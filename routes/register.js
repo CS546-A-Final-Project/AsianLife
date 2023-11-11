@@ -30,7 +30,7 @@ router.route('/').post(async (req, res) => {
   }
   try {
     newUserPostData.email = validation.checkEmail(newUserPostData.email, 'E-mail');
-    if(helper.checkIfEmailExists(newUserPostData.email)) {
+    if(await helper.checkIfEmailExists(newUserPostData.email)) {
       errors.email = 'The email address exists';
     }
   } catch (e) {
