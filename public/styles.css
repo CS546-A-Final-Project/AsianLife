@@ -1,0 +1,78 @@
+.container {
+  max-width: 400px;
+  margin: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  text-align: center;
+}
+
+label {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.input-container {
+  position: relative;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="checkbox"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: #e74c3c; /* Red color for error messages */
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.checkbox {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+button {
+  padding: 10px;
+  background-color: #3498db; /* Blue color for the button */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9; /* Darker blue color on hover */
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #555;
+    padding: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+nav a:hover {
+    background-color: #777;
+}
+
+#avatar {
+    cursor: pointer;
+}
