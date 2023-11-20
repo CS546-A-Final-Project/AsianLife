@@ -1,7 +1,8 @@
 import express from 'express';
 import validation from '../validation.js'
 import helper from '../helpers.js';
-import { users } from "../config/mongoCollections.js";
+import jwt from 'jsonwebtoken';
+const secretKey = 'admin123456';
 const router = express.Router();
 
 router.route('/')
@@ -37,6 +38,10 @@ router.route('/')
       return;
     }
     const userId = await helper.getUserIdByEmail(loginData.email);
+    const token = jwt.sign({
+      id: String(await helper.getUserIdByEmail(loginData.email)),
+      secretKey
+    });
     res.status(200).redirect(`/home/${userId}`);
   });
 
