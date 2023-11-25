@@ -62,7 +62,21 @@ const exportedMethods = {
             and ${passwordRequirements.minSymbols} symbols`
         }
         return password;
-    }
+    },
+
+    checkId(id){
+        if (!id) {
+          throw "No id provided";
+        }
+      
+        if (typeof id !== "string" || id.trim() === "") {
+          throw "Invalid id provided";
+        }
+        id = id.trim();
+        if (!ObjectId.isValid(id)) {
+          throw "Not a valid ObjectId";
+        }
+        return id;}
 }
 
 export default exportedMethods;
