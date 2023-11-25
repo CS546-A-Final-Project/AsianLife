@@ -15,3 +15,8 @@ const getCollectionFn = (collection) => {
 
 // Note: You will need to change the code below to have the collection required by the assignment!
 export const users = getCollectionFn('users');
+export const stores = getCollectionFn('stores');
+export const product = getCollectionFn('product');
+export const comments = getCollectionFn('comments');
+export const reviewsforstores = getCollectionFn('reviewsforstores');
+export const reviewsforproducts = getCollectionFn('reviewsforproducts');
