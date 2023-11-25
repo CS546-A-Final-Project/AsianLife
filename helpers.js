@@ -42,4 +42,6 @@ const getUserIdByEmail = async (email) => {
     }
 }
 
+
+
 export default {toHashPassword, checkIfEmailExists, checkIfPasswordCorrect, getUserIdByEmail};
