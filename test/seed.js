@@ -194,4 +194,87 @@ const getStoreById2 = await storesData.getStoreById(store1._id.toString());
 console.log(getStoreById2);
 console.log("done seeding db");
 
+console.log("-----------------------");
+
+// users
+console.log("-----------------------");
+console.log("users");
+console.log("adduser");
+const user1 = await usersData.addUser({
+    first_name: "FF",
+    last_name: "last",
+    email: "1Q@gmail.com",
+    gender: "Male",
+    hash_password: "password",
+    city: "city",
+    state: "state",
+    age: 20,
+    users_reviews: ["1", "2"],
+    users_comments: ["1", "2"],
+    is_owner: true,
+    owned_store_id: "1",
+    });
+console.log("adduser");
+const user2 = await usersData.addUser({
+    first_name: "FF",
+    last_name: "last",
+    email: "2Q@gmail.com",
+    gender: "Female",
+    hash_password: "password",
+    city: "city",
+    state: "state",
+    age: 20,
+    users_reviews: ["1", "2"],
+    users_comments: ["1", "2"],
+    is_owner: true,
+    owned_store_id: "1",
+    });
+console.log("adduser");
+const user3 = await usersData.addUser({
+    first_name: "FF",
+    last_name: "last",
+    email: "adwad@gmail.com",
+    gender: "Male",
+    hash_password: "password",
+    city: "city",
+    state: "state",
+    age: 20,
+    users_reviews: ["1", "2"],
+    users_comments: ["1", "2"],
+    is_owner: true,
+    owned_store_id: "1",
+    });
+
+const getAllUsers1 = await usersData.getAllUsers();
+console.log("getallusers", getAllUsers1);
+const getUser = await usersData.getUser(user1._id.toString());
+console.log("getUser", getUser);
+const removeUser = await usersData.removeUser(user2._id.toString());
+console.log("removeUser", removeUser);
+const getAllUsers2 = await usersData.getAllUsers();
+
+const updateUser = await usersData.updateUser(user1._id.toString(), {
+    first_name: "Updated!!!!!!!!!!",
+    last_name: "last",
+    email: "adwad@gmail.com",
+    gender: "Male",
+    hash_password: "password",
+    city: "city",
+    state: "state",
+    age: 20,
+    users_reviews: ["1", "2"],
+    users_comments: ["1", "2"],
+    is_owner: true,
+    owned_store_id: "1",
+    });
+console.log("updateUser", updateUser);
+const getUser2 = await usersData.getUser(user1._id.toString());
+console.log(getUser2);
+console.log(getAllUsers2);
+
+
+
+
+
+
 await closeConnection();
