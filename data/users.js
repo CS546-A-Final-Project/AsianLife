@@ -1,47 +1,84 @@
 import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 
-const addUser = async (object) => {
-    let userName = object.userName;
-    let firstName = object.firstName;
-    let lastName = object.lastName;
-    let email = object.email;
-    let password = object.password;
-    let isAdmin = object.isAdmin == 'on' ? true : false;
-    let newUser = {
-        "userName": userName,
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "hashPassword": password,
-        "gender": "",
-        "age": -1,
-        "userReviews": [],
-        "userComments": [],
-        "isAdmin": isAdmin,
-        "ownedStoreId": "",
-    }
-    const userCollection = await users();
-    const insertInfo = await userCollection.insertOne(newUser);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)
-        throw 'Could not creat event';
-
-    const newUserId = insertInfo.insertedId.toString();
-    const theUser = await getUser(newUserId);
-    return theUser;
-};
-
 const getUser = async (id) => {
-    if (!id) throw 'You must provide an id to search for';
-    if (typeof id !== 'string') throw 'Id must be a string';
-    if (id.trim().length === 0)
-      throw 'Id cannot be an empty string or just spaces';
-    id = id.trim();
-    if (!ObjectId.isValid(id)) throw 'invalid object ID';
-    const userCollection = await users();
-    const theUser = await userCollection.findOne({ _id: new ObjectId(id) });
-    if (theUser === null) throw 'No event with that id';
-    return theUser;
-  };
+  const usersCollection = await users();
+  const user = await usersCollection.findOne({ _id: new ObjectId(id) });
+  if (!user) throw "User not found";
+  return user;
+}
 
-export { addUser, getUser };
+const addUser = async (user) => {
+  const usersCollection = await users();
+  const newInsertInformation = await usersCollection.insertOne(user);
+  const newId = newInsertInformation.insertedId;
+  return await getUser(newId.toString());
+}
+
+const removeUser = async (id) => {
+  const usersCollection = await users();
+  const deletionInfo = await usersCollection.findOneAndDelete({
+    _id: new ObjectId(id),
+  });
+  if (deletionInfo.deletedCount === 0) {
+    throw `Could not delete user with id of ${id}`;
+  }
+  console.log(deletionInfo);
+  return deletionInfo;
+}
+
+const updateUser = async (id, updatedUser) => {
+  const usersCollection = await users();
+  const updatedUserData = {};
+  if (updatedUser.first_name) {
+    updatedUserData.first_name = updatedUser.first_name;
+  }
+  if (updatedUser.last_name) {
+    updatedUserData.last_name = updatedUser.last_name;
+  }
+  if (updatedUser.email) {
+    updatedUserData.email = updatedUser.email;
+  }
+  if (updatedUser.gender) {
+    updatedUserData.gender = updatedUser.gender;
+  }
+  if (updatedUser.hash_password) {
+    updatedUserData.hash_password = updatedUser.hash_password;
+  }
+  if (updatedUser.city) {
+    updatedUserData.city = updatedUser.city;
+  }
+  if (updatedUser.state) {
+    updatedUserData.state = updatedUser.state;
+  }
+  if(updatedUser.age) {
+    updatedUserData.age = updatedUser.age;
+  }
+  if (updatedUser.users_reviews) {
+    updatedUserData.users_reviews = updatedUser.users_reviews;
+  }
+  if (updatedUser.users_comments) {
+    updatedUserData.users_comments = updatedUser.users_comments;
+  }
+  if(updatedUser.is_owner) {
+    updatedUserData.is_owner = updatedUser.is_owner;
+  }
+  if (updatedUser.owned_store_id) {
+    updatedUserData.owned_store_id = updatedUser.owned_store_id;
+  }
+  let updateCommand = {
+    $set: updatedUserData,
+  };
+  const query = {
+    _id: new ObjectId(id),
+  };
+  await usersCollection.updateOne(query, updateCommand);
+  return await getUser(id.toString());
+}
+const getAllUsers = async () => {
+  const usersCollection = await users();
+  const allUsers = await usersCollection.find({}).toArray();
+  return allUsers;
+}
+
+export { getUser, addUser, removeUser, updateUser, getAllUsers};
