@@ -120,6 +120,78 @@ console.log("updateReview", updateReview2);
 console.log(getReviewById4);
 console.log("-----------------------");
 
+// stores
+console.log("-----------------------");
+console.log("stores");
+console.log("addstore");
+
+const store1 = await storesData.addStore({
+  admin_id: "1",
+  photo_id: "1",
+  category: "food",
+  store_name: "store1",
+  established_date: "2020-01-01",
+  store_location: "New York",
+  rating: 5,
+  products: ["1", "2"],
+  contact_information: "123-456-7890",
+  comments: ["1", "2"],
+  reviews: ["1", "2"],
+});
+console.log("addstore");
+const store2 = await storesData.addStore({
+  admin_id: "1",
+  photo_id: "1",
+  category: "food",
+  store_name: "store2",
+  established_date: "2020-01-01",
+  store_location: "New York",
+  rating: 5,
+  products: ["1", "2"],
+  contact_information: "123-456-7890",
+  comments: ["1", "2"],
+  reviews: ["1", "2"],
+});
+console.log("addstore");
+const store3 = await storesData.addStore({
+  admin_id: "1",
+  photo_id: "1",
+  category: "food",
+  store_name: "store3",
+  established_date: "2020-01-01",
+  store_location: "New York",
+  rating: 5,
+  products: ["1", "2"],
+  contact_information: "123-456-7890",
+  comments: ["1", "2"],
+  reviews: ["1", "2"],
+});
+
+const getAllStores1 = await storesData.getAllStores();
+console.log("getallstores", getAllStores1);
+const getStoreById = await storesData.getStoreById(store1._id.toString());
+console.log("getStoreById", getStoreById);
+const removeStore = await storesData.removeStore(store2._id.toString());
+console.log("removeStore", removeStore);
+const getAllStores2 = await storesData.getAllStores();
+console.log(getAllStores2);
+
+const updateStore = await storesData.updateStore(store1._id.toString(), {
+    admin_id: "1",
+    photo_id: "1",
+    category: "food",
+    store_name: "store1",
+    established_date: "2020-01-01",
+    store_location: "New York",
+    rating: 5,
+    products: ["1", "2"],
+    contact_information: "123-456-7890",
+    comments: ["1", "2","342"],
+    reviews: ["1", "2"],
+    });
+console.log("updateStore", updateStore);
+const getStoreById2 = await storesData.getStoreById(store1._id.toString());
+console.log(getStoreById2);
 console.log("done seeding db");
 
 await closeConnection();
