@@ -273,6 +273,109 @@ console.log(getUser2);
 console.log(getAllUsers2);
 
 
+console.log("-----------------------");
+
+// comments
+console.log("-----------------------");
+console.log("comments");
+console.log("addcomment");
+const comment1 = await commentsData.addComment({
+    user_id: "1",
+    store_id: "1",
+    comment: "This is a comment",
+    name: "name",
+    reply: "reply",
+    });
+console.log("addcomment");
+const comment2 = await commentsData.addComment({
+    user_id: "2",
+    store_id: "1",
+    comment: "This is a comment",
+    name: "name",
+    reply: "reply",
+    });
+console.log("addcomment");
+const comment3 = await commentsData.addComment({
+    user_id: "3",
+    store_id: "1",
+    comment: "This is a comment",
+    name: "name",
+    reply: "reply",
+    });
+
+const getAllComments1 = await commentsData.getAllComments();
+console.log("getallcomments", getAllComments1);
+const getCommentById1 = await commentsData.getCommentById(comment1._id.toString());
+console.log("getCommentById", getCommentById1);
+const removeComment = await commentsData.removeComment(comment2._id.toString());
+console.log("removeComment", removeComment);
+const getAllComments2 = await commentsData.getAllComments();
+console.log(getAllComments2);
+
+const updateComment = await commentsData.updateComment(comment1._id.toString(), {
+    user_id: "1",
+    store_id: "1",
+    comment: "This is a updated comment",
+    name: "name",
+    reply: "reply",
+    });
+console.log("updateComment", updateComment);
+const getCommentById2 = await commentsData.getCommentById(comment1._id.toString());
+console.log(getCommentById2);
+console.log("-----------------------");
+
+// products
+
+console.log("-----------------------");
+console.log("products");
+console.log("addproduct");
+const product1 = await productsData.addProduct({
+    product_name: "product1",
+    category: "food",
+    product_price: 10,
+    posted_date: "2020-01-01",
+    store_id: "1",
+    product_reviews: ["1", "2"],
+    });
+console.log("addproduct");
+const product2 = await productsData.addProduct({
+    product_name: "product2",
+    category: "food",
+    product_price: 10,
+    posted_date: "2020-01-01",
+    store_id: "1",
+    product_reviews: ["1", "2"],
+    });
+console.log("addproduct");
+const product3 = await productsData.addProduct({
+    product_name: "product3",
+    category: "food",
+    product_price: 10,
+    posted_date: "2020-01-01",
+    store_id: "1",
+    product_reviews: ["1", "2"],
+    });
+    
+const getAllProducts1 = await productsData.getAllProducts();
+console.log("getallproducts", getAllProducts1);
+const getProductById1 = await productsData.getProductById(product1._id.toString());
+console.log("getProductById", getProductById1);
+const removeProduct = await productsData.removeProduct(product2._id.toString());
+console.log("removeProduct", removeProduct);
+const getAllProducts2 = await productsData.getAllProducts();
+console.log(getAllProducts2);
+
+const updateProduct = await productsData.updateProduct(product1._id.toString(), {
+    product_name: "update !!!!!!product1",
+    category: "food",
+    product_price: 10,
+    posted_date: "2020-01-01",
+    store_id: "1",
+    product_reviews: ["1", "2"],
+    });
+console.log("updateProduct", updateProduct);
+const getProductById2 = await productsData.getProductById(product1._id.toString());
+console.log(getProductById2);
 
 
 
