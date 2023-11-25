@@ -1,5 +1,5 @@
-import { reviewsforproducts } from "../config/mongoCollections";
-import { checkId } from "../validation.js";
+import { reviewsforproducts } from "../config/mongoCollections.js";
+import * as validation  from "../validation.js";
 import { ObjectId } from "mongodb";
 
 const exportedMethods = {
@@ -9,7 +9,7 @@ const exportedMethods = {
         return reviews;
     },
     async getReviewById(id) {
-        checkId(id);
+        validation.checkId(id);
         const reviewsCollection = await reviewsforproducts();
         const review = await reviewsCollection.findOne({ _id: ObjectId(id) });
         if (!review) throw "Review not found";
@@ -31,21 +31,22 @@ const exportedMethods = {
     async updateReview(id, updatedReview) {
         const reviewsCollection = await reviewsforproducts();
         const updatedReviewData = {};
-        if (updatedReview.review) {
+        if(updatedReview.user_id){
+            updatedReviewData.user_id = updatedReview.user_id;
+        }
+
+        if(updatedReview.product_id){
+            updatedReviewData.product_id = updatedReview.product_id;
+        }
+
+        if(updatedReview.review){
             updatedReviewData.review = updatedReview.review;
         }
-        if (updatedReview.rating) {
+
+        if(updatedReview.rating){
             updatedReviewData.rating = updatedReview.rating;
         }
-        if (updatedReview.reviewer) {
-            updatedReviewData.reviewer = updatedReview.reviewer;
-        }
-        if (updatedReview.product) {
-            updatedReviewData.product = updatedReview.product;
-        }
-        if (updatedReview.date) {
-            updatedReviewData.date = updatedReview.date;
-        }
+        
         let updateCommand = {
             $set: updatedReviewData
         };
@@ -56,3 +57,5 @@ const exportedMethods = {
         return await this.getReviewById(id);
     }
 };
+
+export default exportedMethods;
