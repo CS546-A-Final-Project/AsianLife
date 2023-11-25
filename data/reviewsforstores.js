@@ -55,3 +55,10 @@ const updateReview = async (id, updatedReview) => {
   await reviewsCollection.updateOne(query, updateCommand);
   return await getReviewById(id.toString());
 };
+export  {
+  getAllReviews,
+  getReviewById,
+  addReview,
+  removeReview,
+  updateReview,
+};
