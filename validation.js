@@ -1,4 +1,8 @@
 import validator from 'validator';
+// XSS,
+// session for middleware
+// client-side
+
 const exportedMethods = {
     checkUserName(string, varName) {
         if (!string) throw `You must provide a ${varName}`;
