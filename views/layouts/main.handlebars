@@ -1,20 +1,39 @@
 {{! This will be your default layout for all handlebars file rendered. This will be inherited by all other templates. }}
 {{! Refer lecture code to learn more on how this works: https://github.com/stevens-cs546-cs554/CS-546/tree/master/lecture_08/code/HTML_Templating }}
+{{! First edition, without sign in or register}}
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <title>{{title}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/styles.css">
+    <title>Asianlife</title>
 </head>
-
 <body>
-
+    <header>
+        <div class="title">Asianlife</div>
+        <nav>
+            <div class="dropdown">
+                <button class="dropbtn">Search</button>
+                <div class="dropdown-content">
+                    <a href="#">Store</a>
+                    <a href="#">Product</a>
+                </div>
+            </div>
+        </nav>
+        <div class="profile-button">
+            <a href="/profile">Profile</a>
+        </div>
+    </header>
     <main>
-        {{{body}}}
+        <aside class="sidebar">
+            <!-- List of store and product categories -->
+        </aside>
+        <section class="store-list">
+            <!-- List of stores -->
+        </section>
     </main>
-
+    <script src="/public/main.js"></script>
 </body>
 </html>
