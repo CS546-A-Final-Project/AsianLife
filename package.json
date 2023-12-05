@@ -14,15 +14,17 @@
   "author": "Mingzhi Wen 20016129, Jiajun Wu 20010950, Su Zhang 20016186, Yaxi Luo 20019222, Siyuan Fang 10444349, ",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "blueimp-md5": "^2.19.0",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
-    "jsonwebtoken": "^9.0.2",
-    "module": "^1.2.5",
+    "express-session": "^1.17.3",
+    "fs": "^0.0.1-security",
     "mongodb": "^6.2.0",
-    "password-hash": "^1.2.2",
+    "multer": "^1.4.5-lts.1",
     "path": "^0.12.7",
     "url": "^0.11.3",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "xss": "^1.0.14"
   }
 }
