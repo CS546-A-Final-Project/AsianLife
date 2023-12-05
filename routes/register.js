@@ -1,7 +1,8 @@
 import express from 'express';
 import validation from '../validation.js';
 import helper from '../helpers.js';
-import { addUser } from '../data/register.js';
+import { addUser } from '../data/users.js';
+import xss from 'xss';
 const router = express.Router();
 
 router.route('/').get(async (req, res) => {
@@ -11,53 +12,115 @@ router.route('/').get(async (req, res) => {
 
 router.route('/').post(async (req, res) => {
   const title = "Register";
-  const newUserPostData = req.body;
-  let errors = {};
+  let cleanUserName = xss(req.body.userName);
+  let cleanFirstName = xss(req.body.firstName);
+  let cleanLastName = xss(req.body.lastName);
+  let cleanEmail = xss(req.body.email).toLowerCase();
+  let cleanPassword = xss(req.body.password);
+  let cleanConfirmPassword = xss(req.body.confirmPassword);
+  let cleanRole = xss(req.body.role).toLowerCase();
+  let errors = [];
   try {
-    newUserPostData.userName = validation.checkUserName(newUserPostData.userName, 'User Name');
+    cleanUserName = validation.checkUserName(cleanUserName, 'User Name');
   } catch (e) {
-    errors.userName = e;
+    errors.push(e);
   }
   try {
-    newUserPostData.firstName = validation.checkName(newUserPostData.firstName, 'First Name');
+    cleanFirstName = validation.checkName(cleanFirstName, 'First Name');
   } catch (e) {
-    errors.firstName = e;
+    errors.push(e);
   }
   try {
-    newUserPostData.lastName = validation.checkName(newUserPostData.lastName, 'Last Name');
+    cleanLastName = validation.checkName(cleanLastName, 'Last Name');
   } catch (e) {
-    errors.lastName = e;
+    errors.push(e);
   }
   try {
-    newUserPostData.email = validation.checkEmail(newUserPostData.email, 'E-mail');
-    if(await helper.checkIfEmailExists(newUserPostData.email)) {
-      errors.email = 'The email address exists';
+    cleanEmail = validation.checkEmail(cleanEmail, 'E-mail');
+    if (await helper.checkIfEmailExists(cleanEmail)) {
+      errors.push('The email address exists');
     }
   } catch (e) {
-    errors.email = e;
+    errors.push(e);
   }
   try {
-    newUserPostData.password = validation.checkPassword(newUserPostData.password);
+    cleanPassword = validation.checkPassword(cleanPassword, 'Password');
   } catch (e) {
-    errors.password = e;
+    errors.push(e);
   }
-  let checked = newUserPostData.isAdmin === 'on' ? 'checked' : '';
-  if (Object.keys(errors).length > 0) {
-    res.render('register', {
-      errors: errors,
-      hasErrors: true,
-      newUserPostData: newUserPostData,
-      checked: checked,
-    });
-    return;
+  if (cleanConfirmPassword !== cleanPassword) {
+    errors.push('Password did not match');
   }
+  cleanRole = cleanRole.trim();
+  if (cleanRole !== 'admin' && cleanRole !== 'user') {
+    errors.push('The role should be admin or user');
+  }
+
+  if (errors.length > 0) {
+    let selectedAdmin = '', selectedUser = '', selectedDefault = '';
+    if (cleanRole === "admin") {
+      selectedAdmin = "selected";
+    } else if (cleanRole === "user") {
+      selectedUser = "selected";
+    } else {
+      selectedDefault = "selected";
+    }
+    return res.status(400).render('register',
+      {
+        title: "Sign Up",
+        userName: cleanUserName,
+        firstName: cleanFirstName,
+        lastName: cleanLastName,
+        email: cleanEmail,
+        password: cleanPassword,
+        confirmPassword: cleanConfirmPassword,
+        selectedDefault: selectedDefault,
+        selectedAdmin: selectedAdmin,
+        selectedUser: selectedUser,
+        errors: errors,
+        hasErrors: true
+      });
+  }
+  let newUser = {};
   try {
-    newUserPostData.password = helper.toHashPassword(newUserPostData.password);
-    const newUser = await addUser(newUserPostData);
-    res.redirect(`home/${newUser._id}`);
+    newUser = await addUser(
+      cleanUserName,
+      cleanFirstName,
+      cleanLastName,
+      cleanEmail,
+      cleanPassword,
+      cleanRole
+    );
   } catch (e) {
-    return res.status(400).render('error', { title: title, error: e });
+    errors.push(e);
+    let selectedAdmin = '', selectedUser = '', selectedDefault = '';
+    if (cleanRole === "admin") {
+      selectedAdmin = "selected";
+    } else if (cleanRole === "user") {
+      selectedUser = "selected";
+    } else {
+      selectedDefault = "selected";
+    }
+    return res.status(400).render('register',
+      {
+        title: "Sign Up",
+        userName: cleanUserName,
+        firstName: cleanFirstName,
+        lastName: cleanLastName,
+        email: cleanEmail,
+        password: cleanPassword,
+        confirmPassword: cleanConfirmPassword,
+        selectedDefault: selectedDefault,
+        selectedAdmin: selectedAdmin,
+        selectedUser: selectedUser,
+        errors: errors,
+        hasErrors: true
+      });
   }
+  if (!newUser) {
+    return res.status(500).render('error', { title: "Internal Server Error", error: "Internal Server Error" });
+  }
+  res.status(200).redirect('/login');
 
 });
 export default router;
