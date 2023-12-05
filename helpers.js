@@ -1,12 +1,8 @@
-import { createRequire } from 'module';
 import { users } from "./config/mongoCollections.js";
-import { ObjectId } from "mongodb";
+import bcrypt from 'bcrypt';
 
-const toHashPassword = (password) => {
-        const require = createRequire(import.meta.url);
-        var passwordHash = require('password-hash');
-        var hashedPassword = passwordHash.generate(password);
-        return hashedPassword;
+const toHashPassword = async (password) => {
+    return await bcrypt.hash(password, 10);
 }
 
 const checkIfEmailExists = async (email) => {
@@ -20,28 +16,50 @@ const checkIfEmailExists = async (email) => {
     return false;
 };
 
+const checkIfEmailExistsExceptMe = async (emailNow, email) => {
+    const userCollection = await users();
+    const userList = await userCollection.find().toArray();
+    for (let user of userList) {
+        if (user.email === emailNow) {
+            continue;
+        }
+        if (user.email === email) {
+            return true;
+        }
+    }
+    return false;
+};
+
 const checkIfPasswordCorrect = async (email, password) => {
+    let compareToMatch = false;
     const userCollection = await users();
     const userList = await userCollection.find().toArray();
     for (let user of userList) {
         if (user.email === email) {
-            const require = createRequire(import.meta.url);
-            var passwordHash = require('password-hash');
-            return passwordHash.verify(password, user.hashPassword);
+            compareToMatch = await bcrypt.compare(password, user.hashPassword);
+            return compareToMatch;
         }
     }
+    return compareToMatch;
 }
 
-const getUserIdByEmail = async (email) => {
+const getUserInfoByEmail = async (email) => {
     const userCollection = await users();
     const userList = await userCollection.find().toArray();
     for (let user of userList) {
         if (user.email === email) {
-            return user._id.toString();
+            return {
+                id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role,
+                ownedStoreId: user.ownedStoreId
+            }
         }
     }
 }
 
 
 
-export default {toHashPassword, checkIfEmailExists, checkIfPasswordCorrect, getUserIdByEmail};
+export default { toHashPassword, checkIfEmailExists, checkIfEmailExistsExceptMe, checkIfPasswordCorrect, getUserInfoByEmail };

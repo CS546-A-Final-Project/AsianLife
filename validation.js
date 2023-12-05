@@ -1,4 +1,9 @@
-import validator from 'validator';
+<<<<<<<<< Temporary merge branch 1
+import validator from "validator";
+import { ObjectId } from "mongodb";
+
+
+>>>>>>>>> Temporary merge branch 2
 const exportedMethods = {
   checkUserName(string, varName) {
     if (!string) throw `You must provide a ${varName}`;
@@ -6,6 +11,8 @@ const exportedMethods = {
     string = string.trim();
     if (string.length === 0)
       throw `${varName} cannot be an empty string or just spaces`;
+    if (string.length < 2 || string.length > 25)
+      throw `${varName} should be within 2 - 25 characters`;
     var regex = /^[a-zA-Z0-9]+$/;
     if (!regex.test(string))
       throw `${varName} must only contain digits and letters`;
@@ -18,6 +25,8 @@ const exportedMethods = {
     string = string.trim();
     if (string.length === 0)
       throw `Error: ${varName} cannot be an empty string or just spaces`;
+    if (string.length < 2 || string.length > 25)
+      throw `${varName} should be within 2 - 25 characters`;
     var regex = /^[a-zA-Z]+$/;
     if (!regex.test(string)) throw `${varName} must only contain letters`;
     return string;
@@ -44,7 +53,7 @@ const exportedMethods = {
     return string;
   },
 
-  checkPassword(password) {
+  checkPassword(password, varName) {
     const passwordRequirements = {
       minLength: 8,
       minLowercase: 1,
@@ -56,8 +65,10 @@ const exportedMethods = {
       password,
       passwordRequirements
     );
+    if (password.includes(' '))
+      throw `${password} should not contain any space`;
     if (!isValidPassword) {
-      throw `Password must have ${passwordRequirements.minLength} characters, 
+      throw `${varName} must have ${passwordRequirements.minLength} characters, 
             with at least ${passwordRequirements.minLowercase} lowercase letters, 
             ${passwordRequirements.minUppercase} uppercase letters,
             ${passwordRequirements.minNumbers} numbers,
@@ -79,6 +90,18 @@ const exportedMethods = {
       throw "Not a valid ObjectId";
     }
     return id;
+  },
+
+  checkIfPasswordValid(password) {
+    const passwordRequirements = {
+      minLength: 8,
+      minUppercase: 1,
+      minLowercase: 0,
+      minNumbers: 1,
+      minSymbols: 1,
+    };
+    const isValidPassword = validator.isStrongPassword(password, passwordRequirements);
+    return isValidPassword;
   },
 };
 
