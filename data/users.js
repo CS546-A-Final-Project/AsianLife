@@ -172,6 +172,20 @@ const updateAvatar = async (id, fileName) => {
       }
     },
     { returnDocument: 'after' });
-};
+}
 
-export { getUser, addUser, loginUser, removeUser, updateUser, getAllUsers, updateAvatar };
+const updatePassword = async (id, password) => {
+  const userCollection = await users();
+  if (!validation.checkIfPasswordValid(password)) throw "Password must have at least 8 characters, with at least 1 uppercase letter, 1 number, and 1 symbol";
+  password = await bcrypt.hash(password, 10);
+  await userCollection.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        hashPassword: password,
+      }
+    },
+    { returnDocument: 'after' });
+}
+
+export { getUser, addUser, loginUser, removeUser, updateUser, getAllUsers, updateAvatar, updatePassword };

@@ -124,6 +124,14 @@ app.use('/logout', (req, res, next) => {
   }
 });
 
+app.use('/password', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+});
+
 app.use('/addStore', (req, res, next) => {
   if (!req.session.user) {
     return res.status(200).redirect('/login');
