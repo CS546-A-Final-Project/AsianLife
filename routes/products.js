@@ -22,3 +22,5 @@ router.route('/product')
     .get(async (req, res) => {
 
 })
+
+export default router;

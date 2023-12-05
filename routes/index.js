@@ -15,6 +15,7 @@ const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
   app.use('/register', registerRoutes);
   app.use('/home', homeRoutes)  
+  app.use('/products', productsRoutes);
 
   app.use('*', (req, res) => {
     res.status(404).render('error', { title: "404 NOT FOUND", error: "404 NOT FOUND" });

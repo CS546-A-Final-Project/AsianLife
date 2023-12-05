@@ -1,9 +1,6 @@
-<<<<<<<<< Temporary merge branch 1
 import validator from "validator";
 import { ObjectId } from "mongodb";
 
-
->>>>>>>>> Temporary merge branch 2
 const exportedMethods = {
   checkUserName(string, varName) {
     if (!string) throw `You must provide a ${varName}`;
