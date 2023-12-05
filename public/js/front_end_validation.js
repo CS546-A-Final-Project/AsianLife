@@ -155,4 +155,58 @@
             }
         });
     }
+
+    const passwordStaticForm = document.getElementById('password-change-form');
+
+    if (passwordStaticForm) {
+        const originalPasswordInput = document.getElementById('originalPassword');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+
+        passwordStaticForm.addEventListener('submit', (event) => {
+            let errors = [];
+            errorContainer.innerHTML = '';
+
+            const originalPassword = originalPasswordInput.value;
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            originalPasswordInput.value = originalPassword;
+            passwordInput.value = password;
+            confirmPasswordInput.value = confirmPassword;
+
+            if (originalPassword.includes(' ')) {
+                errors.push("Original password entered is wrong");
+            } else {
+                const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{8,}$/;
+                if (!passwordRegex.test(originalPassword)) {
+                    errors.push("Original password entered is wrong");
+                }
+            }
+
+            if (password.includes(' ')) {
+                errors.push("Password should not contain any space");
+            } else {
+                const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{8,}$/;
+                if (!passwordRegex.test(password)) {
+                    errors.push("Password must have at least 8 characters, with at least 1 uppercase letter, 1 number, and 1 symbol");
+                }
+            }
+            if (password === originalPassword) {
+                errors.push("New password should not be same as the old one")
+            }
+            if (password !== confirmPassword) {
+                errors.push("Password doesn't match");
+            }
+
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
+        });
+    }
 })();
