@@ -2,11 +2,13 @@
 import loginRoutes from './login.js';
 import registerRoutes from './register.js';
 import homeRoutes from './home.js';
+import productsRoutes from './products.js';
 
 const constructorMethod = (app) => {
   app.use('/', loginRoutes);
   app.use('/register', registerRoutes);
-  app.use('/home', homeRoutes)  
+  app.use('/home', homeRoutes) 
+  app.use('/products', ) 
 
   app.use('*', (req, res) => {
     res.status(404).render('error', { title: "404 NOT FOUND", error: "404 NOT FOUND" });

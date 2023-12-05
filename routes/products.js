@@ -7,10 +7,18 @@ const router = express.Router ();
 router.route ('/')
 	.get (async (req, res) => {
 		try {
-			getAllProducts();
-
+			const allProducts = await getAllProducts();
+			if (!allProducts) {
+				return res.status(400).render('error', {title: "Products Error", error: "Cannot Load Products"});
+			}
+			res.render('productsList', { allProducts: allProducts })
 		} catch (e) {
-			res.render();
+			return res.status(500).render('error', { title: "Internal Server Error", error: e });
 		}
 		
 	});
+
+router.route('/product')
+    .get(async (req, res) => {
+
+})
