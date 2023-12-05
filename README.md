@@ -1,0 +1,2 @@
+# Asian Life
+This website acts as an Asian grocery store review in Central Jersey Users are able to provide reviews about stores and certain items sold at that store. Users are able to search certain items on the website to find their favorite store based on price and review. Store list and product list allow users to browse for all the stores and all products in certain stores.  Store owners are able to manage their store and products. The website also allows new store owners to register their stores.

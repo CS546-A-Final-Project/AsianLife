@@ -1,0 +1,63 @@
+<nav>
+    <a href="/home">Home</a>
+
+</nav>
+<div class="container">
+    <label>Avatar:</label>
+    <img src="/public/images/users/{{avatarId}}" alt="Avatar" width="50" height="50">
+    <form enctype="multipart/form-data" method="post" action="/upload" id="uploadForm">
+        <input type="file" name="file" id="file" accept="image/*">
+        <button type="submit">Update Your Avatar</button>
+    </form>
+    <form id="profile-form" action="/profile" method="POST">
+        <h2>Profile</h2>
+        <label for="userName">User Name:</label>
+        <input type="text" id="userName" name="userName" value="{{userName}}" required>
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" value="{{firstName}}" required>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" value="{{lastName}}" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{email}}" required>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="" {{selectedNull}}>prefer not to say</option>
+            <option value="male" {{selectedMale}}>male</option>
+            <option value="female" {{selectedFemale}}>female</option>
+        </select>
+
+        <label>History Reviews:</label>
+        <ul class="userReviews" id="userReviews">
+            {{#if hasReviews}}
+            {{#each reviews}}
+            <li>
+                {{this}}
+            </li>
+            {{/each}}
+            {{/if}}
+            {{#if hasNoReviews}}
+            <li>
+                You didn't leave any reviews before.
+            </li>
+            {{/if}}
+        </ul>
+        <button type="submit">Update</button>
+    </form>
+    <br>
+    <a href="/password" class="link-button">Change Your Password</a>
+    <ul class="errorContainer" id="errorContainer">
+        {{#if hasErrors}}
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+        {{/if}}
+    </ul>
+</div>
+
+<script src="/public/js/front_end_validation.js"></script>
