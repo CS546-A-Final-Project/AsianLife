@@ -19,11 +19,14 @@ const addProduct = async (
     productClass,
     productPrice,
     manufactureDate,
-    expirationDate
+    expirationDate,
+    storeId,
+    product_reviews
 ) => {
     productName = helpers.checkString(productName, 'productName');
     productClass = helpers.checkClass(productClass, 'productClass');
     productPrice = helpers.checkPrice(productPrice, 'productPrice');
+    product
     let newProduct = {
         productName: productName,
         productClass: productClass,
