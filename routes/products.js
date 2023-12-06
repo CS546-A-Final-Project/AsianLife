@@ -1,6 +1,7 @@
 import express from 'express';
 // import validation from '../validation.js';
 import helpers from '../helpers.js';
+import xss from 'xss';
 import {addProduct, getAllProducts, getProductById, updateProduct} from '../data/products.js';
 const router = express.Router ();
 
@@ -18,9 +19,9 @@ router.route ('/')
 		}		
 	})
     .post (async (req, res)=> {
-        let newProduct = req.body;
+        let newProduct = xss(req.body);
         try {       
-            let product = await addProduct(newProduct);
+            let product = await addProduct(newProduct);//add image
             res.render('products', {product : product} )
         } catch (e) {
             res.status(404).render("products", {error: e});
@@ -32,7 +33,7 @@ router.route('/:id')
     // get one product from the webpage
     .get(async (req, res) => {      
     try {     
-        let id = req.params.id;
+        let id = xss(req.params.id);
         id = helpers.checkId(id, 'product');  
         let product = await getProductById(id);
         return res.render("products", {product, product});
@@ -42,7 +43,7 @@ router.route('/:id')
 })
     .delete(async (req, res) => {
         try {           
-            let id = req.params.id;
+            let id = xss(req.params.id);
             id = helpers.checkId(id, 'product'); 
             let product = await removeProduct(id);
             return res.render("products", {product, product});
@@ -53,8 +54,8 @@ router.route('/:id')
     .put(async (req, res)=> {
 
         try {
-            let id = req.params.id;
-            let updateInfo = req.body;
+            let id = xss(req.params.id);
+            let updateInfo = xss(req.body);
             id = helpers.checkId(id, 'product'); 
             updateProduct(id, updateInfo);
 

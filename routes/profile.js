@@ -8,7 +8,7 @@ import xss from 'xss';
 router.route('/')
     .get(async (req, res) => {
         const title = "Profile";
-        const id = req.session.user.id;
+        const id = xss(req.session.user.id);
         let user = await getUser(id);
         let selectedNull = "", selectedMale = "", selectedFemale = "";
         if (user.gender === null) {
@@ -34,7 +34,7 @@ router.route('/')
     })
     .post(async (req, res) => {
         const title = "Profile";
-        const id = req.session.user.id;
+        const id =  xss(req.session.user.id);
         let user = await getUser(id);
         let cleanUserName = xss(req.body.userName);
         let cleanFirstName = xss(req.body.firstName);

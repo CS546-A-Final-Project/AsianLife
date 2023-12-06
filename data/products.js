@@ -20,7 +20,14 @@ const addProduct = async (
     productPrice,
     manufactureDate,
     expirationDate,
-    storeId,
+    storeId, //store name 
+    /*
+    {
+        store_id: "dlsnfmdlsalmds"
+        store_name: "Walmart"
+    }
+    findStoreByStoreName("Walmart")
+    */
     product_reviews
 ) => {
     productName = helpers.checkString(productName, 'productName');
@@ -35,6 +42,8 @@ const addProduct = async (
         expirationDate: expirationDate,
     };
     const productsCollection = await products();
+    // const store = getStoreByStoreName()
+    // insert new product inside 'store'
     const newInsertInformation = await productsCollection.insertOne(newProduct);
     if (!newInsertInformation.acknowledged || !newInsertInformation.insertedId) {
         throw new Error(
