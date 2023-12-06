@@ -1,5 +1,5 @@
 import { reviewsforproducts } from "../config/mongoCollections.js";
-import validation from "../validation.js";
+import helpers from "../helpers.js";
 import { ObjectId } from "mongodb";
 
 const getAllReviews = async () => {
@@ -8,7 +8,7 @@ const getAllReviews = async () => {
   return reviews;
 };
 const getReviewById = async (id) => {
-  validation.checkId(id);
+  id = helpers.checkId(id);
   const reviewsCollection = await reviewsforproducts();
   const review = await reviewsCollection.findOne({ _id: new ObjectId(id) });
   if (!review) throw "Review not found";
@@ -21,6 +21,7 @@ const addReview = async (review) => {
   return await getReviewById(newId.toString());
 };
 const removeReview = async (id) => {
+  id = helpers.checkId(id);
   const reviewsCollection = await reviewsforproducts();
   const deletionInfo = await reviewsCollection.findOneAndDelete({ _id: new ObjectId(id) });
   if (deletionInfo.deletedCount === 0) {
@@ -30,6 +31,7 @@ const removeReview = async (id) => {
   return deletionInfo;
 };
 const updateReview = async (id, updatedReview) => {
+  id = helpers.checkId(id);
   const reviewsCollection = await reviewsforproducts();
   const updatedReviewData = {};
   if (updatedReview.user_id) {
