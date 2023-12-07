@@ -16,11 +16,12 @@ const getProductById = async id => {
 };
 const addProduct = async (
     productName,
-    productClass,
+    productCategory,
     productPrice,
     manufactureDate,
     expirationDate,
-    storeId, //store name 
+    productReviews,
+    store_name //store name 
     /*
     {
         store_id: "dlsnfmdlsalmds"
@@ -28,18 +29,24 @@ const addProduct = async (
     }
     findStoreByStoreName("Walmart")
     */
-    product_reviews
+
 ) => {
     productName = helpers.checkString(productName, 'productName');
-    productClass = helpers.checkClass(productClass, 'productClass');
+    productCategory = helpers.checkCategories(productCategory, 'productCategory');
     productPrice = helpers.checkPrice(productPrice, 'productPrice');
-    product
+    manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
+    expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
+    helpers.checkDateValid(manufactureDate, expirationDate);
+    productReviews = helpers.checkReview(productReviews, 'productReviews');
+    //store_name = 
     let newProduct = {
         productName: productName,
-        productClass: productClass,
+        productCategory: productCategory,
         productPrice: productPrice,
         manufactureDate: manufactureDate,
         expirationDate: expirationDate,
+        productReviews: [],
+        store_name: store_name
     };
     const productsCollection = await products();
     // const store = getStoreByStoreName()
