@@ -94,7 +94,7 @@ const updateProduct = async (id, updatedProduct) => {
     if (updatedProduct.product_reviews) {
         updatedProductData.product_reviews = updatedProduct.product_reviews;
     }
-        }
+        
     if (updatedProduct.product_image) {
         updatedProductData.product_image = updatedProduct.product_image;
         }
