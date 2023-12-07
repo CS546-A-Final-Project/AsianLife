@@ -1,10 +1,36 @@
 <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="/home">{{name}}</a>
-         <a href="/profile">Profile</a>
-        <a href="/logout">Logout</a>
-        <a href="/profile" id="avatar">
-            <img src="/public/images/users/{{avatarId}}" alt="Avatar" width="30" height="30">
-        </a>
+    <a href="/home">Home</a>
+    <a href="/profile">{{name}}</a>
+    <a href="/profile" id="avatar">
+        <img src="/public/images/users/{{avatarId}}" alt="Avatar">
+    </a>
+    <div class="dropdown">
+        <button class="dropbtn">Personal Center</button>
+        <div class="dropdown-content">
+            <a href="/profile">Profile</a>
+            <a href="/password">Password Change</a>
+            <a href="/logout">Logout</a>
+        </div>
+
+    </div>
 </nav>
+
+<div class="searchContainer">
+    <form id="searchForm" action="/home/search" method="POST">
+        <div class="search-container">
+            <div class="search-dropdown">
+                <label for="searchType">Search for:</label>
+                <select id="searchType" name="searchType">
+                    <option value="store">Store</option>
+                    <option value="product">Product</option>
+                </select>
+            </div>
+            <div class="search-input">
+                <input type="text" id="searchTerm" name="searchTerm" placeholder="Enter your search term">
+                <button type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{{searchResult}}

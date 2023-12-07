@@ -9,12 +9,18 @@ import uploadRoutes from './upload.js';
 import logoutRoutes from './logout.js';
 import errorRoutes from './error.js';
 import passwordRoutes from './password.js'
-import productsRoutes from './products.js';
 
 const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
   app.use('/register', registerRoutes);
-  app.use('/home', homeRoutes)  
+  app.use('/home', homeRoutes);
+  app.use('/store', storeRoutes);
+  app.use('/addStore', addStoreRoutes);
+  app.use('/profile', profileRoutes);
+  app.use('/upload', uploadRoutes);
+  app.use('/logout', logoutRoutes);
+  app.use('/error', errorRoutes);
+  app.use('/password', passwordRoutes);
   app.use('/products', productsRoutes);
 
   app.use('*', (req, res) => {
