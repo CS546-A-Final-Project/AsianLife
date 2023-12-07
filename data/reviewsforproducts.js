@@ -1,5 +1,5 @@
 import { reviewsforproducts } from "../config/mongoCollections.js";
-import {products} from "../config/mongoCollections.js";
+import { products } from "../config/mongoCollections.js";
 import helpers from "../helpers.js";
 import { ObjectId } from "mongodb";
 
@@ -8,7 +8,7 @@ const getAllReviews = async () => {
     const reviews = await reviewsCollection.find({}).toArray();
     return reviews;
 };
-const getReviewById = async (id) => { // By Product Id!!!
+const getReviewById = async (id) => { // By review Id!!!
     id = helpers.checkId(id);
     const reviewsCollection = await reviewsforproducts();
     const review = await reviewsCollection.findOne({ _id: new ObjectId(id) });
@@ -20,24 +20,27 @@ const getReviewById = async (id) => { // By Product Id!!!
 const addReview = async (
     user_id,
     product_id, // ObjectId
+    store_id,
     productName, // string
     productReviews, // string
     rating
 ) => {
     user_id = helpers.checkId(user_id);
     product_id = helpers.checkId(product_id);
+    store_id = helpers.checkId(store_id);
     productName = helpers.checkString(productName);
     productReviews = helpers.checkReview(productReviews);
     rating = helpers.checkRating(rating);
     let review = {
         _id: new ObjectId(),
-        user_id: user_id,
-        product_id: product_id,
+        user_id: user_id, // user name
+        product_id: product_id, // product name
+        store_id: store_id, // store name
         productName: productName,
         productReviews: productReviews,
         rating: rating
     }
-    const reviewsCollection = await product();
+    const reviewsCollection = await reviewsforproducts();
     const newInsertInformation = await reviewsCollection.insertOne(review);
     const newId = newInsertInformation.insertedId;
     return await getReviewById(newId.toString());
@@ -95,6 +98,6 @@ export {
     getAllReviews,
     getReviewById,
     addReview,
-    removeReview,
-    updateReview,
+    removeReview
+    //updateReview,
 };

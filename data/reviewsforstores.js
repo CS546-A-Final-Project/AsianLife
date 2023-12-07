@@ -7,7 +7,7 @@ const getAllReviews = async () => {
   const reviews = await reviewsCollection.find({}).toArray();
   return reviews;
 };
-const getReviewById = async (product_id) => {
+const getReviewById = async (id) => {
   validation.checkId(id);
   const reviewsCollection = await reviewsforstores();
   const review = await reviewsCollection.findOne({ _id: new ObjectId(id) });
