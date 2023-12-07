@@ -1,4 +1,5 @@
 import { reviewsforproducts } from "../config/mongoCollections.js";
+import {products} from "../config/mongoCollections.js";
 import helpers from "../helpers.js";
 import { ObjectId } from "mongodb";
 
@@ -17,22 +18,26 @@ const getReviewById = async (id) => { // By Product Id!!!
     return review;
 };
 const addReview = async (
+    user_id,
     product_id, // ObjectId
     productName, // string
     productReviews, // string
     rating
 ) => {
+    user_id = helpers.checkId(user_id);
     product_id = helpers.checkId(product_id);
     productName = helpers.checkString(productName);
     productReviews = helpers.checkReview(productReviews);
     rating = helpers.checkRating(rating);
     let review = {
-        product_id: new ObjectId(),
+        _id: new ObjectId(),
+        user_id: user_id,
+        product_id: product_id,
         productName: productName,
         productReviews: productReviews,
         rating: rating
     }
-    const reviewsCollection = await reviewsforproducts();
+    const reviewsCollection = await product();
     const newInsertInformation = await reviewsCollection.insertOne(review);
     const newId = newInsertInformation.insertedId;
     return await getReviewById(newId.toString());
@@ -47,42 +52,44 @@ const removeReview = async (id) => {
     //console.log(deletionInfo);
     return deletionInfo;
 };
-const updateReview = async (
-    id, 
-    productReviews,
-    rating) => {
+// const updateReview = async (
+//     product_id,
+//     productReview,
+//     rating) => {
 
-    id = helpers.checkId(id);
-    productReviews = helpers.checkReview(productReviews);
-    rating = helpers.checkRating(rating);
-    
-    const reviewsCollection = await reviewsforproducts();
-    const updatedReviewData = {};
-    if (updatedReview.user_id) {
-        updatedReviewData.user_id = updatedReview.user_id;
-    }
+//     product_id = helpers.checkId(product_id);
+//     productReview = helpers.checkReview(productReview);
+//     rating = helpers.checkRating(rating);
+//     // get collection
+//     const reviewsCollection = await reviewsforproducts();
+//     // find the review
+//     //const product = await 
+//     const updatedReviewData = reviewsCollection.findOne({_id: new ObjectId(product_id)});
+//     // if (updatedReview.user_id) {
+//     //     updatedReviewData.user_id = updatedReview.user_id;
+//     // }
 
-    if (updatedReview.product_id) {
-        updatedReviewData.product_id = updatedReview.product_id;
-    }
+//     // if (updatedReview.product_id) {
+//     //     updatedReviewData.product_id = updatedReview.product_id;
+//     // }
 
-    if (updatedReview.review) {
-        updatedReviewData.review = updatedReview.review;
-    }
+//     if (updatedReview.review) {
+//         updatedReviewData.review = updatedReview.review;
+//     }
 
-    if (updatedReview.rating) {
-        updatedReviewData.rating = updatedReview.rating;
-    }
+//     if (updatedReview.rating) {
+//         updatedReviewData.rating = updatedReview.rating;
+//     }
 
-    let updateCommand = {
-        $set: updatedReviewData,
-    };
-    const query = {
-        _id: new ObjectId(id),
-    };
-    await reviewsCollection.updateOne(query, updateCommand);
-    return await getReviewById(id.toString());
-};
+//     let updateCommand = {
+//         $set: updatedReviewData,
+//     };
+//     const query = {
+//         _id: new ObjectId(id),
+//     };
+//     await reviewsCollection.updateOne(query, updateCommand);
+//     return await getReviewById(id.toString());
+//};
 
 export {
     getAllReviews,

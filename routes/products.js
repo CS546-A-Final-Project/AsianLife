@@ -20,8 +20,24 @@ router.route ('/')
 	})
     .post (async (req, res)=> {
         let newProduct = xss(req.body);
+        productName = newProduct.productName,
+        productCategory = newProduct.productCategory,
+        productPrice = newProduct.productPrice,
+        manufactureDate = newProduct.manufactureDate,
+        expirationDate = newProduct.expirationDate,
+        productReviews = newProduct.productReviews, // 有问题！
+        store_name = newProduct.store_name
+        
         try {       
-            let product = await addProduct(newProduct);//add image
+            let product = await addProduct(
+                productName,
+                productCategory,
+                productPrice,
+                manufactureDate,
+                expirationDate,
+                productReviews,
+                store_name
+                );//add image
             res.render('products', {product : product} )
         } catch (e) {
             res.status(404).render("products", {error: e});

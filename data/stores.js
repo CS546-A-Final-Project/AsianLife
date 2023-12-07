@@ -13,7 +13,7 @@ const getStoreById = async (id) => {
   if (!store) throw "Store not found";
   return store;
 };
-const addStore = async (store) => {
+const addStore = async (store) => { 
   const storesCollection = await stores();
   const newInsertInformation = await storesCollection.insertOne(store);
   const newId = newInsertInformation.insertedId;
