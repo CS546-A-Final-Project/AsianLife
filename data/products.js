@@ -6,6 +6,7 @@ const getAllProducts = async () => {
     const allProducts = await productsCollection.find({}).toArray();
     return allProducts;
     }
+
 const getProductById = async (id) => {
     const productsCollection = await products();
     const product = await productsCollection.findOne({ _id: new ObjectId(id) });

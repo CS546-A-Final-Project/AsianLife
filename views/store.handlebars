@@ -1,0 +1,16 @@
+<p>Store</p>
+<button id="store_review" name="store_review">Store Review</button>
+<button id="store_edit" name="store_edit" hidden>EDIT</button>
+
+<h1>The Products of Store</h1>
+<div class="products-container">
+  <ul>
+    {{#each storeProducts}}
+      <li class="product">
+        <p>Product Name: {{this.product_name}}</p>
+        <p>Price: ${{this.product_price}}</p>
+        <p>Posted Date: {{this.posted_date}}</p>
+      </li>
+    {{/each}}
+  </ul>
+</div>
