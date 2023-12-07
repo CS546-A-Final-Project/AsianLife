@@ -8,7 +8,8 @@ import profileRoutes from './profile.js';
 import uploadRoutes from './upload.js';
 import logoutRoutes from './logout.js';
 import errorRoutes from './error.js';
-import passwordRoutes from './password.js'
+import passwordRoutes from './password.js';
+import productsRoutes from './products.js';
 
 const constructorMethod = (app) => {
   app.use('/login', loginRoutes);

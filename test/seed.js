@@ -347,6 +347,18 @@ try {
 //     console.log(e);
 // }
 try {
+    const updateProduct = await productsData.updateProduct(product1._id.toString(), 
+
+    )
+} catch (e) {
+    console.log(e);
+}
+try {
+
+} catch (e) {
+    console.log(e);
+}
+try {
 
 } catch (e) {
     console.log(e);
@@ -354,14 +366,6 @@ try {
 
 
 
-// const updateProduct = await productsData.updateProduct(product1._id.toString(), {
-//     product_name: "update !!!!!!product1",
-//     category: "food",
-//     product_price: 10,
-//     posted_date: "2020-01-01",
-//     store_id: "1",
-//     product_reviews: ["1", "2"],
-// });
 // console.log("updateProduct", updateProduct);
 // const getProductById2 = await productsData.getProductById(product1._id.toString());
 // console.log(getProductById2);
