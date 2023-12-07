@@ -1,19 +1,101 @@
 import { users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
+import bcrypt from "bcrypt";
+import validator from "validator";
+import validation from "../validation.js"
+import helpers from "../helpers.js";
+import xss from "xss";
 
 const getUser = async (id) => {
-  const usersCollection = await users();
-  const user = await usersCollection.findOne({ _id: new ObjectId(id) });
-  if (!user) throw "User not found";
+  if (!id) throw 'You must provide an id to search for';
+  if (typeof id !== 'string') throw 'Id must be a string';
+  if (id.trim().length === 0)
+    throw 'Id cannot be an empty string or just spaces';
+  id = id.trim();
+  if (!ObjectId.isValid(id)) throw 'invalid object ID';
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: new ObjectId(id) });
+  if (user === null) throw 'No event with that id';
   return user;
 }
 
-const addUser = async (user) => {
-  const usersCollection = await users();
-  const newInsertInformation = await usersCollection.insertOne(user);
-  const newId = newInsertInformation.insertedId;
-  return await getUser(newId.toString());
+const addUser = async (
+  userName,
+  firstName,
+  lastName,
+  email,
+  password,
+  role
+) => {
+  if (!userName) throw "Please provide your user name";
+  if (!firstName) throw "Please provide your first name";
+  if (!lastName) throw "Please provide your last name";
+  if (!email) throw "Please provide your email address";
+  if (!password) throw "Please provide your password";
+  if (!role) throw "Please provide your role";
+
+  var regex = /^[a-zA-Z]+$/;
+  userName = userName.trim();
+  if (!regex.test(userName)) throw "User name must only contain letters";
+  if (userName.length < 2 || userName.length > 25) throw "User name should have 2 - 25 characters";
+
+  firstName = firstName.trim();
+  if (!regex.test(firstName)) throw "First name must only contain letters";
+  if (firstName.length < 2 || firstName.length > 25) throw "First name should have 2 - 25 characters";
+
+  lastName = lastName.trim();
+  if (!regex.test(lastName)) throw "Last name must only contain letters";
+  if (lastName.length < 2 || lastName.length > 25) throw "Last name should have 2 - 25 characters";
+
+  email = email.trim().toLowerCase();
+  if (!validator.isEmail(email)) throw "Email address should be a valid email address format. example@example.com";
+  if (await helpers.checkIfEmailExists(email)) throw "There is already a user with that email address";
+
+  password = password.trim();
+  if (!validation.checkIfPasswordValid(password)) throw "Password must have at least 8 characters, with at least 1 uppercase letter, 1 number, and 1 symbol";
+  password = await bcrypt.hash(password, 10);
+
+  role = role.trim().toLowerCase();
+  if (role !== "admin" && role !== "user") throw "The role should be admin or user";
+
+  let newUser = {
+    "userName": userName,
+    "firstName": firstName,
+    "lastName": lastName,
+    "email": email,
+    "hashPassword": password,
+    "gender": "",
+    "userReviews": [],
+    "userComments": [],
+    "role": role,
+    "ownedStoreId": null,
+    "avatar": "default.jpg",
+  }
+  const userCollection = await users();
+  const insertInfo = await userCollection.insertOne(newUser);
+  if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add user';
+  return { insertedUser: true };
 }
+
+const loginUser = async (email, password) => {
+  if (!email) throw "Please provide your email address";
+  if (!password) throw "Please provide your password";
+
+  email = email.trim().toLowerCase();
+  if (!validator.isEmail(email)) throw "Email address should be a valid email address format. example@example.com";
+
+  password = password.trim();
+  if (!validation.checkIfPasswordValid(password)) throw "Password must have at least 8 characters, with at least 1 uppercase letter, 1 number, and 1 symbol";
+
+  if (!await helpers.checkIfEmailExists(email)) throw "Either the email address or password is invalid";
+
+  if (await helpers.checkIfPasswordCorrect(email, password)) {
+    return await helpers.getUserInfoByEmail(email);
+  } else {
+    throw "Either the email address or password is invalid";
+  }
+};
+
 
 const removeUser = async (id) => {
   const usersCollection = await users();
@@ -28,57 +110,82 @@ const removeUser = async (id) => {
 }
 
 const updateUser = async (id, updatedUser) => {
-  const usersCollection = await users();
-  const updatedUserData = {};
-  if (updatedUser.first_name) {
-    updatedUserData.first_name = updatedUser.first_name;
-  }
-  if (updatedUser.last_name) {
-    updatedUserData.last_name = updatedUser.last_name;
-  }
-  if (updatedUser.email) {
-    updatedUserData.email = updatedUser.email;
-  }
-  if (updatedUser.gender) {
-    updatedUserData.gender = updatedUser.gender;
-  }
-  if (updatedUser.hash_password) {
-    updatedUserData.hash_password = updatedUser.hash_password;
-  }
-  if (updatedUser.city) {
-    updatedUserData.city = updatedUser.city;
-  }
-  if (updatedUser.state) {
-    updatedUserData.state = updatedUser.state;
-  }
-  if(updatedUser.age) {
-    updatedUserData.age = updatedUser.age;
-  }
-  if (updatedUser.users_reviews) {
-    updatedUserData.users_reviews = updatedUser.users_reviews;
-  }
-  if (updatedUser.users_comments) {
-    updatedUserData.users_comments = updatedUser.users_comments;
-  }
-  if(updatedUser.is_owner) {
-    updatedUserData.is_owner = updatedUser.is_owner;
-  }
-  if (updatedUser.owned_store_id) {
-    updatedUserData.owned_store_id = updatedUser.owned_store_id;
-  }
-  let updateCommand = {
-    $set: updatedUserData,
-  };
-  const query = {
-    _id: new ObjectId(id),
-  };
-  await usersCollection.updateOne(query, updateCommand);
-  return await getUser(id.toString());
+  let userName = xss(updatedUser.userName);
+  let firstName = xss(updatedUser.firstName);
+  let lastName = xss(updatedUser.lastName);
+  let email = xss(updatedUser.email);
+  let gender = (updatedUser.gender);
+
+  if (!userName) throw "Please provide your user name";
+  if (!firstName) throw "Please provide your first name";
+  if (!lastName) throw "Please provide your last name";
+  if (!email) throw "Please provide your email address";
+
+  var regex = /^[a-zA-Z]+$/;
+  userName = userName.trim();
+  if (!regex.test(userName)) throw "User name must only contain letters";
+  if (userName.length < 2 || userName.length > 25) throw "User name should have 2 - 25 characters";
+
+  firstName = firstName.trim();
+  if (!regex.test(firstName)) throw "First name must only contain letters";
+  if (firstName.length < 2 || firstName.length > 25) throw "First name should have 2 - 25 characters";
+
+  lastName = lastName.trim();
+  if (!regex.test(lastName)) throw "Last name must only contain letters";
+  if (lastName.length < 2 || lastName.length > 25) throw "Last name should have 2 - 25 characters";
+
+  email = email.trim().toLowerCase();
+  if (!validator.isEmail(email)) throw "Email address should be a valid email address format. example@example.com";
+  if (await helpers.checkIfEmailExistsExceptMe(email)) throw "There is already a user with that email address";
+
+  gender = gender.trim().toLowerCase();
+  if (gender !== "" && gender !== 'male' && gender !== 'female') throw "The gender should be prefer not to say, male or female";
+
+  const userCollection = await users();
+  const updateInfo = await userCollection.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        userName: userName,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        gender: gender,
+      }
+    },
+    { returnDocument: 'after' });
+  if (!updateInfo) throw 'Could not update user';
+  return { updatedUser: true };
 }
 const getAllUsers = async () => {
   const usersCollection = await users();
   const allUsers = await usersCollection.find({}).toArray();
   return allUsers;
 }
+const updateAvatar = async (id, fileName) => {
+  const userCollection = await users();
+  await userCollection.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        avatar: fileName,
+      }
+    },
+    { returnDocument: 'after' });
+}
 
-export { getUser, addUser, removeUser, updateUser, getAllUsers};
+const updatePassword = async (id, password) => {
+  const userCollection = await users();
+  if (!validation.checkIfPasswordValid(password)) throw "Password must have at least 8 characters, with at least 1 uppercase letter, 1 number, and 1 symbol";
+  password = await bcrypt.hash(password, 10);
+  await userCollection.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        hashPassword: password,
+      }
+    },
+    { returnDocument: 'after' });
+}
+
+export { getUser, addUser, loginUser, removeUser, updateUser, getAllUsers, updateAvatar, updatePassword };

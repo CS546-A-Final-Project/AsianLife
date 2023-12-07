@@ -1,43 +1,55 @@
 import express from 'express';
 import validation from '../validation.js'
 import helper from '../helpers.js';
-import { users } from "../config/mongoCollections.js";
+import { loginUser } from '../data/users.js';
+import validator from 'validator';
+import xss from 'xss';
 const router = express.Router();
+
+// router.route('/').get(async (req, res) => {
+//   return res.json({ error: 'YOU SHOULD NOT BE HERE!' });
+// });
 
 router.route('/')
   .get(async (req, res) => {
-    const title = "Login Page";
-    res.render('login', { title: title });
+    res.render('login', { title: "Login Page" });
   })
   .post(async (req, res) => {
     const title = "Login Page";
-    const loginData = req.body;
-    let errors = {};
-    try {
-      loginData.email = validation.checkEmail(loginData.email);
-      if (!await helper.checkIfEmailExists(loginData.email)) {
-        errors.email = "The email entered does not exist!";
-      }
-    } catch (e) {
-      errors.email = e;
+    let cleanEmail = xss(req.body.email);
+    let cleanPassword = xss(req.body.password);
+    let errors = [];
+    cleanEmail = cleanEmail.trim();
+    cleanPassword = cleanPassword.trim();
+    if (!cleanEmail) errors.push("Please enter your email address");
+    if (!cleanPassword) errors.push("Please enter your password");
+    if (errors.length > 0) {
+      return res.status(400).render('login', { title: "Login", hasErrors: true, errors: errors });
     }
 
-    try {
-      if(Object.keys(errors).length === 0) {
-        if (!await helper.checkIfPasswordCorrect(loginData.email, loginData.password)){
-          errors.password = 'Password entered is not correct';
-        }
-      }
-    } catch (e) {
-      errors.password = e;
+    if (!validator.isEmail(cleanEmail)) errors.push("Email address should be a valid email address format. example@example.com");
+
+    if (!validation.checkPassword(cleanPassword)) errors.push("Password must have 8 characters, with at least 1 lowercase letters, 1 uppercase letters, 1 numbers, and 1 symbols");
+
+    if (errors.length > 0) {
+      return res.status(400).render('login', { title: "Login", email: cleanEmail, password: cleanPassword, hasErrors: true, errors: errors });
     }
 
-    if(Object.keys(errors).length > 0) {
-      res.status(200).render('login', {errors: errors, title: title, loginData: loginData});
-      return;
+    let user;
+    try {
+      user = await loginUser(cleanEmail, cleanPassword);
+    } catch (e) {
+      errors.push(e)
+      return res.status(400).render('login', { title: "Login", email: cleanEmail, password: cleanPassword, hasErrors: true, errors: errors });
     }
-    const userId = await helper.getUserIdByEmail(loginData.email);
-    res.status(200).redirect(`/home/${userId}`);
+    req.session.user = user;
+    if (user.role === "admin" && user.ownedStoreId) {
+      res.status(200).redirect('/store');
+    } else if (user.role === "admin" && !user.ownedStoreId) {
+      res.status(200).redirect('addStore');
+    } else if (user.role === "user") {
+      res.status(200).redirect('/home');
+    }
   });
 
 
