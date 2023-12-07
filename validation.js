@@ -78,6 +78,7 @@ const exportedMethods = {
     if (!id) {
       throw "No id provided";
     }
+
     if (typeof id !== "string" || id.trim() === "") {
       throw "Invalid id provided";
     }

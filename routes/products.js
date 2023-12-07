@@ -1,11 +1,9 @@
 import express from 'express';
-// import validation from '../validation.js';
-import helpers from '../helpers.js';
-import xss from 'xss';
-import {addProduct, getAllProducts, getProductById, updateProduct} from '../data/products.js';
+import validation from '../validation.js';
+import helper from '../helpers.js';
+import {getAllProducts, getProductById} from '../data/products.js';
 const router = express.Router ();
 
-// already have /products in index.js
 router.route ('/')
 	.get (async (req, res) => {
 		try {
@@ -13,7 +11,7 @@ router.route ('/')
 			if (!allProducts) {
 				return res.status(400).render('error', {title: "Products Error", error: "Cannot Load Products"});
 			}
-			res.render('products', { allProducts: allProducts })
+			res.render('productsList', { allProducts: allProducts })
 		} catch (e) {
 			return res.status(500).render('error', { title: "Internal Server Error", error: e });
 		}		
