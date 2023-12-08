@@ -10,7 +10,7 @@ const upload = multer({
 })
 
 router.post('/', upload.single('file'), (async (req, res) => {
-    console.log(req.file);
+    //console.log(req.file);
     await updateAvatar(req.session.user.id, req.file.filename);
     res.status(200).redirect('/profile');
 }))
