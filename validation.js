@@ -159,6 +159,13 @@ const exportedMethods = {
     if (!phoneRegex.test(phoneNumber))
       throw "US phone number must contain 10 digits numbers";
   },
+
+  checkIfStoreNameValid(storeName) {
+    const storeNameRegex = /^[a-zA-Z0-9\s\-&',.()]{3,25}$/;
+    if (!storeNameRegex.test(storeName)) {
+      throw "Invalid store name (the store name should be 3 to 25 characters)";
+    }
+  }
 };
 
 export default exportedMethods;
