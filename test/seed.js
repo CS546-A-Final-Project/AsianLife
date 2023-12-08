@@ -378,6 +378,5 @@ const getProductById2 = await productsData.getProductById(product1._id.toString(
 console.log(getProductById2);
 
 
-console.log("123")
 
 await closeConnection();
