@@ -77,13 +77,13 @@ const updateStore = async (id, updatedStore) => {
   return await getStoreById(id.toString());
 };
 
-const updateImage = async (id, updatedStore) => {
+const updateImage = async (id, photo_id) => {
   const storesCollection = await stores();
   await storesCollection.findOneAndUpdate(
     { _id: new ObjectId(id) },
     {
       $set: {
-        photo: updatedStore.photo,
+        photo_id: photo_id,
       },
     },
     { returnDocument: "after" }
