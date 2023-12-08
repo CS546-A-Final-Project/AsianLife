@@ -81,8 +81,8 @@ const updateStore = async (id, updatedStore) => {
   if (updatedStore.admin_id) {
     updatedStoreData.admin_id = updatedStore.admin_id;
   }
-  if (updatedStore.photo_id) {
-    updatedStoreData.photo_id = updatedStore.photo_id;
+  if (updatedStore.photo) {
+    updatedStoreData.photo = updatedStore.photo;
   }
   if (updatedStore.category) {
     updatedStoreData.category = updatedStore.category;
@@ -122,4 +122,17 @@ const updateStore = async (id, updatedStore) => {
   return await getStoreById(id.toString());
 };
 
-export { getAllStores, getStoreById, addStore, removeStore, updateStore };
+const updateImage = async (id, photo_id) => {
+  const storesCollection = await stores();
+  await storesCollection.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        photo_id: photo_id,
+      },
+    },
+    { returnDocument: "after" }
+  );
+}
+
+export { getAllStores, getStoreById, addStore, removeStore, updateStore, updateImage};
