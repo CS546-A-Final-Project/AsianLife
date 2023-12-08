@@ -9,10 +9,13 @@ const getAllProducts = async () => {
     return allProducts;
 };
 const getProductById = async (id) => {
-    id = helpers.checkId(id, 'product');
+    id = xss(id);
+    id = helpers.checkId(id, 'product_id');
     const productsCollection = await products();
     const product = await productsCollection.findOne({ _id: new ObjectId(id) });
-    if (!product) throw new Error('Product not found');
+    if (!product) {
+        throw new Error('Product not found');
+    }
     return product;
 };
 const addProduct = async (
@@ -21,7 +24,7 @@ const addProduct = async (
     productPrice,
     manufactureDate,
     expirationDate,
-    storeName // store_id
+    store_id
     /*
     {
         store_id: "dlsnfmdlsalmds"
@@ -37,9 +40,7 @@ const addProduct = async (
     manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
     expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     helpers.checkDateValid(manufactureDate, expirationDate);
-    // storeName = helpers.checkString(storeName, 'storeName');
-    //productReviews = helpers.checkReview(productReviews, 'productReviews');
-    // check review by id
+    //store_id = helpers.checkId(store_id, 'store_id');
     
     let newProduct = {
         productName: productName,
@@ -49,8 +50,8 @@ const addProduct = async (
         expirationDate: expirationDate,
         productReviews: [],
         productRating: 0,
-        totalAmountOfReviews: 0, // if totalAmountOfReviews = 0
-        store_id: store_id,
+        totalAmountOfComments: 0, // if totalAmountOfReviews = 0
+        store_id: store_id
         //storeName: storeName
     };
     const productsCollection = await products();
@@ -73,7 +74,7 @@ const removeProduct = async (id) => {
         _id: new ObjectId(id),
     });
     if (deletionInfo.deletedCount === 0) {
-        throw `Could not delete product with id of ${id}`;
+        throw new Error(`Could not delete product with id of ${id}`);
     }
     //console.log(deletionInfo);
     return deletionInfo;
@@ -84,48 +85,70 @@ const updateProduct = async (
     productCategory,
     productPrice,
     manufactureDate,
-    expirationDate,
-    storeName
+    expirationDate
+    // store_id
 ) => {
-    // iteration over product 
+    id = helpers.checkId(id, 'productId');
+    //productName = helpers.checkString(productName, 'productName');
+    // productCategory = helpers.checkCategories(productCategory, 'productCategory');
+    // productPrice = helpers.checkPrice(productPrice, 'productPrice');
+    // manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
+    // expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
+    // helpers.checkDateValid(manufactureDate, expirationDate);
 
     const productsCollection = await products();
-    id = helpers.checkId(id, 'productId');
-    const updatedProductData = await getProductById(id);
-    if (!updatedProductData) throw `Cannot find any object from the product ${product}, you should create one`;
-    // if (!productName) {
-    //     updatedProduct.productName = helpers.checkString(updatedProduct.productName)
-    //     updatedProductData.productName = productName;
-    // } 
+        
+    // iteration over product to compare if the new one is same with the rest ones.
+    const existingProduct = await productsCollection.findOne({  
+        _id: { $ne: id },
+        productName: productName 
+    });
 
+    if (existingProduct) {
+        throw new Error('Product name already exists');
+    }
+    const product = await getProductById(id);
+
+    if (!product) {
+        throw new Error(`Cannot find any object from the product ${product}, you should create one`);
+    }
+    // 暂不需要更新产品名称
+    if (productName) {
+        productName = helpers.checkString(productName,'productName');
+        product.productName = productName;
+    }   
+    
+    if (productCategory) {
+        productCategory = helpers.checkCategories(productCategory, 'productCategory');
+        product.productCategory = productCategory;
+    }
+    if (productPrice) {
+        productPrice = helpers.checkPrice(productPrice, 'productPrice');
+        product.productPrice = productPrice;
+    }
+    if (manufactureDate) {
+        manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
+        product.manufactureDate = manufactureDate;
+    }
+    if (expirationDate) {
+        expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
+        product.expirationDate = expirationDate;
+    }
+
+    const updateProduct = await productsCollection.findOneAndUpdate(
+        { _id: new ObjectId(id)},
+        { $set: product},
+        {returnDocument: "after"}
+        );
+    if (!updateProduct) {
+        throw new Error(`The product of ${id} could not be added successfully.`);
+    }
+    // helpers.checkDateValid(manufactureDate, expirationDate);
    
-    storeName = helpers.checkString(storeName, 'storeName');
-    if (updatedProduct.productName) {
-        updatedProduct.productName = helpers.checkString(updatedProduct.productName, 'productName');
-        updatedProductData.productName = updatedProduct.productName;
-    }
-    if (updatedProduct.productCategory) {
-        updatedProduct.productCategory = helpers.checkCategories(updatedProduct.productCategory, 'productCategory');
-        updatedProductData.productCategory = updatedProduct.productCategory;
-    }
-    if (updatedProduct.productPrice) {
-        updatedProduct.productPrice = helpers.checkPrice(updatedProduct.productPrice, 'productPrice');
-        updatedProductData.productPrice = updatedProduct.productPrice;
-    }
-    if (updatedProduct.manufactureDate) {
-        updatedProduct.manufactureDate = helpers.checkDateFormat(updatedProduct.manufactureDate, 'manufactureDate');
-        updatedProductData.manufactureDate = updatedProduct.manufactureDate;
-    }
-    if (updatedProduct.expirationDate) {
-        updatedProduct.expirationDate = helpers.checkDateFormat(updatedProduct.expirationDate, 'expirationDate');
-        updatedProductData.expirationDate = updatedProduct.expirationDate;
-    }
-    helpers.checkDateValid(manufactureDate, expirationDate);
-   
-    if (updatedProduct.store_id) {
-        updatedProduct.store_id = helpers.checkId(updatedProduct.store_id, 'store_id');
-        updatedProductData.store_id = updatedProduct.store_id;
-    }
+    // if (updatedProduct.store_id) {
+    //     updatedProduct.store_id = helpers.checkId(updatedProduct.store_id, 'store_id');
+    //     updatedProductData.store_id = updatedProduct.store_id;
+    // }
     // if (updatedProduct.product_reviews) {
     //     updatedProductData.product_reviews = updatedProduct.product_reviews;
     // }
@@ -133,72 +156,15 @@ const updateProduct = async (
     // if (updatedProduct.product_image) {
     //     updatedProductData.product_image = updatedProduct.product_image;
     //     }
-    let updateCommand = {
-        $set: updatedProductData,
-    };
-    const query = {
-        _id: new ObjectId(id),
-    };
-    await productsCollection.updateOne(query, updateCommand);
-    return await getProductById(id.toString());
-};
 
-const getAllReviews = async () => {
-    const reviewsCollection = await products();
-    const reviews = await reviewsCollection.find({}).toArray();
-    return reviews;
-};
-const getReviewById = async (id) => { // By review Id!!!
-    id = helpers.checkId(id);
-    const reviewsCollection = await reviewsforproducts();
-    const review = await reviewsCollection.findOne({ _id: new ObjectId(id) });
-    if (!review) {
-        throw new Error(`Review for ${id} not found`);
-    }
-    return review;
-};
-const addReview = async (
-
-    user_id,
-    store_id,
-    productName, // string
-    productReviews, // string
-    rating
-) => {
-    user_id = helpers.checkId(user_id);
-    product_id = helpers.checkId(product_id);
-    store_id = helpers.checkId(store_id);
-    productName = helpers.checkString(productName);
-    productReviews = helpers.checkReview(productReviews);
-    rating = helpers.checkRating(rating);
-    let review = {
-        _id: new ObjectId(),
-        user_id: user_id, // user name
-        // productName: productName,
-        productReviews: productReviews,
-        rating: rating
-    }
-    const reviewsCollection = await products();
-    // update!!!
-    const newInsertInformation = await reviewsCollection.insertOne(review);
-    const newId = newInsertInformation.insertedId;
-    if (!newInsertInformation.acknowledged || !newInsertInformation.insertedId) {
-        throw new Error(
-            `New product ${newInsertInformation} could not be added to MongoDB`
-        )
-    };
-    // count rating and update total amount
-    return await getReviewById(newId.toString());
-};
-const removeReview = async (id) => {
-    id = helpers.checkId(id);
-    const reviewsCollection = await reviewsforproducts();
-    const deletionInfo = await reviewsCollection.findOneAndDelete({ _id: new ObjectId(id) });
-    if (deletionInfo.deletedCount === 0) {
-        throw `Could not delete review with id of ${id}`;
-    }
-    //console.log(deletionInfo);
-    return deletionInfo;
+    // let updateCommand = {
+    //     $set: updatedProductData,
+    // };
+    // const query = {
+    //     _id: new ObjectId(id),
+    // };
+    // await productsCollection.updateOne(query, updateCommand);
+    // return await getProductById(id.toString());
 };
 
 export {

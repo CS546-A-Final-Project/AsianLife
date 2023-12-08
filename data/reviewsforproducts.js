@@ -1,17 +1,21 @@
 import { reviewsforproducts } from "../config/mongoCollections.js";
 import { products } from "../config/mongoCollections.js";
+import * as productsFunctions from './products.js';
 import validation from "../validation.js";
 import { ObjectId } from "mongodb";
+import xss from "xss";
+import helpers from '../helpers.js';
 
 const getAllReviews = async () => {
-    const reviewsCollection = await products();
-    const reviews = await reviewsCollection.find({}).toArray();
+    const productsCollection = await products();
+    const reviews = await productsCollection.find({}).toArray();
     return reviews;
 };
 const getReviewById = async (id) => { // By review Id!!!
+    id = xss(id);
     id = helpers.checkId(id);
-    const reviewsCollection = await reviewsforproducts();
-    const review = await reviewsCollection.findOne({ _id: new ObjectId(id) });
+    const productsCollection = await products();
+    const review = await productsCollection.findOne({ _id: new ObjectId(id) });
     if (!review) {
         throw new Error(`Review for ${id} not found`);
     }
@@ -20,41 +24,58 @@ const getReviewById = async (id) => { // By review Id!!!
 const addReview = async (
     user_id,
     product_id, // ObjectId
-    store_id,
-    productName, // string
+    //store_id,
+    //productName, // string
     productReviews, // string
     rating
 ) => {
-    user_id = helpers.checkId(user_id);
+    //user_id = helpers.checkId(user_id);
     product_id = helpers.checkId(product_id);
-    store_id = helpers.checkId(store_id);
-    productName = helpers.checkString(productName);
+    //store_id = helpers.checkId(store_id);
+    //productName = helpers.checkString(productName);
     productReviews = helpers.checkReview(productReviews);
     rating = helpers.checkRating(rating);
+    const productsCollection = await products();
+    const product = await productsFunctions.getProductById(product_id);
+    
     let review = {
         _id: new ObjectId(),
         user_id: user_id, // user name
         product_id: product_id, // product name
-        store_id: store_id, // store name
-        productName: productName,
+        store_id: product.store_id, // get store id from product directly
+        productName: product.productName,
         productReviews: productReviews,
         rating: rating
     }
-    const reviewsCollection = await reviewsforproducts();
-    const newInsertInformation = await reviewsCollection.insertOne(review);
-    const newId = newInsertInformation.insertedId;
-    return await getReviewById(newId.toString());
+
+    let totalAmountOfComments = product.totalAmountOfComments + 1;
+    let productRating = (product.productRating + rating) / totalAmountOfComments
+  
+    const newInsertInformation = await productsCollection.updateOne(
+        { _id: new ObjectId(product_id)},
+        { 
+            $push: { productReviews: review },
+            $inc:{ totalAmountOfComments: 1 },
+            $set: { productRating: (product.productRating * product.totalAmountOfComments + rating)/(product.totalAmountOfComments + 1)}
+                  
+        }
+    );
+    const newId = newInsertInformation._id;
+    console.log(newId)
+   // return await getReviewById(newId.toString());
 };
 const removeReview = async (id) => {
+    id = xss(id);
     id = helpers.checkId(id);
-    const reviewsCollection = await reviewsforproducts();
-    const deletionInfo = await reviewsCollection.findOneAndDelete({ _id: new ObjectId(id) });
+    const productsCollection = await products();
+    const deletionInfo = await productsCollection.findOneAndDelete({ _id: new ObjectId(id) });
     if (deletionInfo.deletedCount === 0) {
         throw `Could not delete review with id of ${id}`;
     }
     //console.log(deletionInfo);
     return deletionInfo;
 };
+
 // const updateReview = async (
 //     product_id,
 //     productReview,
