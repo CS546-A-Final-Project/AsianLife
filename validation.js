@@ -1,5 +1,4 @@
 import validator from "validator";
-import { isValidNumber, parsePhoneNumber } from 'libphonenumber-js'
 import { ObjectId } from "mongodb";
 const exportedMethods = {
   checkUserName(string, varName) {
