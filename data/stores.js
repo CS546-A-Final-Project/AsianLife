@@ -17,6 +17,7 @@ const getStoreById = async (id) => {
 };
 const addStore = async (store) => {
   let adminId = xss(store.adminId).trim();
+  let name = xss(store.name).trim();
   let address = xss(store.address).trim();
   let city = xss(store.city).trim();
   let state = xss(store.state).trim();
@@ -37,12 +38,14 @@ const addStore = async (store) => {
     validation.checkIfLocationValid(location);
     validation.checkIfPhoneNumberValid(phoneNumber);
     validation.checkEmail(email, 'E-mail');
+    validation.checkIfStoreNameValid(name);
   } catch (e) {
     throw e;
   }
   const currentTime = new Date().toUTCString()
   const newStore = {
     admin_id: adminId,
+    name: name,
     photo_id: "default.jpg",
     established_date: currentTime,
     store_location: {
@@ -57,7 +60,7 @@ const addStore = async (store) => {
       phone: phoneNumber,
       email: email,
     },
-    reviews:{},
+    reviews: {},
   }
   const storesCollection = await stores();
   const newInsertInformation = await storesCollection.insertOne(newStore);
@@ -135,4 +138,4 @@ const updateImage = async (id, photo_id) => {
   );
 }
 
-export { getAllStores, getStoreById, addStore, removeStore, updateStore, updateImage};
+export { getAllStores, getStoreById, addStore, removeStore, updateStore, updateImage };
