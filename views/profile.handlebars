@@ -30,23 +30,25 @@
             <option value="female" {{selectedFemale}}>female</option>
         </select>
 
-        <label>History Reviews:</label>
-        <ul class="userReviews" id="userReviews">
-            {{#if hasReviews}}
-            {{#each reviews}}
-            <li>
-                {{this}}
-            </li>
-            {{/each}}
-            {{/if}}
-            {{#if hasNoReviews}}
-            <li>
-                You didn't leave any reviews before.
-            </li>
-            {{/if}}
-        </ul>
         <button type="submit">Update</button>
     </form>
+
+    <label>History Reviews:</label>
+    <ul class="userReviews" id="userReviews">
+        {{#if hasReviews}}
+        {{#each reviews}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+        {{/if}}
+        {{#if hasNoReviews}}
+        <li>
+            You didn't leave any reviews before.
+        </li>
+        {{/if}}
+    </ul>
+    
     <br>
     <a href="/password" class="link-button">Change Your Password</a>
     <ul class="errorContainer" id="errorContainer">
