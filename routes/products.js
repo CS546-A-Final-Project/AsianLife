@@ -2,6 +2,7 @@ import express from 'express';
 import validation from '../validation.js';
 import helpers from '../helpers.js';
 import * as productsData from '../data/products.js';
+import * as reviewsForProductsData from '../data/reviewsforproducts.js';
 const router = express.Router();
 
 router
@@ -136,5 +137,25 @@ router
             res.status(404).render('products', { error: e });
         }
     });
+
+router.
+    route('/reviewId')
+    .get(async (req, res) => {
+        let reviewId = xss(req.params.reviewId);    
+        try {
+            reviewId = helpers.checkId(reviewId);
+            let reviewForProducts = reviewsForProductsData.getReviewById(reviewId);
+            res.status(200).render
+        } catch (e) {
+            res.status(404).render('products', { error: e });
+        }
+    })
+    .delete(async (req, res) => {
+        let reviewId = xss(req.params.reviewId);
+        try {
+            reviewId = helpers.checkId(reviewId);
+            let deleteReview = reviewsForProductsData.removeReview()
+        }
+    })
 
 export default router;
