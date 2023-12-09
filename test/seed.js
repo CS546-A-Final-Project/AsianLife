@@ -341,7 +341,7 @@ try {
         "Fresh Produce",
         13,
         '12/06/2023',
-        '12/08/2023',
+        '12/10/2023',
         "1"     
         )
     //console.log(product1);
@@ -351,7 +351,7 @@ try {
         "product1",
         "Fresh Produce",
         15,
-        "12/07/2023"
+
     )
     //console.log(updateProduct1);
     const addReview1 = await reviewsforproductsData.addReview(
@@ -375,7 +375,7 @@ try {
     )
     //console.log(product2);
     const removeProduct2 = await productsData.removeProduct(product2._id.toString());
-    console.log("removeProduct", removeProduct2);
+    //console.log("removeProduct", removeProduct2);
     } catch (e) {
     console.log(e);       
 }
@@ -395,7 +395,7 @@ try {
 
 try {
     const getAllProducts1 = await productsData.getAllProducts();
-    console.log(getAllProducts1);
+    //console.log(getAllProducts1);
 } catch (e) {
     console.log(e);
 }

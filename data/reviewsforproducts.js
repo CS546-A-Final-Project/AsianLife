@@ -47,32 +47,58 @@ const addReview = async (
         productReviews: productReviews,
         rating: rating
     }
+    // check if the review has been already existed
+    if (product.productReviews.length > 0) {
+        for (let review of product.productReviews) {
+            if (
+                user_id === review.user_id &&
+                product_id === review.product_id &&
+                productReviews === review.productReviews &&
+                rating === review.rating
+            ) {
+                throw new Error (`This review ${review} has been already existed!`)
+            }
+        }
+    }
 
     let totalAmountOfComments = product.totalAmountOfComments + 1;
-    let productRating = (product.productRating + rating) / totalAmountOfComments
+    let productRating = (rating + product.productRating * product.totalAmountOfComments) / totalAmountOfComments
   
     const newInsertInformation = await productsCollection.updateOne(
         { _id: new ObjectId(product_id)},
         { 
-            $push: { productReviews: review },
-            $inc:{ totalAmountOfComments: 1 },
-            $set: { productRating: (product.productRating * product.totalAmountOfComments + rating)/(product.totalAmountOfComments + 1)}
+            $push: { productReviews: review }, // add value to array[]
+            $inc:{ totalAmountOfComments: 1 }, // increment or decrement value
+            $set: { rating: rating, productRating: productRating}
                   
         }
     );
+    console.log(newInsertInformation);
     const newId = newInsertInformation._id;
     console.log(newId)
-   // return await getReviewById(newId.toString());
+    // return await getReviewById(newId.toString());
 };
-const removeReview = async (id) => {
+const removeReview = async (id, product_id) => {
     id = xss(id);
     id = helpers.checkId(id);
     const productsCollection = await products();
     const deletionInfo = await productsCollection.findOneAndDelete({ _id: new ObjectId(id) });
+    console.log(deletionInfo);
     if (deletionInfo.deletedCount === 0) {
         throw `Could not delete review with id of ${id}`;
     }
-    //console.log(deletionInfo);
+    const product = productsFunctions.getProductById(product_id);
+    const productRating = (product.productRating * product.totalAmountOfComments - deletionInfo.rating) / (product.totalAmountOfComments - 1);
+    const updatedInfo = productsCollection.updateOne(
+        {_id: new ObjectId(product_id)},
+        {
+            $inc: {totalAmountOfComments: -1},
+            $set: {
+                productRating: productRating
+            }
+        }
+    )
+    console.log(updatedInfo);
     return deletionInfo;
 };
 
