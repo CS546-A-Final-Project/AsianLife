@@ -34,12 +34,12 @@ router
             return res.status(400).json({error: "You didn't provide any information."})
         }
         try {
-            productName = helpers.checkString(newProduct.productName); 
-            productCategory = helpers.checkCategories(newProduct.productCategory); 
-            productPrice = helpers.checkPrice(newProduct.productPrice);
-            manufactureDate = helpers.checkDateFormat(newProduct.manufactureDate); 
-            expirationDate = helpers.checkDateFormat(newProduct.expirationDate); 
-            productReviews = helpers.checkReview(newProduct.productReviews);
+            productName = helpers.checkString(newProduct.productName, "productName"); 
+            productCategory = helpers.checkCategories(newProduct.productCategory, 'productCategory'); 
+            productPrice = helpers.checkPrice(newProduct.productPrice, 'productPrice');
+            manufactureDate = helpers.checkDateFormat(newProduct.manufactureDate, 'manufactureDate'); 
+            expirationDate = helpers.checkDateFormat(newProduct.expirationDate, 'expirationDate'); 
+            productReviews = helpers.checkReview(newProduct.productReviews, 'productReviews');
             // store应该改成id (store_name = newProduct.store_name); 
         } catch (e) {
             return res.status(400).json({error: e});
