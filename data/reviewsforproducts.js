@@ -1,4 +1,5 @@
 import { reviewsforproducts } from "../config/mongoCollections.js";
+import { stores } from "../config/mongoCollections.js";
 import { products } from "../config/mongoCollections.js";
 import * as productsFunctions from './products.js';
 import * as usersFunctions from './users.js';

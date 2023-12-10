@@ -1,4 +1,5 @@
 import { products } from '../config/mongoCollections.js';
+import { stores } from "../config/mongoCollections.js";
 import { ObjectId } from 'mongodb';
 import helpers from '../helpers.js';
 import xss from 'xss';
