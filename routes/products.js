@@ -3,22 +3,25 @@ import validation from '../validation.js';
 import helpers from '../helpers.js';
 import * as productsData from '../data/products.js';
 import * as reviewsForProductsData from '../data/reviewsforproducts.js';
+import { error } from 'console';
+import xss from 'xss';
 const router = express.Router();
 
 router
     .route('/')
     .get(async (req, res) => {
         try {
-            const allProducts = await getAllProducts();
+            const allProducts = await productsData.getAllProducts();
             if (!allProducts) {
                 return res
-                    .status(400)
+                    .status(404)
                     .render('error', {
                         title: 'Products Error',
-                        error: 'Cannot Load Products',
+                        error: 'Products Not Found',
                     });
             }
-            res.render('productsList', { allProducts: allProducts });
+            res.status(200).json(allProducts); // for postman test
+            // res.status(200).render('productsList', { allProducts: allProducts });
         } catch (e) {
             return res
                 .status(500)
@@ -27,26 +30,36 @@ router
     })
     .post(async (req, res) => {
         let newProduct = xss(req.body);
-        (productName = newProduct.productName), (productCategory =
-            newProduct.productCategory), (productPrice =
-                newProduct.productPrice), (manufactureDate =
-                    newProduct.manufactureDate), (expirationDate =
-                        newProduct.expirationDate), (productReviews =
-                            newProduct.productReviews), (store_name = newProduct.store_name); // 有问题！
+        if (!newProduct || Object.keys(newProduct).length === 0) {
+            return res.status(400).json({error: "You didn't provide any information."})
+        }
+        try {
+            productName = helpers.checkString(newProduct.productName); 
+            productCategory = helpers.checkCategories(newProduct.productCategory); 
+            productPrice = helpers.checkPrice(newProduct.productPrice);
+            manufactureDate = helpers.checkDateFormat(newProduct.manufactureDate); 
+            expirationDate = helpers.checkDateFormat(newProduct.expirationDate); 
+            productReviews = helpers.checkReview(newProduct.productReviews);
+            // store应该改成id (store_name = newProduct.store_name); 
+        } catch (e) {
+            return res.status(400).json({error: e});
+        }
+       
 
         try {
-            let product = await addProduct(
+            let product = await productsData.addProduct(
                 productName,
                 productCategory,
                 productPrice,
                 manufactureDate,
                 expirationDate,
                 productReviews,
-                store_name
+                store_id
             ); //add image
+            res.status(200).json(product)
             res.render('products', { product: product });
         } catch (e) {
-            res.status(404).render('products', { error: e });
+            res.status(500).render('products', { error: "Internal Server Error" });
         }
     });
 
@@ -54,29 +67,39 @@ router
     .route('/:productId')
     // get one product from the webpage
     .get(async (req, res) => {
-        let id = xss(req.params.productId); // updateId
+        let productId = xss(req.params.productId); // updateId
         try {
-            id = helpers.checkId(id, 'productId');
-            let product = await getProductById(id);
-            return res.status(200).render('products', {
-                title: 'product details',
-                product: product,
-            });
+            productId = helpers.checkId(productId, 'productId');
         } catch (e) {
             res.status(400).render('products', { error: e });
         }
-    })
-    .delete(async (req, res) => {
-        let id = xss(req.params.productId);
-        try {
-            id = helpers.checkId(id, 'product');
-            let product = await removeProduct(id);
-            return res.render('products', { product, product });
+        try{
+            let product = await productsData.getProductById(productId);
+            return res.status(200).json(product);
+            // return res.status(200).render('products', {
+            //     title: 'product details',
+            //     product: product,
+            // });
         } catch (e) {
             res.status(404).render('products', { error: e });
         }
     })
-    .put(async (req, res) => {
+    .delete(async (req, res) => {
+        let productId = xss(req.params.productId);
+        try {
+            productId = helpers.checkId(productId, 'product');
+        } catch (e) {
+            res.status(400).render('products', { error: e });
+        }   
+        try{
+            let product = await productsData.removeProduct(productId);
+            return res.status(200).json(product); // 检查删除的信息
+            // return res.status(200).render('products', { product, product });
+        } catch (e) {
+            res.status(404).render('products', { error: e });
+        }
+    })
+    .put(async (req, res) => { // update
         let id = xss(req.params.productId);
         let updateInfo = xss(req.body);
         try {
@@ -116,6 +139,10 @@ router
                 );
                 // expirationDate = updateInfo.expirationDate;
             }
+        } catch (e) {
+            res.status(400).render('products', { error: e });
+        }
+        try {
             const result = productsData.updateProduct(
                 id,
                 productName,
@@ -138,14 +165,19 @@ router
         }
     });
 
-router.
-    route('/reviewId')
+    router
+    .route('/reviewId')
     .get(async (req, res) => {
-        let reviewId = xss(req.params.reviewId);    
+        let reviewId = xss(req.params.reviewId);
         try {
             reviewId = helpers.checkId(reviewId);
-            let reviewForProducts = reviewsForProductsData.getReviewById(reviewId);
-            res.status(200).render
+        } catch (e) {
+            res.status(404).render('products', { error: e });
+        }
+        try {
+            let reviewForProducts = await reviewsForProductsData.getReviewById(reviewId);
+            return res.status(200).json(reviewForProducts);
+            // return res.status(200).render('products', { error: e });
         } catch (e) {
             res.status(404).render('products', { error: e });
         }
@@ -154,8 +186,26 @@ router.
         let reviewId = xss(req.params.reviewId);
         try {
             reviewId = helpers.checkId(reviewId);
-            let deleteReview = reviewsForProductsData.removeReview()
+            let deleteReview = await reviewsForProductsData.removeReview();
+        } catch (e) {
+            res.status(404).render('products', { error: e });
         }
+    })
+    .post(async (req, res) => { // add
+        let reviewId = xss(req.params.reviewId);
+        let review = {
+            _id: new ObjectId(),
+            user_id: user_id, // user name
+            product_id: product_id, // product name
+            store_id: product.store_id, // get store id from product directly
+            productName: product.productName,
+            productReviews: productReviews,
+            rating: rating
+        }
+        await reviewsForProductsData.addReview(
+
+        )
+
     })
 
 export default router;

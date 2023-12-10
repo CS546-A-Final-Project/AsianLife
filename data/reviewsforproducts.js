@@ -1,14 +1,32 @@
 import { reviewsforproducts } from "../config/mongoCollections.js";
 import { products } from "../config/mongoCollections.js";
 import * as productsFunctions from './products.js';
+import * as usersFunctions from './users.js';
 import validation from "../validation.js";
 import { ObjectId } from "mongodb";
 import xss from "xss";
 import helpers from '../helpers.js';
 
-const getAllReviews = async () => {
+const getAllReviews = async (product_id) => {
+    product_id = xss(product_id);
+    product_id = helpers.checkId(product_id);
     const productsCollection = await products();
-    const reviews = await productsCollection.find({}).toArray();
+    const product = await productsCollection.findOne({ _id: new ObjectId(product_id)});
+    if (!product || product === null) {
+        throw new Error (`Product with _id ${product_id} has not been found.`)
+    }
+
+    if (product.productReviews && product.productReviews.length > 0) {
+        reviews = product.productReviews.map(reveiw => {
+            //  user_id: getUserbyId(user_id), // user name
+            //     product_id: product_id, // product name
+            //     store_id: product.store_id, // get store id from product directly
+            //     productName: product.productName,
+            //     productReviews: productReviews,
+            //     rating: rating
+        })
+        
+    }
     return reviews;
 };
 const getReviewById = async (id) => { // By review Id!!!
@@ -69,14 +87,15 @@ const addReview = async (
         { 
             $push: { productReviews: review }, // add value to array[]
             $inc:{ totalAmountOfComments: 1 }, // increment or decrement value
-            $set: { rating: rating, productRating: productRating}
+            $set: { productRating: productRating}
                   
         }
     );
-    console.log(newInsertInformation);
-    const newId = newInsertInformation._id;
-    console.log(newId)
-    // return await getReviewById(newId.toString());
+    //console.log(review)
+    //console.log(newInsertInformation); // an object contains results of update
+    const newId = review._id;
+    //console.log(newId)
+    //return await getReviewById(newId.toString());
 };
 const removeReview = async (id, product_id) => {
     id = xss(id);

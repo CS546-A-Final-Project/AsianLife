@@ -164,7 +164,7 @@ const updateProduct = async (
     //     _id: new ObjectId(id),
     // };
     // await productsCollection.updateOne(query, updateCommand);
-    // return await getProductById(id.toString());
+    return await getProductById(id.toString());
 };
 
 export {

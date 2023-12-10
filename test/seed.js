@@ -344,8 +344,7 @@ try {
         '12/10/2023',
         "1"     
         )
-    //console.log(product1);
-    const getProductById1 = await productsData.getProductById(product1._id.toString());
+    console.log(product1);
     const updateProduct1 = await productsData.updateProduct(
         product1._id.toString(),
         "product1",
@@ -353,14 +352,23 @@ try {
         15,
 
     )
-    //console.log(updateProduct1);
+    console.log(updateProduct1);
     const addReview1 = await reviewsforproductsData.addReview(
         "userID1",
         product1._id.toString(),
         "goooooooooooooooooooooooooooooooooood",
         5
-    )
-    console.log(addReview1)
+    )    
+    const addRevie2 = await reviewsforproductsData.addReview(
+        "userID2",
+        product1._id.toString(),
+        "goooooooooooooooooooooooooooooooooood",
+        3
+    )    
+    //console.log(addReview1);
+    const getProductById1 = await productsData.getProductById(product1._id.toString());
+    //console.log(getProductById1);
+    const getProduct1Review = await reviewsforproductsData.getReviewById(addReview1._id.toString());
 } catch (e) {
     console.log(e);
 }
@@ -373,9 +381,9 @@ try {
         '01/02/2024',
         "2"
     )
-    //console.log(product2);
+//     //console.log(product2);
     const removeProduct2 = await productsData.removeProduct(product2._id.toString());
-    //console.log("removeProduct", removeProduct2);
+    console.log("removeProduct", removeProduct2);
     } catch (e) {
     console.log(e);       
 }
@@ -389,6 +397,7 @@ try {
         "3"
     );
     //console.log(product3);
+
 }  catch (e) {
     console.log(e);       
 }

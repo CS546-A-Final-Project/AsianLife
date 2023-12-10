@@ -140,15 +140,15 @@ const checkDateFormat = (eventDate, varName) => {
     // // Compare date: https://stackoverflow.com/questions/15063670/compare-string-with-todays-date-in-javascript
     // const currDate = new Date();
     // if (dateObj <= currDate) throw `${eventDate} should be future events`;
-    return dateObj;
+    return eventDate;
 };
-const checkDateValid = (manufactureDateObj, expiryDateObj) => {
+const checkDateValid = (manufactureDate, expiryDate) => {
     // 确保日期是Date对象
-    // const [month, day, year] = manufactureDate.split("/").map(Number);
-    // const [monthE, dayE, yearE] = expiryDate.split("/").map(Number);
-    // const manufactureDateObj = new Date(year, month - 1, day);
+    const [month, day, year] = manufactureDate.split("/").map(Number);
+    const [monthE, dayE, yearE] = expiryDate.split("/").map(Number);
+    const manufactureDateObj = new Date(year, month - 1, day);
     // console.log(manufactureDateObj);
-    // const expiryDateObj = new Date(yearE, monthE - 1, dayE);
+    const expiryDateObj = new Date(yearE, monthE - 1, dayE);
     // console.log(expiryDateObj);
 
     // check if it is a valid date
@@ -169,7 +169,7 @@ const checkDateValid = (manufactureDateObj, expiryDateObj) => {
 }
 const checkRating = (rating) => {
     if (typeof rating != "number"){
-        throw new Error (`productPrice ${rating} should be a number`);
+        throw new Error (`The product's rating ${rating} should be a number`);
     }
     if (!Number.isInteger(rating)) {
         throw new Error('Rating must be an integer');
@@ -177,8 +177,7 @@ const checkRating = (rating) => {
     if (rating < 1 || rating > 5) {
         throw new Error('Rating must be between 1 and 5');
     }
-
-
+    return rating
 }
 
 export default {
