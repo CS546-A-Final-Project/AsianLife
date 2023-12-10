@@ -9,7 +9,7 @@ const router = express.Router();
 
 router
     .route('/')
-    .get(async (req, res) => {
+    .get(async (req, res) => { // runs well
         try {
             const allProducts = await productsData.getAllProducts();
             if (!allProducts) {
@@ -45,7 +45,6 @@ router
             return res.status(400).json({error: e});
         }
        
-
         try {
             let product = await productsData.addProduct(
                 productName,
@@ -57,7 +56,7 @@ router
                 store_id
             ); //add image
             res.status(200).json(product)
-            res.render('products', { product: product });
+            //res.render('products', { product: product });
         } catch (e) {
             res.status(500).render('products', { error: "Internal Server Error" });
         }
@@ -66,7 +65,7 @@ router
 router
     .route('/:productId')
     // get one product from the webpage
-    .get(async (req, res) => {
+    .get(async (req, res) => { // runs well
         let productId = xss(req.params.productId); // updateId
         try {
             productId = helpers.checkId(productId, 'productId');
@@ -84,7 +83,7 @@ router
             res.status(404).render('products', { error: e });
         }
     })
-    .delete(async (req, res) => {
+    .delete(async (req, res) => { // runs well
         let productId = xss(req.params.productId);
         try {
             productId = helpers.checkId(productId, 'product');

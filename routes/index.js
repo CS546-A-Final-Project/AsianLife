@@ -11,6 +11,7 @@ import logoutRoutes from './logout.js';
 import errorRoutes from './error.js';
 import passwordRoutes from './password.js';
 import productsRoutes from './products.js';
+import reviewsForProductsRoutes from './reveiwsForProducts.js';
 import editRoutes from './editstore.js'
 
 const constructorMethod = (app) => {
@@ -27,6 +28,7 @@ const constructorMethod = (app) => {
   app.use('/password', passwordRoutes);
   app.use('/editstore', editRoutes);
   app.use('/products', productsRoutes);
+  app.use('/reviewsForProducts', reviewsForProductsRoutes);
 
   app.use('*', (req, res) => {
     res.status(404).render('error', { title: "404 NOT FOUND", error: "404 NOT FOUND" });
