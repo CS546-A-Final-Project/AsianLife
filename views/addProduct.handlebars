@@ -1,0 +1,53 @@
+<div class="container">
+    <form id="add-product-form" action="/addProduct" method="POST">
+        <h2>Add Product</h2>
+
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" name="name" value="{{name}}" required>
+{{!-- 
+        <label for="address">Store Address:</label>
+        <input type="text" id="address" name="address" value="{{address}}" required>
+
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" value="{{city}}" required> 
+        
+--}}
+
+        <label for="category">Product Category:</label>
+        <select id="category" name="category">
+            <option value="" disabled {{selected.default}}>Select</option>
+            <option value="Fresh Produce" {{selected.Fresh Produce}}>Fresh Produce</option>
+            <option value="Dairy Products" {{selected.Dairy Products}}>Dairy Products</option>
+            <option value="Meat and Poultry" {{selected.Meat and Poultry}}>Meat and Poultry</option>
+            <option value="Seafood" {{selected.Seafood}}>Seafood</option>
+            <option value="Frozen Foods" {{selected.Frozen Foods}}>Frozen Foods</option>
+            <option value="Bakery and Confectionery" {{selected.Bakery and Confectionery}}>Bakery and Confectionery</option>
+            <option value="Beverages" {{selected.Beverages}}>Beverages</option>
+            <option value="Snacks" {{selected.Snacks}}>Snacks</option>
+            <option value="Canned and Jarred Goods" {{selected.Canned and Jarred Goods}}>Canned and Jarred Goods</option>
+            <option value="Dry Goods and Staples" {{selected.Dry Goods and Staples}}>Dry Goods and Staples</option>
+        </select>
+
+        <label for="zipCode">Zip Code:</label>
+        <input type="text" id="zipCode" name="zipCode" value="{{zipCode}}" required>
+
+        <label for="phoneNumber">Contact Phone Number:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" value="{{phoneNumber}}" required>
+
+        <label for="email">Contact E-mail Address:</label>
+        <input type="text" id="email" name="email" value="{{email}}" required>
+
+        <button type="submit">Add Store</button>
+    </form>
+    <ul class="errorContainer" id="errorContainer">
+        {{#if hasErrors}}
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+        {{/if}}
+    </ul>
+</div>
+
+<script src="/public/js/front_end_validation.js"></script>

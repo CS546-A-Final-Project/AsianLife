@@ -7,7 +7,7 @@ import xss from 'xss';
 
 router
     .route('/productId')
-    .get(async (req, res) => { // get all reviews for one product
+    .get(async (req, res) => { // get all reviews for a product
         let id = xss(req.params.productId);
         try {
             id = helpers.checkId(id);
@@ -22,7 +22,7 @@ router
             res.status(404).render('products', { error: e });
         }
     })
-    .post(async (req, res) => { // add a review for one product
+    .post(async (req, res) => { // add a review for a product
         let id = xss(req.params.productId);
         let addInfo = xss(req.body);
         try {
@@ -36,7 +36,7 @@ router
             res.status(404).render('products', { error: e });
         }
     })
-    .delete(async (req, res) => {
+    .delete(async (req, res) => { // delete a review for a product
         let id = xss(req.params.productId);
         try {
             id = helpers.checkId(id);

@@ -1,14 +1,15 @@
 import { reviewsforproducts } from "../config/mongoCollections.js";
 import { stores } from "../config/mongoCollections.js";
+import * as storeFunctions from '../data/stores.js';
 import { products } from "../config/mongoCollections.js";
 import * as productsFunctions from './products.js';
-import * as usersFunctions from './users.js';
+import * as usersFunctions from '../data/users.js';
 import validation from "../validation.js";
 import { ObjectId } from "mongodb";
 import xss from "xss";
 import helpers from '../helpers.js';
 
-const getAllReviews = async (product_id) => {
+const getAllReviews = async (product_id) => { // get all reviews for one product
     product_id = xss(product_id);
     product_id = helpers.checkId(product_id);
     const productsCollection = await products();
@@ -18,18 +19,30 @@ const getAllReviews = async (product_id) => {
     }
 
     if (product.productReviews && product.productReviews.length > 0) {
-        reviews = product.productReviews.map(reveiw => {
-            //  user_id: getUserbyId(user_id), // user name
-            //     product_id: product_id, // product name
-            //     store_id: product.store_id, // get store id from product directly
-            //     productName: product.productName,
-            //     productReviews: productReviews,
-            //     rating: rating
+        reviews = await product.productReviews.map(reveiw => {
+                user_id: getUserNamebyUserId(user_id), // user name
+                product_id: product_id, // product name
+                storeName: getStoreNameByStoreId(product.store_id); // get store id from product directly
+                productName: product.productName,
+                productReviews: productReviews,
+                rating: rating
         })
         
     }
     return reviews;
 };
+const getUserNamebyUserId = async(user_id) => {
+    user_id = xss(user_id);
+    user_id = helpers.checkId(user_id);
+    let user = await usersFunctions.getUser(user_id);
+    return user.userName;
+}
+const getStoreNameByStoreId = async (store_id) => {
+    store_id = xss(store_id);
+    store_id = helpers.checkId(store_id);
+    let store = await storeFunctions.getStoreById(store_id);
+    return store.name;
+}
 const getReviewById = async (id) => { // By review Id!!!
     id = xss(id);
     id = helpers.checkId(id);
@@ -107,9 +120,9 @@ const removeReview = async (id, product_id) => {
     if (deletionInfo.deletedCount === 0) {
         throw `Could not delete review with id of ${id}`;
     }
-    const product = productsFunctions.getProductById(product_id);
+    const product = await productsFunctions.getProductById(product_id);
     const productRating = (product.productRating * product.totalAmountOfComments - deletionInfo.rating) / (product.totalAmountOfComments - 1);
-    const updatedInfo = productsCollection.updateOne(
+    const updatedInfo = await productsCollection.updateOne(
         {_id: new ObjectId(product_id)},
         {
             $inc: {totalAmountOfComments: -1},
@@ -159,7 +172,7 @@ const removeReview = async (id, product_id) => {
 //     };
 //     await reviewsCollection.updateOne(query, updateCommand);
 //     return await getReviewById(id.toString());
-//};
+// };
 
 export {
     getAllReviews,
