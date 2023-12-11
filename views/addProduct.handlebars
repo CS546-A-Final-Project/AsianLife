@@ -2,16 +2,8 @@
     <form id="add-product-form" action="/addProduct" method="POST">
         <h2>Add Product</h2>
 
-        <label for="name">Product Name:</label>
-        <input type="text" id="name" name="name" value="{{name}}" required>
-{{!-- 
-        <label for="address">Store Address:</label>
-        <input type="text" id="address" name="address" value="{{address}}" required>
-
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" value="{{city}}" required> 
-        
---}}
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" value="{{name}}" required>
 
         <label for="category">Product Category:</label>
         <select id="category" name="category">
@@ -21,23 +13,33 @@
             <option value="Meat and Poultry" {{selected.Meat and Poultry}}>Meat and Poultry</option>
             <option value="Seafood" {{selected.Seafood}}>Seafood</option>
             <option value="Frozen Foods" {{selected.Frozen Foods}}>Frozen Foods</option>
-            <option value="Bakery and Confectionery" {{selected.Bakery and Confectionery}}>Bakery and Confectionery</option>
+            <option value="Bakery and Confectionery" {{selected.Bakery and Confectionery}}>Bakery and
+                Confectionery</option>
             <option value="Beverages" {{selected.Beverages}}>Beverages</option>
             <option value="Snacks" {{selected.Snacks}}>Snacks</option>
-            <option value="Canned and Jarred Goods" {{selected.Canned and Jarred Goods}}>Canned and Jarred Goods</option>
-            <option value="Dry Goods and Staples" {{selected.Dry Goods and Staples}}>Dry Goods and Staples</option>
+            <option value="Canned and Jarred Goods" {{selected.Canned and Jarred Goods}}>Canned and
+                Jarred Goods</option>
+            <option value="Dry Goods and Staples" {{selected.Dry Goods and Staples}}>Dry Goods and
+                Staples</option>
         </select>
 
-        <label for="zipCode">Zip Code:</label>
-        <input type="text" id="zipCode" name="zipCode" value="{{zipCode}}" required>
+        <label for="manufactureDate">Manufacture Date:</label>
+        <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
 
-        <label for="phoneNumber">Contact Phone Number:</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" value="{{phoneNumber}}" required>
+        <label for="expirationDate">Erexpiration Date:</label>
+        <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
 
-        <label for="email">Contact E-mail Address:</label>
-        <input type="text" id="email" name="email" value="{{email}}" required>
+        {{!--store id怎么搞？--}}
+        {{!--
+        <label for="address">Store Address:</label>
+        <input type="text" id="address" name="address" value="{{address}}" required>
 
-        <button type="submit">Add Store</button>
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" value="{{city}}" required>
+
+        --}}
+
+        <button type="submit">Add Product</button>
     </form>
     <ul class="errorContainer" id="errorContainer">
         {{#if hasErrors}}
