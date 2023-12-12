@@ -196,7 +196,7 @@ await db.dropDatabase();
 
 // console.log("-----------------------");
 
-// // users
+// users
 // console.log("-----------------------");
 // console.log("users");
 // console.log("adduser");
@@ -330,6 +330,41 @@ console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 console.log("products");
 console.log("addproduct");
 try {
+    const user1 = await usersData.addUser(
+        "yyy",
+        "yaxi",
+        "luo",
+        "yancy@gmail.com",
+        "Ci1936@Gm",
+        "admin"
+    )
+    console.log
+    console.log(await usersData.getUser(user1._id));
+} catch (e) {
+    console.log(e);
+}
+
+try {
+//    const store1 = await storesData.addStore(
+//     {
+//         admin_id: "65777bf7fce4b5f608b19219",
+//         name: "walmart",
+//         store_location: {
+//           streetAddress: "Wshington St,",
+//           city: "Hoboken",
+//           state: "NJ",
+//           zip: "07013",
+//         },
+//         contact_information: {
+//           phone: "012345678",
+//           email: "yancy@gmail.com",
+//         }
+//       }
+//    )
+} catch (e) {
+    console.log(e);
+}
+try {
     // productName,
     // productCategory,
     // productPrice,
@@ -337,14 +372,15 @@ try {
     // expirationDate,
     // store_id
     const product1 = await productsData.addProduct(
+        "userId1",
+        "storeId1",
         'AAA',
         "Fresh Produce",
         13,
         '12/06/2023',
-        '12/10/2023',
-        "1"     
+        '12/25/2023'       
         )
-    console.log(product1);
+    //console.log(product1);
     const updateProduct1 = await productsData.updateProduct(
         product1._id.toString(),
         "product1",
@@ -352,59 +388,71 @@ try {
         15,
 
     )
-    console.log(updateProduct1);
+    //console.log(updateProduct1);
     const addReview1 = await reviewsforproductsData.addReview(
         "userID1",
         product1._id.toString(),
         "goooooooooooooooooooooooooooooooooood",
         5
     )    
-    const addRevie2 = await reviewsforproductsData.addReview(
+    //console.log(addReview1);
+    const addReview2 = await reviewsforproductsData.addReview(
         "userID2",
         product1._id.toString(),
         "goooooooooooooooooooooooooooooooooood",
         3
     )    
-    //console.log(addReview1);
+    //console.log(addReview2);
     const getProductById1 = await productsData.getProductById(product1._id.toString());
-    //console.log(getProductById1);
-    const getProduct1Review = await reviewsforproductsData.getReviewById(addReview1._id.toString());
+    console.log(getProductById1);
+    const allReviews = await reviewsforproductsData.getAllReviews(product1._id.toString());
+    // console.log(allReviews);
+    console.log(product1.productReviews)
+    //const getProduct1Review = await reviewsforproductsData.removeReview(product1.productReviews[0]._id.toString());
 } catch (e) {
     console.log(e);
 }
 try {
-    const product2 = await productsData.addProduct(
-        'hhh',
-        'Dairy Products',
-        4.50,
-        '12/04/2023',
-        '01/02/2024',
-        "2"
+    const product4 = await productsData.addProduct(        
+        "userId2",
+        "4",
+        "product4",
+        "Seafood",
+         45,
+        "12/06/2023",
+        "01/04/2024"
     )
-//     //console.log(product2);
-    const removeProduct2 = await productsData.removeProduct(product2._id.toString());
-    console.log("removeProduct", removeProduct2);
-    } catch (e) {
-    console.log(e);       
+} catch(e) {
+    console.log(e);
 }
-try {
-    const product3 = await productsData.addProduct(
-        "product3",
-        'Meat and Poultry',
-        100,
-        '12/04/2023',
-        '01/02/2024',
-        "3"
-    );
-    //console.log(product3);
+// try {
+//     const product2 = await productsData.addProduct(
+//         'hhh',
+//         'Dairy Products',
+//         4.50,
+//         '12/04/2023',
+//         '01/02/2024',
+//         "2"
+//     )
+// //     //console.log(product2);
+//     const product3 = await productsData.addProduct(
+//         "product3",
+//         'Meat and Poultry',
+//         100,
+//         '12/04/2023',
+//         '01/02/2024',
+//         "3"
+//     );
+//     const removeProduct2 = await productsData.removeProduct(product2._id.toString());
+//     //console.log("removeProduct", removeProduct2);
+//     const getAllProducts1 = await productsData.getAllProducts();
+//     //console.log(getAllProducts1);
+//     } catch (e) {
+//     console.log(e);       
+// }
 
-}  catch (e) {
-    console.log(e);       
-}
-
 try {
-    const getAllProducts1 = await productsData.getAllProducts();
-    //console.log(getAllProducts1);
+
 } catch (e) {
     console.log(e);
 }
@@ -433,16 +481,7 @@ try {
 } catch (e) {
     console.log(e);
 }
-try {
 
-} catch (e) {
-    console.log(e);
-}
-try {
-
-} catch (e) {
-    console.log(e);
-}
 
 
 

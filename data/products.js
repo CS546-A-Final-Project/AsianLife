@@ -19,12 +19,14 @@ const getProductById = async (id) => {
     return product;
 };
 const addProduct = async (
+    user_id,
+    store_id,
     productName,
     productCategory,
     productPrice,
     manufactureDate,
     expirationDate,
-    store_id
+ 
     /*
     {
         store_id: "dlsnfmdlsalmds"
@@ -34,15 +36,19 @@ const addProduct = async (
     */
 
 ) => {
+    console.log("in data")
+    // user_id = helpers.checkId(user_id, 'user_id');
+    // store_id = helpers.checkId(store_id, 'store_id');
     productName = helpers.checkString(productName, 'productName');
     productCategory = helpers.checkCategories(productCategory, 'productCategory');
     productPrice = helpers.checkPrice(productPrice, 'productPrice');
     manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
     expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     helpers.checkDateValid(manufactureDate, expirationDate);
-    //store_id = helpers.checkId(store_id, 'store_id');
-    
+
     let newProduct = {
+        user_id: user_id,
+        store_id: store_id,  //storeName: storeName
         productName: productName,
         productCategory: productCategory,
         productPrice: productPrice,
@@ -50,9 +56,8 @@ const addProduct = async (
         expirationDate: expirationDate,
         productReviews: [],
         productRating: 0,
-        totalAmountOfComments: 0, // if totalAmountOfReviews = 0
-        store_id: store_id
-        //storeName: storeName
+        totalAmountOfReviews: 0, // if totalAmountOfReviews = 0
+
     };
     const productsCollection = await products();
     // const store = getStoreByStoreName()
@@ -80,28 +85,21 @@ const removeProduct = async (id) => {
     return deletionInfo;
 };
 const updateProduct = async (
-    id, 
+    id,
     productName,
     productCategory,
     productPrice,
     manufactureDate,
-    expirationDate
+    expirationDate,
     // store_id
 ) => {
     id = helpers.checkId(id, 'productId');
-    //productName = helpers.checkString(productName, 'productName');
-    // productCategory = helpers.checkCategories(productCategory, 'productCategory');
-    // productPrice = helpers.checkPrice(productPrice, 'productPrice');
-    // manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
-    // expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
-    // helpers.checkDateValid(manufactureDate, expirationDate);
-
     const productsCollection = await products();
-        
+
     // iteration over product to compare if the new one is same with the rest ones.
-    const existingProduct = await productsCollection.findOne({  
+    const existingProduct = await productsCollection.findOne({
         _id: { $ne: id },
-        productName: productName 
+        productName: productName
     });
 
     if (existingProduct) {
@@ -114,10 +112,10 @@ const updateProduct = async (
     }
     // 暂不需要更新产品名称
     if (productName) {
-        productName = helpers.checkString(productName,'productName');
+        productName = helpers.checkString(productName, 'productName');
         product.productName = productName;
-    }   
-    
+    }
+
     if (productCategory) {
         productCategory = helpers.checkCategories(productCategory, 'productCategory');
         product.productCategory = productCategory;
@@ -134,17 +132,26 @@ const updateProduct = async (
         expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
         product.expirationDate = expirationDate;
     }
+    if (manufactureDate && expirationDate) {
+        helpers.checkDateValid(manufactureDate, expirationDate);
+    }
 
     const updateProduct = await productsCollection.findOneAndUpdate(
-        { _id: new ObjectId(id)},
-        { $set: product},
-        {returnDocument: "after"}
-        );
+        { _id: new ObjectId(id) },
+        { $set: product },
+        { returnDocument: "after" }
+    );
     if (!updateProduct) {
         throw new Error(`The product of ${id} could not be added successfully.`);
     }
+
+    // productName = helpers.checkString(productName, 'productName');
+    // productCategory = helpers.checkCategories(productCategory, 'productCategory');
+    // productPrice = helpers.checkPrice(productPrice, 'productPrice');
+    // manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
+    // expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     // helpers.checkDateValid(manufactureDate, expirationDate);
-   
+
     // if (updatedProduct.store_id) {
     //     updatedProduct.store_id = helpers.checkId(updatedProduct.store_id, 'store_id');
     //     updatedProductData.store_id = updatedProduct.store_id;
@@ -152,7 +159,7 @@ const updateProduct = async (
     // if (updatedProduct.product_reviews) {
     //     updatedProductData.product_reviews = updatedProduct.product_reviews;
     // }
-        
+
     // if (updatedProduct.product_image) {
     //     updatedProductData.product_image = updatedProduct.product_image;
     //     }
