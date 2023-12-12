@@ -1,4 +1,6 @@
 import { products } from '../config/mongoCollections.js';
+import { users } from '../config/mongoCollections.js';
+import { stores } from '../config/mongoCollections.js';
 import { ObjectId } from 'mongodb';
 import helpers from '../helpers.js';
 import xss from 'xss';
@@ -36,7 +38,7 @@ const addProduct = async (
     */
 
 ) => {
-    console.log("in data")
+    //console.log("in data")
     // user_id = helpers.checkId(user_id, 'user_id');
     // store_id = helpers.checkId(store_id, 'store_id');
     productName = helpers.checkString(productName, 'productName');
@@ -145,25 +147,6 @@ const updateProduct = async (
         throw new Error(`The product of ${id} could not be added successfully.`);
     }
 
-    // productName = helpers.checkString(productName, 'productName');
-    // productCategory = helpers.checkCategories(productCategory, 'productCategory');
-    // productPrice = helpers.checkPrice(productPrice, 'productPrice');
-    // manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
-    // expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
-    // helpers.checkDateValid(manufactureDate, expirationDate);
-
-    // if (updatedProduct.store_id) {
-    //     updatedProduct.store_id = helpers.checkId(updatedProduct.store_id, 'store_id');
-    //     updatedProductData.store_id = updatedProduct.store_id;
-    // }
-    // if (updatedProduct.product_reviews) {
-    //     updatedProductData.product_reviews = updatedProduct.product_reviews;
-    // }
-
-    // if (updatedProduct.product_image) {
-    //     updatedProductData.product_image = updatedProduct.product_image;
-    //     }
-
     // let updateCommand = {
     //     $set: updatedProductData,
     // };
@@ -173,6 +156,25 @@ const updateProduct = async (
     // await productsCollection.updateOne(query, updateCommand);
     return await getProductById(id.toString());
 };
+const bindProductWithUser = async (user_id, product_id) => {
+    user_id = xss(user_id);
+    product_id = xss(product_id);
+    user_id = helpers.checkId(user_id);
+    product_id = helpers.checkId(product_id);
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: new ObjectId(user_id) });
+    if (user === null) throw 'No user with that id';
+    if (user.role !== 'admin') throw 'The user is not an admin'
+    await userCollection.findOneAndUpdate(
+      { _id: new ObjectId(user_id) },
+      {
+        $set: {
+          ownedStoreId: storeId,
+        }
+      },
+      { returnDocument: 'after' });
+    return { insertStore: true };
+  }
 
 export {
     getAllProducts,

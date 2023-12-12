@@ -338,8 +338,7 @@ try {
         "Ci1936@Gm",
         "admin"
     )
-    console.log
-    console.log(await usersData.getUser(user1._id));
+    // console.log(await usersData.getUser(user1._id.toString()));
 } catch (e) {
     console.log(e);
 }
@@ -395,7 +394,7 @@ try {
         "goooooooooooooooooooooooooooooooooood",
         5
     )    
-    //console.log(addReview1);
+    console.log(addReview1);
     const addReview2 = await reviewsforproductsData.addReview(
         "userID2",
         product1._id.toString(),
@@ -404,11 +403,12 @@ try {
     )    
     //console.log(addReview2);
     const getProductById1 = await productsData.getProductById(product1._id.toString());
-    console.log(getProductById1);
-    const allReviews = await reviewsforproductsData.getAllReviews(product1._id.toString());
+    // console.log(getProductById1);
+    // const allReviews = await reviewsforproductsData.getAllReviews(addReview1._id.toString());
     // console.log(allReviews);
-    console.log(product1.productReviews)
-    //const getProduct1Review = await reviewsforproductsData.removeReview(product1.productReviews[0]._id.toString());
+    console.log(product1.productReviews + "product1.productReviews")
+    const removeProduct1Review = await reviewsforproductsData.removeReview(addReview1._id.toString());
+    console.log(removeProduct1Review)
 } catch (e) {
     console.log(e);
 }
