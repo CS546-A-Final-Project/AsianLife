@@ -409,22 +409,26 @@ try {
     console.log(product1.productReviews + "product1.productReviews")
     const removeProduct1Review = await reviewsforproductsData.removeReview(addReview1._id.toString());
     console.log(removeProduct1Review)
+    const updateProduct1Review = await reviewsforproductsData.updateReview("userID2",
+    addReview2._id.toString,
+    5);
+    console.log(updateProduct1Review)
 } catch (e) {
     console.log(e);
 }
-try {
-    const product4 = await productsData.addProduct(        
-        "userId2",
-        "4",
-        "product4",
-        "Seafood",
-         45,
-        "12/06/2023",
-        "01/04/2024"
-    )
-} catch(e) {
-    console.log(e);
-}
+// try {
+//     const product4 = await productsData.addProduct(        
+//         "userId2",
+//         "4",
+//         "product4",
+//         "Seafood",
+//          45,
+//         "12/06/2023",
+//         "01/04/2024"
+//     )
+// } catch(e) {
+//     console.log(e);
+// }
 // try {
 //     const product2 = await productsData.addProduct(
 //         'hhh',

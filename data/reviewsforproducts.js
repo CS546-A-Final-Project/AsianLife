@@ -12,28 +12,28 @@ const getAllReviews = async (product_id) => { // get all reviews for one product
     product_id = xss(product_id);
     product_id = helpers.checkId(product_id, 'product_id');
     const productsCollection = await products();
-    const product = await productsCollection.findOne({ _id: new ObjectId(product_id)});
+    const product = await productsCollection.findOne({ _id: new ObjectId(product_id) });
     if (!product || product === null) {
-        throw new Error (`Product with _id ${product_id} has not been found.`)
+        throw new Error(`Product with _id ${product_id} has not been found.`)
     }
 
     if (product.productReviews && product.productReviews.length > 0) {
         for (let review of product.productReviews) {
             review._id = review._id.toString();
         }
-    //     reviews = await product.productReviews.map(reveiw => {
-    //             user_id: getUserNamebyUserId(user_id), // user name
-    //             product_id: product_id, // product name
-    //             storeName: getStoreNameByStoreId(product.store_id); // get store id from product directly
-    //             productName: product.productName,
-    //             productReviews: productReviews,
-    //             rating: rating
-    //     })
-        
+        //     reviews = await product.productReviews.map(reveiw => {
+        //             user_id: getUserNamebyUserId(user_id), // user name
+        //             product_id: product_id, // product name
+        //             storeName: getStoreNameByStoreId(product.store_id); // get store id from product directly
+        //             productName: product.productName,
+        //             productReviews: productReviews,
+        //             rating: rating
+        //     })
+
     }
     return product.productReviews;
 };
-const getUserNamebyUserId = async(user_id) => {
+const getUserNamebyUserId = async (user_id) => {
     user_id = xss(user_id);
     user_id = helpers.checkId(user_id, 'user_id');
     let user = await usersFunctions.getUser(user_id);
@@ -73,7 +73,7 @@ const addReview = async (
     rating = helpers.checkRating(rating);
     const productsCollection = await products();
     const product = await productsFunctions.getProductById(product_id);
-    
+
     let review = {
         _id: new ObjectId(),
         user_id: user_id, // user name
@@ -92,21 +92,21 @@ const addReview = async (
                 productReviews === review.productReviews &&
                 rating === review.rating
             ) {
-                throw new Error (`This review ${review} has been already existed!`)
+                throw new Error(`This review ${review} has been already existed!`)
             }
         }
     }
 
     let totalAmountOfReviews = product.totalAmountOfReviews + 1;
     let productRating = (rating + product.productRating * product.totalAmountOfReviews) / totalAmountOfReviews
-  
+
     const newInsertInformation = await productsCollection.updateOne(
-        { _id: new ObjectId(product_id)},
-        { 
+        { _id: new ObjectId(product_id) },
+        {
             $push: { productReviews: review }, // add value to array[]
-            $inc:{ totalAmountOfReviews: 1 }, // increment or decrement value
-            $set: { productRating: productRating}
-                  
+            $inc: { totalAmountOfReviews: 1 }, // increment or decrement value
+            $set: { productRating: productRating }
+
         }
     );
     if (newInsertInformation.modifiedCount === 0) {
@@ -123,7 +123,7 @@ const removeReview = async (id) => {
     id = xss(id);
     id = helpers.checkId(id, 'review_id');
     const productsCollection = await products();
-    const product = await productsCollection.findOne({"productReviews._id": new ObjectId(id)});
+    const product = await productsCollection.findOne({ "productReviews._id": new ObjectId(id) });
     // console.log(product);
     if (!product) throw new Error(`Cannot find a product with the review id ${id}.`);
 
@@ -146,14 +146,14 @@ const removeReview = async (id) => {
     // 重新计算产品评分
     let totalRating = product.productRating * product.totalAmountOfReviews;
     totalRating -= reviewToRemove.rating; // 减去被删除评论的评分
-    const productRating = product.totalAmountOfReviews > 1 
-                          ? totalRating / (product.totalAmountOfReviews - 1) 
-                          : 0;
+    const productRating = product.totalAmountOfReviews > 1
+        ? totalRating / (product.totalAmountOfReviews - 1)
+        : 0;
 
     const updatedInfo = await productsCollection.updateOne(
-        {_id: product._id},
+        { _id: product._id },
         {
-            $inc: {totalAmountOfReviews: -1},
+            $inc: { totalAmountOfReviews: -1 },
             $set: {
                 productReviews: updatedReview,
                 productRating: productRating
@@ -168,44 +168,50 @@ const removeReview = async (id) => {
 const updateReview = async (
     user_id, // must
     review_id, // must
-    productReview,
+    productReview, 
     rating) => {
-    user_id = helpers.checkId(user_id, 'user_id')
+    user_id = helpers.checkId(user_id, 'user_id');
     review_id = helpers.checkId(review_id, 'review_id');
 
-    // find the product with this review
     const productsCollection = await products();
-    const product = await productsCollection.findOne({"productReviews._id": new ObjectId(id)});
-    // console.log(product);
-    if (!product) throw new Error(`Cannot find a product with the review id ${id}.`);
-    let updateReview
-    const findReview = product.productReviews.filter(
-        (review) => {
-            if (review._id === review_id) {
-                updateReview = review
+    const product = await productsCollection.findOne({ "productReviews._id": new ObjectId(review_id) });
+    //console.log(product);
+    if (!product) throw new Error(`Cannot find a product with the review id ${review_id}.`);
+
+    let reviewFound = false;
+    product.productReviews.forEach((review) => {
+        if (review._id.toString() === review_id) {
+            if (productReview) {
+                review.productReview = helpers.checkReview(productReview, 'productReview');
             }
+            if (rating) {
+                review.rating = helpers.checkRating(rating, 'rating');
+            }
+            reviewFound = true;
         }
-    )
+    });
 
-    if (productReview) {
-        productReview = helpers.checkReview(productReview, 'productReview');
-        productReview = productReview;
+    if (!reviewFound) {
+        throw new Error(`Review with id ${review_id} not found.`);
     }
 
-    if (rating) {
-        rating = helpers.checkRating(rating, 'rating');
-        updatedReviewData.rating = rating;
-    }
+    // 重新计算产品评分
+    let totalRating = product.productReviews.reduce((sum, review) => sum + review.rating, 0);
+    let productRating = totalRating / product.productReviews.length;
 
-    let updateCommand = {
-        $set: updatedReviewData,
+    // 更新产品信息
+    const query = { _id: product._id };
+    const updateCommand = {
+        $set: {
+            productReviews: product.productReviews,
+            productRating: productRating
+        }
     };
-    const query = {
-        _id: new ObjectId(id),
-    };
-    await reviewsCollection.updateOne(query, updateCommand);
-    return await getReviewById(id.toString());
+
+    await productsCollection.updateOne(query, updateCommand);
+    return await getReviewById(review_id);
 };
+
 
 export {
     getAllReviews,
