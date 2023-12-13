@@ -1,8 +1,11 @@
 <p>Store</p>
 <button id="store_review" name="store_review">Store Review</button>
+
 <button id="store_edit" name="store_edit" hidden>EDIT</button>
 
 <h1>The Products of Store</h1>
+<!--add if hasStoreProducts-->
+{{#if hasStoreProducts}}
 <div class="products-container">
   <ul>
     {{#each storeProducts}}
@@ -15,3 +18,4 @@
     {{/each}}
   </ul>
 </div>
+{{/if}}

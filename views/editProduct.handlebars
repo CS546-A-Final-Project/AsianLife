@@ -1,0 +1,24 @@
+<form enctype="multipart/form-data" method="post" action="/product/{{productId}}" id="uploadForm">
+          <input type="file" name="file" id="file" accept="image/*" />
+
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" value="{{productName}}" required/>
+
+          <label for="streetAddress">Store Address:</label>
+          <input type="text" id="streetAddress" name="streetAddress" value="{{streetAddress}}" required />
+          <label for="city">Store city:</label>
+          <input type="text" id="city" name="city" value="{{city}}" required />
+          <label for="state">Store state:</label>
+          <input type="text" id="state" name="state" value="{{state}}" required />
+          <label for="zip">Store zip:</label>
+          <input type="text" id="zip" name="zip" value="{{zip}}" required />
+        <label for="productPrice">Product Price:</label>
+        <input type="text" id="productPrice" name="productPrice" value="{{productPrice}}" required>
+
+        <label for="manufactureDate">Manufacture Date:</label>
+        <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
+
+        <label for="expirationDate">Erexpiration Date:</label>
+        <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
+          <button type="submit">Update Product</button>
+</form>

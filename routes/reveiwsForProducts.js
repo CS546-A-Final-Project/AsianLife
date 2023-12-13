@@ -6,20 +6,22 @@ const router = express.Router();
 import xss from 'xss';
 
 router
-    .route('/productId')
+    .route('/:productId')
     .get(async (req, res) => { // get all reviews for a product
         let id = xss(req.params.productId);
         try {
             id = helpers.checkId(id);
         } catch (e) {
-            res.status(400).render('products', { error: e });
+            res.status(400).json({error: e.message});
+            // return res.status(400).render('products', { error: e.message });
         }
         try {
-            let reviewForProducts = reviewsForProductsData.getAllReviews(id);
-            return res.status(200).json(reviewForProducts);
-            // return res.status(200).render('products', { error: e });
+            let reviewForProducts = await reviewsForProductsData.getAllReviews(id);
+            //return res.status(200).json(reviewForProducts);
+            return res.status(200).render('product', { reviews: reviewForProducts });
         } catch (e) {
-            res.status(404).render('products', { error: e });
+            res.status(400).json({error: e.message});
+            // return res.status(404).render('products', { error: e.message });
         }
     })
     .post(async (req, res) => { // add a review for a product
@@ -44,5 +46,8 @@ router
         } catch (e) {
             res.status(404).render('products', { error: e });
         }
+    })
+    .put(async (req, res) => {
+        let id = xss(req.params.productId);
     });
 export default router;

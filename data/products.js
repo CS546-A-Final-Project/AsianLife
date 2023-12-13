@@ -5,12 +5,12 @@ import { ObjectId } from 'mongodb';
 import helpers from '../helpers.js';
 import xss from 'xss';
 
-const getAllProducts = async () => {
+const getAllProducts = async () => { // runs well
     const productsCollection = await products();
     const allProducts = await productsCollection.find({}).toArray();
     return allProducts;
 };
-const getProductById = async (id) => {
+const getProductById = async (id) => { // runs well
     id = xss(id);
     id = helpers.checkId(id, 'product_id');
     const productsCollection = await products();
@@ -20,7 +20,7 @@ const getProductById = async (id) => {
     }
     return product;
 };
-const addProduct = async (
+const addProduct = async ( // runs well
     user_id,
     store_id,
     productName,
@@ -75,16 +75,16 @@ const addProduct = async (
 };
 const removeProduct = async (id) => {
     id = xss(id);
-    id = helpers.checkId(id, 'product');
+    id = helpers.checkId(id, 'product_id');
     const productsCollection = await products();
     const deletionInfo = await productsCollection.findOneAndDelete({
         _id: new ObjectId(id),
     });
-    if (deletionInfo.deletedCount === 0) {
+    //console.log(deletionInfo);
+    if (!deletionInfo) {
         throw new Error(`Could not delete product with id of ${id}`);
     }
-    //console.log(deletionInfo);
-    return deletionInfo;
+    return deletionInfo; // return the deleted value
 };
 const updateProduct = async (
     id,
@@ -98,41 +98,45 @@ const updateProduct = async (
     id = helpers.checkId(id, 'productId');
     const productsCollection = await products();
 
-    // iteration over product to compare if the new one is same with the rest ones.
-    const existingProduct = await productsCollection.findOne({
-        _id: { $ne: id },
-        productName: productName
-    });
-
-    if (existingProduct) {
-        throw new Error('Product name already exists');
+    // 获取现有产品信息，以便于与新数据进行比较
+    const currentProduct = await productsCollection.findOne({ _id: new ObjectId(id) });
+    if (!currentProduct) {
+        throw new Error(`Cannot find a product with the id ${id}.`);
     }
-    const product = await getProductById(id);
 
-    if (!product) {
-        throw new Error(`Cannot find any object from the product ${product}, you should create one`);
+    // 检查产品名称是否已存在
+    if (productName && productName !== currentProduct.productName) {
+        const existingProduct = await productsCollection.findOne({
+            _id: { $ne: new ObjectId(id) },
+            productName: productName
+        });
+        if (existingProduct) {
+            throw new Error(`Other product with the name ${productName} has already exists.`);
+        }
     }
-    // 暂不需要更新产品名称
+    
+    let updateFields = {};
+    // 通过检验后，更新产品名称
     if (productName) {
         productName = helpers.checkString(productName, 'productName');
-        product.productName = productName;
+        updateFields.productName = productName;
     }
 
     if (productCategory) {
         productCategory = helpers.checkCategories(productCategory, 'productCategory');
-        product.productCategory = productCategory;
+        updateFields.productCategory = productCategory;
     }
     if (productPrice) {
         productPrice = helpers.checkPrice(productPrice, 'productPrice');
-        product.productPrice = productPrice;
+        updateFields.productPrice = productPrice;
     }
     if (manufactureDate) {
         manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
-        product.manufactureDate = manufactureDate;
+        updateFields.manufactureDate = manufactureDate;
     }
     if (expirationDate) {
         expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
-        product.expirationDate = expirationDate;
+        updateFields.expirationDate = expirationDate;
     }
     if (manufactureDate && expirationDate) {
         helpers.checkDateValid(manufactureDate, expirationDate);
@@ -140,21 +144,14 @@ const updateProduct = async (
 
     const updateProduct = await productsCollection.findOneAndUpdate(
         { _id: new ObjectId(id) },
-        { $set: product },
+        { $set: updateFields },
         { returnDocument: "after" }
     );
     if (!updateProduct) {
         throw new Error(`The product of ${id} could not be added successfully.`);
     }
 
-    // let updateCommand = {
-    //     $set: updatedProductData,
-    // };
-    // const query = {
-    //     _id: new ObjectId(id),
-    // };
-    // await productsCollection.updateOne(query, updateCommand);
-    return await getProductById(id.toString());
+    return updateProduct.value;
 };
 const bindProductWithUser = async (user_id, product_id) => {
     user_id = xss(user_id);

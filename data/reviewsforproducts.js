@@ -13,10 +13,11 @@ const getAllReviews = async (product_id) => { // get all reviews for one product
     product_id = helpers.checkId(product_id, 'product_id');
     const productsCollection = await products();
     const product = await productsCollection.findOne({ _id: new ObjectId(product_id) });
-    if (!product || product === null) {
-        throw new Error(`Product with _id ${product_id} has not been found.`)
+    console.log(product);
+    if (!product) {
+        throw new Error(`Product with id ${product_id} has not been found.`)
     }
-
+    
     if (product.productReviews && product.productReviews.length > 0) {
         for (let review of product.productReviews) {
             review._id = review._id.toString();

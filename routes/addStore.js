@@ -13,7 +13,7 @@ router.route('/')
         })
     })
     .post(async (req, res) => {
-        const adminId = req.session.user.id;
+        const adminId = req.session.user.id; // user.role
         let name = xss(req.body.name).trim();
         let address = xss(req.body.address).trim();
         let city = xss(req.body.city).trim();

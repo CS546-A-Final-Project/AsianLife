@@ -102,7 +102,7 @@ const checkCategories = (categoryToCheck) => {
     return categoryToCheck;
 }
 const checkPrice = (productPrice) => {
-    if (typeof productPrice != "number"){
+    if (typeof productPrice !== "number"){
         throw new Error (`productPrice ${productPrice} should be a number`);
     }
         

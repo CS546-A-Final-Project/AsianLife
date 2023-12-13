@@ -1,0 +1,31 @@
+<!-- Yaxi for product-->
+<p>Products Details</p>
+<button id="product_review" name="product_review">Product Review</button>
+<button id="product_edit" name="product_edit">EDIT</button>
+{{#if hasProducts}}
+<div class="products-container">
+    <ul>
+        {{#each products}}
+        <li class="product">
+            <p>Product Name: {{this.productName}}</p>
+            <p><img src="/public/images/products/{{this.product_image}}" alt="Image" width="50" height="50"></p>
+            <p>Product Category: {{this.productCategory}}</p>
+            <p>Price: ${{this.productPrice}}</p>
+            <p>Manufacture Date: {{this.manufactureDate}}</p>
+            <p>expirationDate: {{this.expirationDate}}</p>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}
+
+<ul class="errorContainer" id="errorContainer">
+    {{#if hasErrors}}
+    {{#each errors}}
+    <li>
+        {{this}}
+    </li>
+    {{/each}}
+    {{/if}}
+</ul>
+<a></a>

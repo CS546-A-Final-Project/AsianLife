@@ -394,7 +394,7 @@ try {
         "goooooooooooooooooooooooooooooooooood",
         5
     )    
-    console.log(addReview1);
+    // console.log(addReview1);
     const addReview2 = await reviewsforproductsData.addReview(
         "userID2",
         product1._id.toString(),
@@ -404,61 +404,62 @@ try {
     //console.log(addReview2);
     const getProductById1 = await productsData.getProductById(product1._id.toString());
     // console.log(getProductById1);
-    // const allReviews = await reviewsforproductsData.getAllReviews(addReview1._id.toString());
-    // console.log(allReviews);
+    const allReviewsForProduct1 = await reviewsforproductsData.getAllReviews(product1._id.toString());
+    console.log("allReviewsForProduct1" + allReviewsForProduct1);
     console.log(product1.productReviews + "product1.productReviews")
     const removeProduct1Review = await reviewsforproductsData.removeReview(addReview1._id.toString());
     console.log(removeProduct1Review)
-    const updateProduct1Review = await reviewsforproductsData.updateReview("userID2",
+    const updateProduct1Review = await reviewsforproductsData.updateReview(
+        "userID2",
     addReview2._id.toString,
     5);
     console.log(updateProduct1Review)
 } catch (e) {
     console.log(e);
 }
-// try {
-//     const product4 = await productsData.addProduct(        
-//         "userId2",
-//         "4",
-//         "product4",
-//         "Seafood",
-//          45,
-//         "12/06/2023",
-//         "01/04/2024"
-//     )
-// } catch(e) {
-//     console.log(e);
-// }
-// try {
-//     const product2 = await productsData.addProduct(
-//         'hhh',
-//         'Dairy Products',
-//         4.50,
-//         '12/04/2023',
-//         '01/02/2024',
-//         "2"
-//     )
-// //     //console.log(product2);
-//     const product3 = await productsData.addProduct(
-//         "product3",
-//         'Meat and Poultry',
-//         100,
-//         '12/04/2023',
-//         '01/02/2024',
-//         "3"
-//     );
-//     const removeProduct2 = await productsData.removeProduct(product2._id.toString());
-//     //console.log("removeProduct", removeProduct2);
-//     const getAllProducts1 = await productsData.getAllProducts();
-//     //console.log(getAllProducts1);
-//     } catch (e) {
-//     console.log(e);       
-// }
-
 try {
-
-} catch (e) {
+    const product4 = await productsData.addProduct(        
+        "userId2",
+        "4",
+        "product4",
+        "Seafood",
+         45,
+        "12/06/2023",
+        "01/04/2024"
+    )
+} catch(e) {
     console.log(e);
+}
+try {
+    const product2 = await productsData.addProduct(
+        "user_id2",
+        "store_id2",
+        'hhh',
+        'Dairy Products',
+        4.50,
+        '12/04/2023',
+        '01/02/2024',       
+    )
+//     //console.log(product2);
+    const product3 = await productsData.addProduct(
+        "user_id3",
+        "store_id3",
+        "product3",
+        'Meat and Poultry',
+        100,
+        '12/04/2023',
+        '01/02/2024'
+    );
+    const updateProduct = await productsData.updateProduct(
+        product2._id.toString(),
+        "product2_updated"
+    ) 
+    // const removeProduct2 = await productsData.removeProduct(product2._id.toString());
+    // console.log("removeProduct", removeProduct2);
+    // const getAllProducts1 = await productsData.getAllProducts();
+    //console.log(getAllProducts1);
+    } catch (e) {
+    console.log(e);       
 }
 try {
     // const getProductById1 = await productsData.getProductById(product1._id.toString());
@@ -478,13 +479,11 @@ try {
 // } catch (e) {
 //     console.log(e);
 // }
-try {
-   // const updateProduct = await productsData.updateProduct(product1._id.toString(), 
-
+// try {
     
-} catch (e) {
-    console.log(e);
-}
+// } catch (e) {
+//     console.log(e);
+// }
 
 
 
