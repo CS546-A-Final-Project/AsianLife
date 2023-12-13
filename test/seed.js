@@ -67,57 +67,64 @@ console.log("updateReview", getReviewById2);
 
 console.log("-----------------------");
 
-// reviewsforstores
+// commentsforstores
 console.log("-----------------------");
-console.log("reviewsforstores");
-console.log("addreview");
-const review4 = await reviewsforstoresData.addReview({
+console.log("commentsforstores");
+console.log("addcomment");
+const storecomment1 = await commentsforstoresData.addComment({
   user_id: "1",
   store_id: "1",
-  review: "This is a review",
+  comment: "This is a comment for store",
+  Answer:["This is answer for comment"],
   rating: 5,
-});
-console.log("addreview");
-const review5 = await reviewsforstoresData.addReview({
+}); 
+console.log(storecomment1)
+console.log("addcomment");
+const storecomment2 = await commentsforstoresData.addComment({
   user_id: "1",
   store_id: "2",
-  review: "This is a review",
+  comment: "This is a comment for store",
+  Answer:["This is answer for comment"],
   rating: 5,
 });
-console.log("addreview");
-const review6 = await reviewsforstoresData.addReview({
+console.log("addcomment");
+const storecomment3 = await commentsforstoresData.addComment({
   user_id: "1",
   store_id: "3",
-  review: "This is a review",
+  comment: "This is a comment for store",
+  Answer:["This is answer for comment"],
   rating: 5,
 });
 
-const getAllReviews3 = await reviewsforstoresData.getAllReviews();
-console.log("getallreviews", getAllReviews3);
-const getReviewById3 = await reviewsforstoresData.getReviewById(
-  review4._id.toString()
+const getAllcomment1 = await commentsforstoresData.getAllComments("1");
+console.log("getallcommentsforstoreid1", getAllcomment1 );
+const getCommentById1 = await commentsforstoresData.getCommentById(
+  storecomment1._id.toString()
 );
-console.log("getReviewById", getReviewById3);
-const removeReview2 = await reviewsforstoresData.removeReview(
-  review5._id.toString()
+console.log("getCommentById", getCommentById1);
+const removeComment1 = await commentsforstoresData.removeComment(
+  storecomment2._id.toString()
 );
-console.log("removeReview", removeReview2);
-const getAllReviews4 = await reviewsforstoresData.getAllReviews();
-console.log(getAllReviews4);
-const updateReview2 = await reviewsforstoresData.updateReview(
-  review4._id.toString(),
-  {
-    user_id: "1",
-    store_id: "1",
-    review: "This is a updated review",
-    rating: 1,
-  }
+console.log("removeComment", removeComment1);
+const getAllcomment2 = await commentsforstoresData.getAllComments("2");
+console.log(getAllcomment2);
+const addAnswer1 = await commentsforstoresData.addAnswer(
+  storecomment1._id.toString(), "This is answer for comment"
 );
-const getReviewById4 = await reviewsforstoresData.getReviewById(
-  review4._id.toString()
+console.log("addAnswer", addAnswer1)
+const addAnswer2 = await commentsforstoresData.addAnswer(
+  storecomment3._id.toString(), "This is answer for comment"
 );
-console.log("updateReview", updateReview2);
-console.log(getReviewById4);
+console.log("addanswer", addAnswer2);
+const getAnswer = await commentsforstoresData.getAnswerById(
+  storecomment1._id.toString()
+);
+console.log("getAnswer",getAnswer);
+const deleteAnswer = await commentsforstoresData.deleteAnswer(
+  storecomment1._id.toString()
+);
+
+console.log("deleteAnswer", deleteAnswer);
 console.log("-----------------------");
 
 // stores
