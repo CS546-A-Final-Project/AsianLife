@@ -10,7 +10,7 @@ const router = express.Router();
 router
     .route('/')
     .get(async (req, res) => { // runs well
-        try {
+        try {  // should it be get all products by store id?
             const allProducts = await productsData.getAllProducts();
             if (!allProducts) {
                 return res
@@ -20,8 +20,10 @@ router
                         error: 'Products Not Found',
                     });
             }
-            res.status(200).json(allProducts); // for postman test
-            // res.status(200).render('productsList', { allProducts: allProducts });
+            // res.status(200).json(allProducts); // for postman test
+            res.status(200).render('products', { 
+                title: 'product details',
+                allProducts: allProducts });
         } catch (e) {
             return res
                 .status(500)
@@ -97,11 +99,11 @@ router
         }
         try {
             let product = await productsData.getProductById(productId);
-            return res.status(200).json(product);
-            // return res.status(200).render('products', {
-            //     title: 'product details',
-            //     product: product,
-            // });
+            // return res.status(200).json(product);
+            return res.status(200).render('products', {
+                title: 'product details',
+                product: product,
+            });
         } catch (e) {
             res.status(404).render('products', { error: e });
         }

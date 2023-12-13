@@ -1,24 +1,28 @@
 <form enctype="multipart/form-data" method="post" action="/product/{{productId}}" id="uploadForm">
-          <input type="file" name="file" id="file" accept="image/*" />
+    <input type="file" name="file" id="file" accept="image/*" />
 
-        <label for="productName">Product Name:</label>
-        <input type="text" id="productName" name="productName" value="{{productName}}" required/>
+    <label for="productName">Product Name:</label>
+    <input type="text" id="productName" name="productName" value="{{productName}}" required />
 
-          <label for="streetAddress">Store Address:</label>
-          <input type="text" id="streetAddress" name="streetAddress" value="{{streetAddress}}" required />
-          <label for="city">Store city:</label>
-          <input type="text" id="city" name="city" value="{{city}}" required />
-          <label for="state">Store state:</label>
-          <input type="text" id="state" name="state" value="{{state}}" required />
-          <label for="zip">Store zip:</label>
-          <input type="text" id="zip" name="zip" value="{{zip}}" required />
-        <label for="productPrice">Product Price:</label>
-        <input type="text" id="productPrice" name="productPrice" value="{{productPrice}}" required>
+    <label for="productCategory">Product Category:</label>
+    <select id="productCategory" name="productCategory">
+        <option value="" disabled {{selected.default}}>Select</option>
+        <option value="Fresh Produce" {{selected.FreshProduce}}>Fresh Produce</option>
+        <option value="Dairy Products" {{selected.DairyProducts}}>Dairy Products</option>
+        <option value="Meat and Poultry" {{selected.MeatAndPoultry}}>Meat and Poultry</option>
+        <option value="Seafood" {{selected.Seafood}}>Seafood</option>
+        <option value="Frozen Foods" {{selected.FrozenFoods}}>Frozen Foods</option>
+        <option value="Bakery and Confectionery" {{selected.BakeryAndConfectionery}}>Bakery and Confectionery</option>
+        <option value="Beverages" {{selected.Beverages}}>Beverages</option>
+        <option value="Snacks" {{selected.Snacks}}>Snacks</option>
+        <option value="Canned and Jarred Goods" {{selected.CannedAndJarredGoods}}>Canned and Jarred Goods</option>
+        <option value="Dry Goods and Staples" {{selected.DryGoodsAndStaples}}>Dry Goods and Staples</option>
+    </select>
 
-        <label for="manufactureDate">Manufacture Date:</label>
-        <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
+    <label for="manufactureDate">Manufacture Date:</label>
+    <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
 
-        <label for="expirationDate">Erexpiration Date:</label>
-        <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
-          <button type="submit">Update Product</button>
+    <label for="expirationDate">Erexpiration Date:</label>
+    <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
+    <button type="submit">Update Product</button>
 </form>

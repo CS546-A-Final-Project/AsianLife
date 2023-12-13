@@ -1,23 +1,39 @@
 <!-- Yaxi for product-->
 <p>Products Details</p>
 <button id="product_review" name="product_review">Product Review</button>
-<button id="product_edit" name="product_edit">EDIT</button>
-{{#if hasProducts}}
+<a href='/product/{{productId}}'>
+    <button id="product_edit" name="product_edit">EDIT Product</button>
+</a>
+
+{{#if product}}
 <div class="products-container">
-    <ul>
-        {{#each products}}
+    <ul>      
         <li class="product">
             <p>Product Name: {{this.productName}}</p>
             <p><img src="/public/images/products/{{this.product_image}}" alt="Image" width="50" height="50"></p>
             <p>Product Category: {{this.productCategory}}</p>
             <p>Price: ${{this.productPrice}}</p>
             <p>Manufacture Date: {{this.manufactureDate}}</p>
-            <p>expirationDate: {{this.expirationDate}}</p>
-        </li>
-        {{/each}}
+            <p>Expiration Date: {{this.expirationDate}}</p>
+            {{#if productReviews}}
+            <ul>
+                {{#each productReviews}}
+                <li>
+                    <p>User Name: {{this.productReviews.user_id}}</p>
+                    <p>Review:  {{this.productReviews.productReviews}}</p>
+                    <p>Rating:  {{this.productReviews.rating}}</p>
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+            <label for="productReviews">Add Review 'more than 25 characters lengths':</label>
+            <input type="text" id="productReviews" name="productReviews" value="{{productReviews}}" required>
+        </li>      
     </ul>
 </div>
 {{/if}}
+
+
 
 <ul class="errorContainer" id="errorContainer">
     {{#if hasErrors}}

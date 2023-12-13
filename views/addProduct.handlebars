@@ -5,8 +5,8 @@
         <label for="productName">Product Name:</label>
         <input type="text" id="productName" name="productName" value="{{productName}}" required>
 
-        <label for="category">Product Category:</label>
-        <select id="category" name="category">
+        <label for="productCategory">Product Category:</label>
+        <select id="productCategory" name="productCategory">
             <option value="" disabled {{selected.default}}>Select</option>
             <option value="Fresh Produce" {{selected.FreshProduce}}>Fresh Produce</option>
             <option value="Dairy Products" {{selected.DairyProducts}}>Dairy Products</option>
@@ -23,10 +23,10 @@
         <label for="productPrice">Product Price:</label>
         <input type="text" id="productPrice" name="productPrice" value="{{productPrice}}" required>
 
-        <label for="manufactureDate">Manufacture Date:</label>
+        <label for="manufactureDate">Manufacture Date "MM/DD/YYYY":</label>
         <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
 
-        <label for="expirationDate">Erexpiration Date:</label>
+        <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
         <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
 
         {{!--store id怎么搞？--}}

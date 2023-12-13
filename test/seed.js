@@ -1,10 +1,10 @@
 import {
-  reviewsforproductsData,
-  reviewsforstoresData,
-  storesData,
-  usersData,
-  commentsData,
-  productsData,
+    reviewsforproductsData,
+    reviewsforstoresData,
+    storesData,
+    usersData,
+    commentsData,
+    productsData,
 } from "../data/index.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 
@@ -344,22 +344,22 @@ try {
 }
 
 try {
-//    const store1 = await storesData.addStore(
-//     {
-//         admin_id: "65777bf7fce4b5f608b19219",
-//         name: "walmart",
-//         store_location: {
-//           streetAddress: "Wshington St,",
-//           city: "Hoboken",
-//           state: "NJ",
-//           zip: "07013",
-//         },
-//         contact_information: {
-//           phone: "012345678",
-//           email: "yancy@gmail.com",
-//         }
-//       }
-//    )
+    //    const store1 = await storesData.addStore(
+    //     {
+    //         admin_id: "65777bf7fce4b5f608b19219",
+    //         name: "walmart",
+    //         store_location: {
+    //           streetAddress: "Wshington St,",
+    //           city: "Hoboken",
+    //           state: "NJ",
+    //           zip: "07013",
+    //         },
+    //         contact_information: {
+    //           phone: "012345678",
+    //           email: "yancy@gmail.com",
+    //         }
+    //       }
+    //    )
 } catch (e) {
     console.log(e);
 }
@@ -377,8 +377,8 @@ try {
         "Fresh Produce",
         13,
         '12/06/2023',
-        '12/25/2023'       
-        )
+        '12/25/2023'
+    )
     //console.log(product1);
     const updateProduct1 = await productsData.updateProduct(
         product1._id.toString(),
@@ -393,74 +393,76 @@ try {
         product1._id.toString(),
         "goooooooooooooooooooooooooooooooooood",
         5
-    )    
-    // console.log(addReview1);
+    )
+    console.log(addReview1);
     const addReview2 = await reviewsforproductsData.addReview(
         "userID2",
         product1._id.toString(),
         "goooooooooooooooooooooooooooooooooood",
         3
-    )    
+    )
     //console.log(addReview2);
-    const getProductById1 = await productsData.getProductById(product1._id.toString());
+    // const getProductById1 = await productsData.getProductById(product1._id.toString());
     // console.log(getProductById1);
-    const allReviewsForProduct1 = await reviewsforproductsData.getAllReviews(product1._id.toString());
-    console.log("allReviewsForProduct1" + allReviewsForProduct1);
-    console.log(product1.productReviews + "product1.productReviews")
-    const removeProduct1Review = await reviewsforproductsData.removeReview(addReview1._id.toString());
-    console.log(removeProduct1Review)
+    // const allReviewsForProduct1 = await reviewsforproductsData.getAllReviews(product1._id.toString());
+    // console.log("allReviewsForProduct1" + allReviewsForProduct1);
+    // console.log(product1.productReviews + "product1.productReviews")
+    // const removeProduct1Review = await reviewsforproductsData.removeReview(addReview1._id.toString());
+    // console.log(removeProduct1Review)
     const updateProduct1Review = await reviewsforproductsData.updateReview(
-        "userID2",
-    addReview2._id.toString,
-    5);
+        "userID2_updated",
+        addReview2._id.toString(),
+        "I changed the review bulabulabula",
+        5
+        );
     console.log(updateProduct1Review)
 } catch (e) {
     console.log(e);
 }
-try {
-    const product4 = await productsData.addProduct(        
-        "userId2",
-        "4",
-        "product4",
-        "Seafood",
-         45,
-        "12/06/2023",
-        "01/04/2024"
-    )
-} catch(e) {
-    console.log(e);
-}
-try {
-    const product2 = await productsData.addProduct(
-        "user_id2",
-        "store_id2",
-        'hhh',
-        'Dairy Products',
-        4.50,
-        '12/04/2023',
-        '01/02/2024',       
-    )
-//     //console.log(product2);
-    const product3 = await productsData.addProduct(
-        "user_id3",
-        "store_id3",
-        "product3",
-        'Meat and Poultry',
-        100,
-        '12/04/2023',
-        '01/02/2024'
-    );
-    const updateProduct = await productsData.updateProduct(
-        product2._id.toString(),
-        "product2_updated"
-    ) 
-    // const removeProduct2 = await productsData.removeProduct(product2._id.toString());
-    // console.log("removeProduct", removeProduct2);
-    // const getAllProducts1 = await productsData.getAllProducts();
-    //console.log(getAllProducts1);
-    } catch (e) {
-    console.log(e);       
-}
+// try {
+//     const product4 = await productsData.addProduct(        
+//         "userId2",
+//         "4",
+//         "product4",
+//         "Seafood",
+//          45,
+//         "12/06/2023",
+//         "01/04/2024"
+//     )
+// } catch(e) {
+//     console.log(e);
+// }
+// try {
+//     const product2 = await productsData.addProduct(
+//         "user_id2",
+//         "store_id2",
+//         'hhh',
+//         'Dairy Products',
+//         4.50,
+//         '12/04/2023',
+//         '01/02/2024',       
+//     )
+// //     //console.log(product2);
+//     const product3 = await productsData.addProduct(
+//         "user_id3",
+//         "store_id3",
+//         "product3",
+//         'Meat and Poultry',
+//         100,
+//         '12/04/2023',
+//         '01/02/2024'
+//     );
+//     const updateProduct = await productsData.updateProduct(
+//         product2._id.toString(),
+//         "product2_updated"
+//     ) 
+//     // const removeProduct2 = await productsData.removeProduct(product2._id.toString());
+//     // console.log("removeProduct", removeProduct2);
+//     // const getAllProducts1 = await productsData.getAllProducts();
+//     //console.log(getAllProducts1);
+//     } catch (e) {
+//     console.log(e);       
+// }
 try {
     // const getProductById1 = await productsData.getProductById(product1._id.toString());
     // console.log( getProductById1);
@@ -480,7 +482,7 @@ try {
 //     console.log(e);
 // }
 // try {
-    
+
 // } catch (e) {
 //     console.log(e);
 // }

@@ -78,7 +78,7 @@ const addReview = async (
     let review = {
         _id: new ObjectId(),
         user_id: user_id, // user name
-        product_id: product_id, // product name
+        product_id: product_id, // get product name by product_Id?
         store_id: product.store_id, // get store id from product directly
         productName: product.productName,
         productReviews: productReviews,
@@ -171,7 +171,7 @@ const updateReview = async (
     review_id, // must
     productReview, 
     rating) => {
-    user_id = helpers.checkId(user_id, 'user_id');
+    // user_id = helpers.checkId(user_id, 'user_id');
     review_id = helpers.checkId(review_id, 'review_id');
 
     const productsCollection = await products();
@@ -179,15 +179,17 @@ const updateReview = async (
     //console.log(product);
     if (!product) throw new Error(`Cannot find a product with the review id ${review_id}.`);
 
+    let updatedReview;
     let reviewFound = false;
     product.productReviews.forEach((review) => {
         if (review._id.toString() === review_id) {
             if (productReview) {
-                review.productReview = helpers.checkReview(productReview, 'productReview');
+                review.productReviews = helpers.checkReview(productReview, 'productReview');
             }
             if (rating) {
                 review.rating = helpers.checkRating(rating, 'rating');
             }
+            updatedReview = review
             reviewFound = true;
         }
     });
@@ -210,7 +212,7 @@ const updateReview = async (
     };
 
     await productsCollection.updateOne(query, updateCommand);
-    return await getReviewById(review_id);
+    return updatedReview;
 };
 
 

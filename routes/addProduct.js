@@ -23,7 +23,7 @@ router
         //console.log(productName);
         let productCategory = xss(req.body.productCategory);
         //console.log(productCategory);
-        let productPrice = parseFloat(req.body.productPrice);
+        let productPrice = parseFloat(xss(req.body.productPrice));
         //console.log(typeof productPrice); //xss would make price a string
         let manufactureDate = xss(req.body.manufactureDate);
         //console.log(manufactureDate);
@@ -31,7 +31,7 @@ router
         //console.log(expirationDate);
 
         let newProduct = req.body;
-        console.log("req", req.body)
+        //console.log("req", req.body)
         if (!newProduct || Object.keys(newProduct).length === 0) {
             return res.status(400).json({ error: "You didn't provide any information." })
         }
