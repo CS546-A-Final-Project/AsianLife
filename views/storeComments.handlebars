@@ -13,7 +13,9 @@ You can use this template to render any errors on your site if you wish
 
     <ul>
         {{#each commentList}}
-        <li><a href="/commentsDetail/{{this._id}}?title={{title}}">{{this.comment}}</a></li>
+        <li><a href="/commentsDetail/{{this._id}}?title={{title}}&user_id={{this.user_id}}">{{this.comment}}</a></li>
+        {{else}}
+        <li>No comments for this store now.</li>
         {{/each}}
     </ul>
 
