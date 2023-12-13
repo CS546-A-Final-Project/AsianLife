@@ -12,17 +12,32 @@ You can use this template to render any errors on your site if you wish
 
     <ul>
        <li>{{comment.comment}}</li>
+       {{#if comment.answer}}
        <ul>
             <li>&rarr; {{comment.answer}}</li>
         </ul>
+        {{/if}}
     </ul>
 
+    {{#if isCommentUser}}
+        <form id="delete-comment-btn" action="/commentDetail/{{comment._id}}" method="Update">Delete Comment
+            <button type="submit" id="delete-comment-btn">Delete Comment</button>
+        </form>
+    {{/if}}
+
     {{#if isAdmin}}
-    <form id="answer-form" action="/storecomment/commentDetail" method="POST">
+    <form id="answer-form" action="/commentDetail/{{comment._id}}" method="POST">
         <lable for="answer">Owner Answer:</lable>
         <input type="text" name="answerInput" id="answerInput">
 
         <button type="submit">Add answer</button>
     </form>
     <script src="/public/js/front_end_validation.js"></script>
+    <script>
+        document.getElementById('delete-comment-btn').addEventListener('click', function() {
+            
+        });
+    </script>
+
+
 </body>

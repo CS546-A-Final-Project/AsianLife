@@ -11,7 +11,8 @@ You can use this template to render any errors on your site if you wish
 <body>
     <h1>{{title}} Comments List</h1>
 
-    <ul>
+    {{!--未完成： 跟佳骏对接怎么传入的时候确定一个isOwner来保证可以删除answer --}}
+    <ul> 
         {{#each commentList}}
         <li><a href="/commentsDetail/{{this._id}}?title={{title}}&user_id={{this.user_id}}">{{this.comment}}</a></li>
         {{else}}
