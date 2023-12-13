@@ -75,31 +75,6 @@ router.route('/storecomment').get(async (req, res) => {
         }
     });
 
-router.route('/commentDetail').get(async (req, res) => {
-    let {_id, user_id, store_id, comment, answer} = req.body //和佳俊对接
-    let isAdmin = true;
-    if(req.body.user_id !== 'admin') isAdmin = false;
-    res.render("/commentDetail", {comment: comment, answer: answer, isAdmin: isAdmin})
-    })
-    .post(async (req, res) => {
-        let {_id, user_id, store_id, comment, answer, answerInput} = req.body //和佳俊对接
-        let isAdmin = true;
-        if(req.body.user_id !== 'admin') isAdmin = false;
-
-        try{
-            checkString(answerInput,"answer");
-        }catch(e){
-            return res.status(400).render('error', {title: "Error", message: e})
-        }
-
-        try{
-            const newAnswer = await commentsforstoresData.addAnswer(_id, answerInput)
-            res.render("/commentDetail", {comment: newAnswer.comment, answer: newAnswer.answer, isAdmin: isAdmin},)
-        }catch(e){
-            return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
-        }
-    });
-
 
 export default router;
 
