@@ -1,0 +1,28 @@
+{{!
+You can use this template to render any errors on your site if you wish
+}}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} Comments List</title>
+</head>
+
+<body>
+    <h1>{{title}} Comments List</h1>
+
+    <ul>
+        {{#each commentList}}
+        <li><a href="/commentsDetail/{{this._id}}?title={{title}}">{{this.comment}}</a></li>
+        {{/each}}
+    </ul>
+
+    {{#if isUser}}
+    <form id="storecomment-form" action="/storecomment" method="POST">
+        <lable for="comment">Your Comment:</lable>
+        <input type="text" name="commentInput" id="commentInput">
+
+        <button type="submit">Add New Comment</button> 
+    </form>
+    <script src="/public/js/front_end_validation.js"></script>
+</body>
