@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { commentsforstoresData, storesData } from "../data/index.js";
 const router = express.Router();
 
-router.route('/commentDetail').get(async (req, res) => {
+router.route('/').get(async (req, res) => {
     let {_id, user_id, store_id, comment, answer} = req.body //和佳俊对接
     let isAdmin = true;
     if(req.body.user_id !== 'admin') isAdmin = false;
