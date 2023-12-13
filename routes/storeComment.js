@@ -101,7 +101,7 @@ router.route('/commentDetail').get(async (req, res) => {
     });
 
 
-
+export default router;
 
 
 function checkString(string, varName) {
