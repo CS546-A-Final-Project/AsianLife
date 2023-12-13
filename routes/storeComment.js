@@ -5,7 +5,7 @@ import { commentsforstoresData, storesData } from "../data/index.js";
 const router = express.Router();
 
 
-router.route('/storecomment').get(async (req, res) => {
+router.route('/').get(async (req, res) => {
 
     const Id = req.params.admin_id //和佳俊对接
     
