@@ -98,10 +98,10 @@ const storecomment3 = await commentsforstoresData.addComment({
 
 const getAllcomment1 = await commentsforstoresData.getAllComments("1");
 console.log("getallcommentsforstoreid1", getAllcomment1 );
-const getCommentById1 = await commentsforstoresData.getCommentById(
+const getCommentById11 = await commentsforstoresData.getCommentById(
   storecomment1._id.toString()
 );
-console.log("getCommentById", getCommentById1);
+console.log("getCommentById", getCommentById11);
 const removeComment1 = await commentsforstoresData.removeComment(
   storecomment2._id.toString()
 );
