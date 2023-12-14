@@ -5,9 +5,6 @@
         <label for="productName">Product Name:</label>
         <input type="text" id="productName" name="productName" value="{{productName}}" required>
 
-        <label for="productImage">Product Image:</label>
-        <input type="file" id="productImage" name="productImage" accept="image/*" required>
-
         <label for="productCategory">Product Category:</label>
         <select id="productCategory" name="productCategory">
             <option value="" disabled {{selected.default}}>Select</option>
@@ -31,6 +28,9 @@
 
         <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
         <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
+        
+        <label for="productImage">Product Image:</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*" required>
 
         <button type="submit">Add Product</button>
     </form>  

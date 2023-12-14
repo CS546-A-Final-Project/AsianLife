@@ -1,13 +1,13 @@
 <h1>{{product.productName}}</h1>
 <button id="product_review" name="product_review">Product Review</button>
-<a href='/product/{{productId}}'>
-    <button id="product_edit" name="product_edit">EDIT Product</button>
+<a href='/editProduct/{{productId}}'>
+    <button id="product_edit" name="product_edit">Edit Product</button>
 </a>
 
 {{#if product}}
 <div class="products-container">
     {{!-- <p>Product Name: {{product.productName}}</p> --}}
-    <p><img src="/public/images/products/{{product.product_image}}" alt="Image" width="50" height="50"></p>
+    <p><img src="/public/images/products/{{product.productImage}}" alt="Image" width="100" height="100"></p>
     <p>Product Category: {{product.productCategory}}</p>
     <p>Price: ${{product.productPrice}}</p>
     <p>Manufacture Date: {{product.manufactureDate}}</p>
