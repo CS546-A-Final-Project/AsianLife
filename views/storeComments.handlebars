@@ -14,11 +14,7 @@ You can use this template to render any errors on your site if you wish
     {{!--未完成： 跟佳骏对接怎么传入的时候确定一个isOwner来保证可以删除answer --}}
     <ul> 
         {{#each commentList}}
-<<<<<<< Updated upstream
         <li><a href="/commentsDetail/{{this._id}}?title={{title}}&user_id={{this.user_id}}">{{this.comment}}</a></li>
-=======
-        <li><a href="/commentsDetail/{{this._id}}?">{{this.comment}}</a></li>
->>>>>>> Stashed changes
         {{else}}
         <li>No comments for this store now.</li>
         {{/each}}

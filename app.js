@@ -145,10 +145,9 @@ app.use('/addStore', (req, res, next) => {
 });
 
 app.use('/storeComments', (req, res, next) => {
-<<<<<<< Updated upstream
-=======
+
   const requestRoute = req.originalUrl;
->>>>>>> Stashed changes
+
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   } else {
@@ -157,10 +156,8 @@ app.use('/storeComments', (req, res, next) => {
 });
 
 app.use('/commentsDetail', (req, res, next) => {
-<<<<<<< Updated upstream
-=======
-  const requestRoute = req.originalUrl;
->>>>>>> Stashed changes
+
+
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   } else {
@@ -168,10 +165,7 @@ app.use('/commentsDetail', (req, res, next) => {
   }
 });
 
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 configRoutes(app);
 
 app.listen(3000, () => {
