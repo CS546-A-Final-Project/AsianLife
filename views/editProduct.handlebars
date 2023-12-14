@@ -1,5 +1,4 @@
-<form enctype="multipart/form-data" method="post" action="/product/{{productId}}" id="uploadForm">
-    <input type="file" name="file" id="file" accept="image/*" />
+<form enctype="multipart/form-data" method="put" action="/edit/{{productId}}" id="uploadForm">
 
     <label for="productName">Product Name:</label>
     <input type="text" id="productName" name="productName" value="{{productName}}" required />
@@ -19,10 +18,17 @@
         <option value="Dry Goods and Staples" {{selected.DryGoodsAndStaples}}>Dry Goods and Staples</option>
     </select>
 
+    <label for="productPrice">Product Price:</label>
+    <input type="text" id="productPrice" name="productPrice" value="{{productPrice}}" required>
+
     <label for="manufactureDate">Manufacture Date:</label>
     <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
 
     <label for="expirationDate">Erexpiration Date:</label>
     <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
+
+    <label for="productImage">Product Image:</label>
+    <input type="file" id="productImage" name="productImage" accept="image/*" required>
+
     <button type="submit">Update Product</button>
 </form>

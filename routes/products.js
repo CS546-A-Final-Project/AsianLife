@@ -8,7 +8,7 @@ import xss from 'xss';
 const router = express.Router();
 
 router
-    .route('/')
+    .route('/') // get all products from store ID?
     .get(async (req, res) => { // runs well
         try {  // should it be get all products by store id?
             const allProducts = await productsData.getAllProducts();
@@ -33,8 +33,7 @@ router
 
 
 router
-    .route('/:productId')
-    // get one product from the webpage
+    .route('/:productId') // get one product after add it
     .get(async (req, res) => { // runs well
         let productId = xss(req.params.productId); // updateId
         try {
@@ -44,19 +43,24 @@ router
         }
         try {
             let product = await productsData.getProductById(productId);
+            console.log(product);
             // return res.status(200).json(product);
             return res.status(200).render('products', {
-                title: 'product details',
+                title: product.productName,
                 product: product,
                 productName: product.productName,
                 productCategory: product.productCategory,
                 productPrice: product.productPrice,
                 manufactureDate: product.manufactureDate,
                 expirationDate: product.expirationDate,
-                productReviews: product.productReviews
+                productReviews: product.productReviews,
+                productImage: productImage
             });
         } catch (e) {
-            res.status(404).render('products', { error: e });
+            res.status(404).render('products', { 
+                hasErrors: true,
+                errors: e 
+            });
         }
     })
     .delete(async (req, res) => { // runs well
@@ -69,56 +73,55 @@ router
         }
         try {
             let product = await productsData.removeProduct(productId);
-            return res.status(200).json("Delete successfully!" + product); // 检查删除的信息
-            // return res.status(200).render('products', { product, product });
+            // return res.status(200).json("Delete successfully!" + product); // 检查删除的信息
+            return res.status(200).render('products', { product, product });
         } catch (e) {
-            res.status(404).json({error: e.message});
-            // res.status(404).render('products', { error: e.message });
+            // res.status(404).json({error: e.message});
+            res.status(404).render('products', { error: e.message });
         }
     })
-    .put(async (req, res) => { // runs well
-        let id = xss(req.params.productId);
-        let productName = xss(req.body.productName);
-        let productCategory = xss(req.body.productCategory);
-        let productPrice = parseFloat(req.body.productPrice);
-        let manufactureDate = xss(req.body.manufactureDate);
-        let expirationDate = xss(req.body.expirationDate);
+    // .put(async (req, res) => { // runs well
+    //     let id = xss(req.params.productId);
+    //     let productName = xss(req.body.productName);
+    //     let productCategory = xss(req.body.productCategory);
+    //     let productPrice = parseFloat(req.body.productPrice);
+    //     let manufactureDate = xss(req.body.manufactureDate);
+    //     let expirationDate = xss(req.body.expirationDate);
     
-        try {
-            id = helpers.checkId(id, 'productId');
-            if (productName) productName = helpers.checkString(productName, 'productName');
-            if (productCategory) productCategory = helpers.checkCategories(productCategory, 'productCategory');
-            if (productPrice) productPrice = helpers.checkPrice(productPrice, 'productPrice');
-            if (manufactureDate) manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
-            if (expirationDate) expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
-            if (manufactureDate && expirationDate) helpers.checkDateValid(manufactureDate, expirationDate);
-        } catch (e) {
-            return res.status(400).json({ error: e.message });
-        }
-    
-        try {
-            const result = await productsData.updateProduct(
-                id,
-                productName,
-                productCategory,
-                productPrice,
-                manufactureDate,
-                expirationDate
-            );
-            console.log(result);
-            // if (result.modifiedCount === 0) {
-            //     throw new Error(`The update of Product ${id} failed.`);
-            // }
-            res.status(200).json({ message: `Product ${id} updated successfully.` });
-            // res.status(200).render('products', {
-            //     title: 'product',
-            //     product: updatedProduct
-            // });
-        } catch (e) {
-            res.status(500).json({ error: e.message });
-            // res.status(500).render('products', { error: e.message });
-        }
-    });
+    //     try {
+    //         id = helpers.checkId(id, 'productId');
+    //         if (productName) productName = helpers.checkString(productName, 'productName');
+    //         if (productCategory) productCategory = helpers.checkCategories(productCategory, 'productCategory');
+    //         if (productPrice) productPrice = helpers.checkPrice(productPrice, 'productPrice');
+    //         if (manufactureDate) manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
+    //         if (expirationDate) expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
+    //         if (manufactureDate && expirationDate) helpers.checkDateValid(manufactureDate, expirationDate);
+    //     } catch (e) {
+    //         return res.status(400).json({ error: e.message });
+    //     }    
+    //     try {
+    //         const result = await productsData.updateProduct(
+    //             id,
+    //             productName,
+    //             productCategory,
+    //             productPrice,
+    //             manufactureDate,
+    //             expirationDate
+    //         );
+    //         // console.log(result);
+    //         if (result.modifiedCount === 0) {
+    //             throw new Error(`The update of Product ${id} failed.`);
+    //         }
+    //         // res.status(200).json({ message: `Product ${id} updated successfully.` });
+    //         res.status(200).render('products', {
+    //             title: 'product',
+    //             product: updatedProduct
+    //         });
+    //     } catch (e) {
+    //         // res.status(500).json({ error: e.message });
+    //         res.status(500).render('products', { error: e.message });
+    //     }
+    // });
     
 
     router

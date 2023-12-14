@@ -12,11 +12,6 @@ const upload = multer({
     dest: path.join(process.cwd(), "/public/images/products"), // 注意更改目录为产品图片目录
   });
 
-//   router.post("/", upload.single("file"), async (req, res) => {
-//     //console.log(req.file);
-//     await updateAvatar(req.session.user.id, req.file.filename);
-//     res.status(200).redirect("/profile");
-//   });
 router
     .route('/')
     .get(async (req, res) => { // runs well
@@ -37,6 +32,7 @@ router
         //console.log(typeof productPrice); //xss would make price a string
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
+        // productImage
         let productImage = req.file.filename;
         let errors = [];
 

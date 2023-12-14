@@ -60,7 +60,6 @@ const addProduct = async ( // runs well
         productReviews: [],
         productRating: 0,
         totalAmountOfReviews: 0, // if totalAmountOfReviews = 0
-
     };
     const productsCollection = await products();
     // const store = getStoreByStoreName()

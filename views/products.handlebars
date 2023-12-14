@@ -1,13 +1,10 @@
 <h1>{{product.productName}}</h1>
-<button id="product_review" name="product_review">Product Review</button>
-<a href='/editProduct/{{productId}}'>
-    <button id="product_edit" name="product_edit">Edit Product</button>
-</a>
+<a href='/editProduct/{{productId}}' class="button">EDIT Product</a>
+<a href="/products/{{productId}}" class="button" onclick="return confirm('Are you sure you want to delete this product?');">DELETE Product</a>
 
 {{#if product}}
 <div class="products-container">
-    {{!-- <p>Product Name: {{product.productName}}</p> --}}
-    <p><img src="/public/images/products/{{product.productImage}}" alt="Image" width="100" height="100"></p>
+    <p><img src="/public/images/products/{{product.productImage}}" alt="Image" width="200" height="200"></p>
     <p>Product Category: {{product.productCategory}}</p>
     <p>Price: ${{product.productPrice}}</p>
     <p>Manufacture Date: {{product.manufactureDate}}</p>
@@ -46,6 +43,8 @@
         <button type="submit">Submit Review</button>
     </form>
 </div>
+{{else}}
+<p>Fail to get the product</p>
 {{/if}}
 
     <ul class="errorContainer" id="errorContainer">
