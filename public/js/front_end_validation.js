@@ -303,7 +303,7 @@
             }
         });
     }
-})();
+
 
 
     const storecommentStaticForm = document.getElementById('storecomment-form');
