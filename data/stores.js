@@ -79,7 +79,6 @@ const removeStore = async (id) => {
   return deletionInfo;
 };
 const updateStore = async (id, updatedStore) => {
-    zip: zipCode,
   const storesCollection = await stores();
   const updatedStoreData = {};
   if (updatedStore.admin_id) {
