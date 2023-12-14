@@ -29,8 +29,8 @@ const constructorMethod = (app) => {
   app.use('/error', errorRoutes);
   app.use('/password', passwordRoutes);
   app.use('/editstore', editRoutes);
-  app.use('./storeComments',storeCommentsRoutes);
-  app.use('./commentsDetail',commentDetailRoutes);
+  app.use('/storeComments',storeCommentsRoutes);
+  app.use('/commentsDetail',commentDetailRoutes);
 
   app.use('*', (req, res) => {
     res.status(404).render('error', { title: "404 NOT FOUND", error: "404 NOT FOUND" });

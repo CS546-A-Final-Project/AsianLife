@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.route('/:id').get(async (req, res) => {
     const storeId = req.params.id;
+    const userRole = req.session.user.role
     try {
         if (!ObjectId.isValid(storeId)) {
             throw 'invalid object ID';
@@ -20,7 +21,7 @@ router.route('/:id').get(async (req, res) => {
         const storeProducts = allProducts.filter(product => product.store_id === storeId);
         if (store === null) 
             throw "No store with that ID";
-        res.status(200).render('store', { storeProducts: storeProducts});
+        res.status(200).render('store', { storeProducts: storeProducts, storeID: storeId, user: userRole});
     } catch (e) {
         return res.status(404).render('error', { error: e });
     }

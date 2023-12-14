@@ -2,30 +2,32 @@
 You can use this template to render any errors on your site if you wish
 }}
 
-<head>
+{{!-- <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}} Comments List</title>
-</head>
+</head> --}}
 
 <body>
     <h1>{{title}} Comments List</h1>
 
-    {{!--未完成： 跟佳骏对接怎么传入的时候确定一个isOwner来保证可以删除answer --}}
     <ul> 
         {{#each commentList}}
-        <li><a href="/commentsDetail/{{this._id}}?title={{title}}&user_id={{this.user_id}}">{{this.comment}}</a></li>
+            <li><a href="/commentsDetail/{{this._id}}">{{this.comment}}</a></li>
         {{else}}
-        <li>No comments for this store now.</li>
+            <li>No comments for this store now.</li>
         {{/each}}
     </ul>
 
     {{#if isUser}}
-    <form id="storecomment-form" action="/:store_id" method="POST">
-        <lable for="comment">Your Comment:</lable>
-        <input type="text" name="commentInput" id="commentInput">
+        <form id="storecomment-form" action="/storeComments/{{storeID}}" method="POST">
+            <label for="comment">Your Comment:</label>
+            <input type="text" name="commentInput" id="commentInput">
 
-        <button type="submit">Add New Comment</button> 
-    </form>
-    <script src="/public/js/front_end_validation.js"></script>
+            <button type="submit">Add New Comment</button> 
+        </form>
+        <script src="/public/js/front_end_validation.js"></script>
+    {{else}}
+        <p>Only User can comment store</p>
+    {{/if}}
 </body>

@@ -144,10 +144,8 @@ app.use('/addStore', (req, res, next) => {
   }
 });
 
-app.use('/storeComments', (req, res, next) => {
-
-  const requestRoute = req.originalUrl;
-
+app.use('/storeComments/:store_id', (req, res, next) => {
+  console.log(req, "123456")
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   } else {

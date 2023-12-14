@@ -15,6 +15,9 @@ const getStoreById = async (id) => {
   if (!store) throw "Store not found";
   return store;
 };
+// const store = await getStoreById("657b2761bd1b4f1cadcc4b28")
+// const rating = store.rating
+// console.log(rating)
 const addStore = async (store) => {
   let adminId = xss(store.adminId).trim();
   let name = xss(store.name).trim();

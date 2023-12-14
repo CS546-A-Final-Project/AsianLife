@@ -10,6 +10,7 @@ router.route('/:store_id').get(async (req, res) => {//get all comment for this s
     let user = req.session.user 
     
     let storeid = xss(req.params.store_id)//Noah send a store_id;
+    // console.log(storeid)
 
     
     try{
@@ -20,26 +21,34 @@ router.route('/:store_id').get(async (req, res) => {//get all comment for this s
 
     try{
         let isUser = true;//for determining if have right to comment;
-        const storeName = await storesData.getStoreById(storeid).name;
+        const store = await storesData.getStoreById(storeid);
+        const storeName = store.name;
         const commentList = await commentsforstoresData.getAllComments(storeid);
-        const rating = await storesData.getStoreById(storeid).rating;
+        // console.log(commentList, "this is commentLists")
+        const rating = store.rating;
         if(user.role !== 'user') {
             isUser = false;
         }
-        res.render("storeComments", {title: storeName, commentList: commentList, isUser: isUser, rating:rating})
+        res.render("storeComments", {title: storeName, commentList: commentList, isUser: isUser, rating:rating, storeID: storeid})
+        // res.redirect(`storeComments/${storeid}`)
     }catch(e){
         return res.status(400).render('error', {title: "Error", message: e})
     }
     })
     .post(async (req, res) => { //add a comment for this store(realize delete at commentDetail page)
+        console.log("successful hit POST")
         let user = req.session.user;
-        let user_id = xss(user._id);
+        let userid = xss(user.id);
+        console.log(userid,"userid")
         let storeid = xss(req.params.store_id)
+        console.log(storeid,"storeid")
         let comment = xss(req.body.commentInput);
-        let rating = await storesData.getStoreById(storeid).rating;
+        console.log(comment, "comment")
+        let store = await storesData.getStoreById(storeid)
+        let rating = store.rating;
 
         try{
-            checkId(user_id)
+            checkId(userid)
         }catch(e){
             return res.status(400).render('error', {title: "Error", message: e})
         }
@@ -65,14 +74,17 @@ router.route('/:store_id').get(async (req, res) => {//get all comment for this s
 
         let newComment
         try{
-            newComment = await commentsforstoresData.addComment({user_id: user_id, store_id: storeid, comment: comment, rating: rating})
+            newComment = await commentsforstoresData.addComment({user_id: userid, store_id: storeid, comment: comment, rating: rating})
             if(newComment){
-            res.redirect(`/${storeid}`)  
+            res.redirect(`/storeComments/${storeid}`)  
             }
         }catch(e){
             return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
         }
     });
+
+
+
 
 export default router;
 
@@ -99,3 +111,4 @@ function checkId(id) {
     }
     return id;
 }
+
