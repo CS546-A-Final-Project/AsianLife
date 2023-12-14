@@ -103,6 +103,12 @@ router
             return res.status(200).render('products', {
                 title: 'product details',
                 product: product,
+                productName: product.productName,
+                productCategory: product.productCategory,
+                productPrice: product.productPrice,
+                manufactureDate: product.manufactureDate,
+                expirationDate: product.expirationDate,
+                productReviews: product.productReviews
             });
         } catch (e) {
             res.status(404).render('products', { error: e });
@@ -170,47 +176,87 @@ router
     });
     
 
-// router
-// .route('/reviewId')
-// .get(async (req, res) => {
-//     let reviewId = xss(req.params.reviewId);
-//     try {
-//         reviewId = helpers.checkId(reviewId);
-//     } catch (e) {
-//         res.status(404).render('products', { error: e });
-//     }
-//     try {
-//         let reviewForProducts = await reviewsForProductsData.getReviewById(reviewId);
-//         return res.status(200).json(reviewForProducts);
-//         // return res.status(200).render('products', { error: e });
-//     } catch (e) {
-//         res.status(404).render('products', { error: e });
-//     }
-// })
-// .delete(async (req, res) => {
-//     let reviewId = xss(req.params.reviewId);
-//     try {
-//         reviewId = helpers.checkId(reviewId);
-//         let deleteReview = await reviewsForProductsData.removeReview();
-//     } catch (e) {
-//         res.status(404).render('products', { error: e });
-//     }
-// })
-// .post(async (req, res) => { // add
-//     let reviewId = xss(req.params.reviewId);
-//     let review = {
-//         _id: new ObjectId(),
-//         user_id: user_id, // user name
-//         product_id: product_id, // product name
-//         store_id: product.store_id, // get store id from product directly
-//         productName: product.productName,
-//         productReviews: productReviews,
-//         rating: rating
-//     }
-//     await reviewsForProductsData.addReview(
+    router
+    .route('/:productId/reviews')
+    .get(async (req, res) => { // get all reviews for a product
+        let id = xss(req.params.productId);
+        try {
+            id = helpers.checkId(id, 'productId');
+        } catch (e) {
+            // res.status(400).json({error: e.message});
+            return res.status(400).render('products', { error: e.message });
+        }
+        try {
+            let productReviews = await reviewsForProductsData.getAllReviews(id);
+            //return res.status(200).json(reviewForProducts);
+            return res.status(200).render('products', { 
+                productReviews: productReviews,
+                user_id: user_id });
+        } catch (e) {
+            // res.status(400).json({error: e.message});
+            return res.status(404).render('products', { error: e.message });
+        }
+    })
+    .post(async (req, res) => { // add a review for a product
+        let user_id = xss(req.session.user.id);
+        let productId = xss(req.params.productId);
+        let productReview = xss(req.body.productReviews);
+        let rating = xss(req.body.rating);
+        let errors = [];
+        try {
+            productId = helpers.checkId(productId, 'productId');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            productReview = helpers.checkReview(productReview, 'productReview');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            rating = helpers.checkRating(rating, 'rating');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            productReview = reviewsForProductsData.addReview(
+                user_id,
+                productId,
+                productReview,
+                rating
+            )
+        } catch (e) {
+            errors.push(e);
+        }
+        if (errors.length > 0) {
+            return res.status(400).render('products', {
+                productName: productName,
+                productReview: productReview,
+                rating: rating,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            })
+        }
+    })
 
-//     )
-
-// })
+    .delete(async (req, res) => { // delete a review for a product
+        let productId = xss(req.params.productId);
+        try {
+            productId = helpers.checkId(productId, 'productId');
+            
+        } catch (e) {
+            res.status(400).render('products', { error: e });
+        }
+        try {
+            let deleteReview = reviewsForProductsData.removeReview(productId);
+            res.status(200).render('products', )
+        } catch (e) {
+            res.status(400).render('products', { error: e });
+        }
+    })
+    .put(async (req, res) => {
+        let id = xss(req.params.productId);
+    });
 
 export default router;

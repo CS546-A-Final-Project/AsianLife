@@ -71,7 +71,7 @@ const addProduct = async ( // runs well
         )
     };
     const newId = newInsertInformation.insertedId;
-    return await getProductById(newId.toString());
+    return newId.toString(); // get the new product's Id 
 };
 const removeProduct = async (id) => {
     id = xss(id);

@@ -17,56 +17,94 @@ router
         // let user_id = xss(req.session.user._id).trim();
         let user_id = xss(req.body.user_id); // 这里要改！！！
         //console.log(user_id);
-        let store_id = xss(req.body.store_id);
-        //console.log(store_id);
+        let store_id = xss(req.body.store_id);      
         let productName = xss(req.body.productName);
-        //console.log(productName);
         let productCategory = xss(req.body.productCategory);
-        //console.log(productCategory);
         let productPrice = parseFloat(xss(req.body.productPrice));
         //console.log(typeof productPrice); //xss would make price a string
         let manufactureDate = xss(req.body.manufactureDate);
-        //console.log(manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
-        //console.log(expirationDate);
+        let errors = [];
 
         let newProduct = req.body;
         //console.log("req", req.body)
         if (!newProduct || Object.keys(newProduct).length === 0) {
-            return res.status(400).json({ error: "You didn't provide any information." })
+            return res.status(400).json({ error: "You didn't provide any information." });
         }
         try {
-            console.log("validation");
             // user_id = helpers.checkId(user_id, 'user_id');
-            // store_id = helpers.checkId(store_id, 'store_id'); // store应该改成id (store_name = newProduct.store_name); 
-            productName = helpers.checkString(productName, 'productName');
-            productCategory = helpers.checkCategories(productCategory, 'productCategory');
-            productPrice = helpers.checkPrice(productPrice, 'productPrice');
-            manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
-            expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
-            helpers.checkDateValid(manufactureDate, expirationDate);        
         } catch (e) {
-            console.error(e);
-            return res.status(400).json({ error: e.message });
+            errors.push(e);
         }
         try {
-            console.log("addProduct");
-            let product = await productsData.addProduct(
+            // store_id = helpers.checkId(store_id, 'store_id'); // store应该改成id (store_name = newProduct.store_name); 
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            productName = helpers.checkString(productName, 'productName');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            productCategory = helpers.checkCategories(productCategory, 'productCategory');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            productPrice = helpers.checkPrice(productPrice, 'productPrice');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            helpers.checkDateValid(manufactureDate, expirationDate);
+        } catch (e) {
+            errors.push(e);
+        }
+        // after validation, now starts add product
+        try {
+            // console.log("addProduct");
+            let productId = await productsData.addProduct(
                 user_id,
                 store_id,
                 productName,
                 productCategory,
                 productPrice,
                 manufactureDate,
-                expirationDate,            
+                expirationDate,
             ); //add image
-            console.log("finished");
-            //res.status(200).json(product)
-            res.status(200).render('products', { product: product });
+            //console.log("finished");
+            //res.status(200).json(product);
+            return res.status(200).redirect(`/products/${productId}`);
         } catch (e) {
-            console.error(e)
-            res.status(500).json({ error: e.message });
-            //res.status(500).render('products', { error: "Internal Server Error" });
+            errors.push(e);
+            //console.error(e)
+            // return res.status(500).json({ error: e.message });
+            // res.status(500).render('products', { error: "Internal Server Error" });
+        }
+        if (errors.length > 0) {
+            const selected = { [`${productCategory}`]: 'selected' };
+            return res.status(400).render('addProduct', {
+                title: "add Product",
+                productName: productName,
+                productCategory: productCategory,
+                productPrice: productPrice,
+                manufactureDate: manufactureDate,
+                expirationDate: expirationDate,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            })
         }
     });
 

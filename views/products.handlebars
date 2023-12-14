@@ -1,5 +1,4 @@
-<!-- Yaxi for product-->
-<p>Products Details</p>
+<h1>{{product.productName}}</h1>
 <button id="product_review" name="product_review">Product Review</button>
 <a href='/product/{{productId}}'>
     <button id="product_edit" name="product_edit">EDIT Product</button>
@@ -7,41 +6,54 @@
 
 {{#if product}}
 <div class="products-container">
-    <ul>      
-        <li class="product">
-            <p>Product Name: {{this.productName}}</p>
-            <p><img src="/public/images/products/{{this.product_image}}" alt="Image" width="50" height="50"></p>
-            <p>Product Category: {{this.productCategory}}</p>
-            <p>Price: ${{this.productPrice}}</p>
-            <p>Manufacture Date: {{this.manufactureDate}}</p>
-            <p>Expiration Date: {{this.expirationDate}}</p>
-            {{#if productReviews}}
-            <ul>
-                {{#each productReviews}}
-                <li>
-                    <p>User Name: {{this.productReviews.user_id}}</p>
-                    <p>Review:  {{this.productReviews.productReviews}}</p>
-                    <p>Rating:  {{this.productReviews.rating}}</p>
-                </li>
-                {{/each}}
-            </ul>
-            {{/if}}
-            <label for="productReviews">Add Review 'more than 25 characters lengths':</label>
-            <input type="text" id="productReviews" name="productReviews" value="{{productReviews}}" required>
-        </li>      
+    {{!-- <p>Product Name: {{product.productName}}</p> --}}
+    <p><img src="/public/images/products/{{product.product_image}}" alt="Image" width="50" height="50"></p>
+    <p>Product Category: {{product.productCategory}}</p>
+    <p>Price: ${{product.productPrice}}</p>
+    <p>Manufacture Date: {{product.manufactureDate}}</p>
+    <p>Expiration Date: {{product.expirationDate}}</p>
+
+    {{#if product.productReviews}}
+    <ul>
+        {{#each product.productReviews}}
+        <li>
+            {{!-- <p>User Name: {{this.user_id}}</p> --}}
+            <p>Review: {{this.productReviews}}</p>
+            <p>Rating: {{this.rating}}</p>
+        </li>
+        {{/each}}
     </ul>
+    {{else}}
+    <p>This product has no reviews.</p>
+    {{/if}}
+
+    <form id="add-review-form" action="/{{product._id}}/reviews" method="POST">
+        <input type="hidden" name="productId" value="{{product._id}}">
+
+        <label for="productReviews">Add Review 'more than 25 characters lengths':</label>
+        <textarea id="productReviews" name="productReviews" value="{{productReviews}}" required></textarea>
+
+        <label for="productRating">Product Rating:</label>
+        <select id="productRating" name="productRating">
+            <option value="" disabled selected>Select</option>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+        </select>
+
+        <button type="submit">Submit Review</button>
+    </form>
 </div>
 {{/if}}
 
-
-
-<ul class="errorContainer" id="errorContainer">
-    {{#if hasErrors}}
-    {{#each errors}}
-    <li>
-        {{this}}
-    </li>
-    {{/each}}
-    {{/if}}
-</ul>
-<a></a>
+    <ul class="errorContainer" id="errorContainer">
+        {{#if hasErrors}}
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+        {{/if}}
+    </ul>
