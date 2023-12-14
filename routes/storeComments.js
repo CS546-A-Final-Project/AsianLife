@@ -1,66 +1,80 @@
 import express from 'express';
-
+import xss from "xss";
 import { ObjectId } from "mongodb";
 import { commentsforstoresData, storesData } from "../data/index.js";
 const router = express.Router();
 
 
-router.route('/:id').get(async (req, res) => {
+router.route('/:store_id').get(async (req, res) => {//get all comment for this store
 
     let user = req.session.user 
     
-    let storeId = req.params.id//佳骏传进一个storeid;
+    let storeid = xss(req.params.store_id)//Noah send a store_id;
 
     
-    // try{
-    //     checkId(storeId)
-    // }catch(e){
-    //     return res.status(400).render('error', {title: "Error", message: "no comments of this store for now"})
-    // }
+    try{
+        checkId(storeid)
+    }catch(e){
+        return res.status(400).render('error', {title: "Error", message: e})
+    }
 
     try{
-        let isUser = true;
-        const storeName = storesData.getStoreById(storeId).name;
-        const commentList = commentsforstoresData.getAllComments(storeId);
-        const rating = storesData.getStoreById(storeId).rating;
-        // const comment = commentsforstoresData.getCommentById(Id);
+        let isUser = true;//for determining if have right to comment;
+        const storeName = await storesData.getStoreById(storeid).name;
+        const commentList = await commentsforstoresData.getAllComments(storeid);
+        const rating = await storesData.getStoreById(storeid).rating;
         if(user.role !== 'user') {
             isUser = false;
         }
-        const answer = commentsforstoresData.getAnswerById(Id)
-        res.render("storeComment", {title: storeName, commentList: commentList, answer: answer , isUser: isUser, rating:rating})
+        res.render("storeComments", {title: storeName, commentList: commentList, isUser: isUser, rating:rating})
     }catch(e){
         return res.status(400).render('error', {title: "Error", message: e})
     }
     })
-    .post(async (req, res) => {
-        // let { user_id, store_id, commentInput, rating} = req.body //和佳俊对接
-
+    .post(async (req, res) => { //add a comment for this store(realize delete at commentDetail page)
         let user = req.session.user;
-        let store_id = req.params.id;
-        let user_id = user._id;
-        let rating = storesData.getStoreById(store_id).rating;
-        let storeName = storesData.getStoreById(store_id).name;
-        let commentInput = req.body.commentInput;
-        let isUser = true;
-        if(user.role !== 'user') {
-            isUser = false;
-        }
+        let user_id = xss(user._id);
+        let storeid = xss(req.params.store_id)
+        let comment = xss(req.body.commentInput);
+        let rating = await storesData.getStoreById(storeid).rating;
+
         try{
-            checkString(commentInput, "Newcomment");
+            checkId(user_id)
+        }catch(e){
+            return res.status(400).render('error', {title: "Error", message: e})
+        }
+
+        try{
+            checkId(storeid)
+        }catch(e){
+            return res.status(400).render('error', {title: "Error", message: e})
+        }
+        
+        try{
+            checkString(comment, "Newcomment");
         }catch(e){
             return res.status(400).render('error', {title: "Error", message: "Please enter valid comment"})
         }
 
 
         try{
-            const newComment = await commentsforstoresData.addComment(user_id, store_id, commentInput, rating)
-            res.redirect(`/${store_id}`)  
+            if(typeof rating !== 'number') throw 'rating has to be number'
+        }catch(e){
+            return res.status(400).render('error', {title: "Error", message: "Please enter valid rating"})
+        }
+
+        let newComment
+        try{
+            newComment = await commentsforstoresData.addComment({user_id: user_id, store_id: storeid, comment: comment, rating: rating})
+            if(newComment){
+            res.redirect(`/${storeid}`)  
+            }
         }catch(e){
             return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
         }
     });
 
+export default router;
 
 function checkString(string, varName) {
     if (!string) throw `You must provide a ${varName}`;
