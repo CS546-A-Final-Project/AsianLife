@@ -14,7 +14,6 @@ router.route('/')
     })
     .post(async (req, res) => {
         const adminId = req.session.user.id;
-        let name = xss(req.body.name).trim();
         let address = xss(req.body.address).trim();
         let city = xss(req.body.city).trim();
         let state = xss(req.body.state).trim();
@@ -22,11 +21,6 @@ router.route('/')
         let phoneNumber = xss(req.body.phoneNumber).trim();
         let email = xss(req.body.email).trim();
         let errors = [];
-        try {
-            validation.checkIfStoreNameValid(name);
-        } catch (e) {
-            errors.push(e);
-        }
         try {
             const location = {
                 address: address,
@@ -40,7 +34,6 @@ router.route('/')
             const selected = { default: 'selected' };
             return res.status(400).render('addStore', {
                 title: "add store",
-                name: name,
                 address: address,
                 city: city,
                 state: state,
@@ -57,12 +50,24 @@ router.route('/')
             validation.checkEmail(email, "E-mail");
         } catch (e) {
             errors.push(e);
+            const selected = { [`${state}`]: 'selected' };
+            return res.status(400).render('addStore', {
+                title: "add store",
+                address: address,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+                phoneNumber: phoneNumber,
+                email: email,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            });
         }
         let storeId;
         try {
             storeId = await addStore({
                 adminId: adminId,
-                name: name,
                 address: address,
                 city: city,
                 state: state,
@@ -72,27 +77,45 @@ router.route('/')
             });
         } catch (e) {
             errors.push(e);
-        }    
-        try {
-            const insertedStore = await bindStoreWithUser(storeId, adminId);
-            if (insertedStore.insertStore) {
-                return res.status(200).redirect(`/store/${storeId}`);
-            }
-        } catch (e) {
-            errors.push(e);
-        }
-        if (errors.length > 0) {
-            const selected = { [`${state}`]: 'selected' };
             return res.status(400).render('addStore', {
                 title: "add store",
-                name: name,
                 address: address,
                 city: city,
                 state: state,
                 zipCode: zipCode,
                 phoneNumber: phoneNumber,
                 email: email,
-                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            });
+        }
+        try {
+            const insertedStore = await bindStoreWithUser(storeId, adminId);
+            if (insertedStore.insertStore) {
+                return res.status(200).redirect(`/store/${storeId}`);
+            } else {
+                return res.status(400).render('addStore', {
+                    title: "add store",
+                    address: address,
+                    city: city,
+                    state: state,
+                    zipCode: zipCode,
+                    phoneNumber: phoneNumber,
+                    email: email,
+                    hasErrors: true,
+                    errors: errors,
+                });
+            }
+        } catch (e) {
+            errors.push(e);
+            return res.status(400).render('addStore', {
+                title: "add store",
+                address: address,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+                phoneNumber: phoneNumber,
+                email: email,
                 hasErrors: true,
                 errors: errors,
             });

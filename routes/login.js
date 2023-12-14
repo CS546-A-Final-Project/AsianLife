@@ -6,6 +6,10 @@ import validator from 'validator';
 import xss from 'xss';
 const router = express.Router();
 
+// router.route('/').get(async (req, res) => {
+//   return res.json({ error: 'YOU SHOULD NOT BE HERE!' });
+// });
+
 router.route('/')
   .get(async (req, res) => {
     res.render('login', { title: "Login Page" });
@@ -40,7 +44,7 @@ router.route('/')
     }
     req.session.user = user;
     if (user.role === "admin" && user.ownedStoreId) {
-      res.status(200).redirect(`/store/${user.ownedStoreId}`);
+      res.status(200).redirect('/store');
     } else if (user.role === "admin" && !user.ownedStoreId) {
       res.status(200).redirect('addStore');
     } else if (user.role === "user") {

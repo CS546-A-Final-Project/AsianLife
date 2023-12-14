@@ -213,7 +213,6 @@
     const addStoreStaticForm = document.getElementById('add-store-form');
 
     if (addStoreStaticForm) {
-        const nameInput = document.getElementById('name');
         const addressInput = document.getElementById('address');
         const cityInput = document.getElementById('city');
         const stateInput = document.getElementById('state');
@@ -224,8 +223,7 @@
         addStoreStaticForm.addEventListener('submit', (event) => {
             let errors = [];
             errorContainer.innerHTML = '';
-            
-            const name = nameInput.value.trim();
+
             const address = addressInput.value.trim();
             const city = cityInput.value.trim();
             const state = stateInput.value.trim();
@@ -233,18 +231,12 @@
             const phoneNumber = phoneNumberInput.value.trim();
             const emailAddress = emailAddressInput.value.trim();
 
-            nameInput.value = name;
             addressInput.value = address;
             cityInput.value = city;
             stateInput.value = state;
             zipCodeInput.value = zipCode;
             phoneNumberInput.value = phoneNumber;
             emailAddressInput.value = emailAddress;
-
-            const storeNameRegex = /^[a-zA-Z0-9\s\-&',.()]{3,25}$/;
-            if (!storeNameRegex.test(name)) {
-                errors.push("Invalid store name (the store name should be 3 to 25 characters)");
-            }
 
             const addressRegex = /^[a-zA-Z0-9\s\-,]+$/;
             if (!addressRegex.test(address)) {
