@@ -65,6 +65,7 @@ const getStoreNameByStoreId = async (store_id) => {
 const addReview = async (
     user_id,
     product_id, // ObjectId
+    store_id, // 可以不添加store id，
     productReviews, // string
     rating
 ) => {
@@ -74,12 +75,14 @@ const addReview = async (
     rating = helpers.checkRating(rating);
     const productsCollection = await products();
     const product = await productsFunctions.getProductById(product_id);
+    const storeCollection = await stores();
+    const store = await storeFunctions.getStoreById(store_id);
 
     let review = {
         _id: new ObjectId(),
         user_id: user_id, // user name
-        product_id: product_id, // get product name by product_Id?
         store_id: product.store_id, // get store id from product directly
+        product_id: product_id, // get product name by product_Id?
         productName: product.productName,
         productReviews: productReviews,
         rating: rating
@@ -100,8 +103,7 @@ const addReview = async (
 
     let totalAmountOfReviews = product.totalAmountOfReviews + 1;
     let productRating = (rating + product.productRating * product.totalAmountOfReviews) / totalAmountOfReviews
-
-    const newInsertInformation = await productsCollection.updateOne(
+    const newInsertProductInformation = await productsCollection.updateOne(
         { _id: new ObjectId(product_id) },
         {
             $push: { productReviews: review }, // add value to array[]
@@ -110,14 +112,23 @@ const addReview = async (
 
         }
     );
-    if (newInsertInformation.modifiedCount === 0) {
-        throw new Error("No document was updated. Review might already exist.");
+    if (newInsertProductInformation.modifiedCount === 0) {
+        throw new Error("No document was updated in Product Collection. Review might already exist.");
     }
-    //console.log(review) it didn't work until you change the _id to string
-    //console.log(newInsertInformation); // an object contains results of update
+
+
+    let storeRating = (rating + store.rating * store.product.length) / product.productReviews.length;
+    const newInsertStoreInformation = await storeCollection.updateOne(
+        { _id: new ObjectId(store_id)},
+        {
+            $set: {rating: storeRating}
+        }
+    )
+    if (!newInsertStoreInformation) {
+        throw new Error("No document was updated in Store Collection.");
+    }
     review._id = review._id.toString();
-    //console.log(newId)
-    //return await getReviewById(newId.toString());
+
     return review;
 };
 const removeReview = async (id) => {

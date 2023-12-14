@@ -26,7 +26,7 @@ router
             selected: { default: 'selected' }
         })
     })
-    .post(upload.single("file"), async (req, res) => { // runs well!
+    .post(upload.single("productImage"), async (req, res) => { // runs well!
         // let user_id = xss(req.session.user._id).trim();
         let user_id = xss(req.body.user_id); // 这里要改！！！
         //console.log(user_id);
@@ -37,6 +37,7 @@ router
         //console.log(typeof productPrice); //xss would make price a string
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
+        let productImage = req.file.filename;
         let errors = [];
 
         let newProduct = req.body;
@@ -97,15 +98,11 @@ router
                 expirationDate,
             );
             //add image
-            productsData.updateImage(productId, productImage);
-            //console.log("finished");
+            await productsData.updateImage(productId, productImage);
             //res.status(200).json(product);
             return res.status(200).redirect(`/products/${productId}`);
         } catch (e) {
             errors.push(e);
-            //console.error(e)
-            // return res.status(500).json({ error: e.message });
-            // res.status(500).render('products', { error: "Internal Server Error" });
         }
         if (errors.length > 0) {
             const selected = { [`${productCategory}`]: 'selected' };
@@ -122,10 +119,5 @@ router
             })
         }
     })
-    .post("/", upload.single("file"), async (req, res) => {
-        //console.log(req.file);
-        await updateAvatar(req.session.user.id, req.file.filename);
-        res.status(200).redirect("/profile");
-    });
 
 export default router;

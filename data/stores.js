@@ -55,12 +55,12 @@ const addStore = async (store) => {
       zip: zipCode,
     },
     rating: 0,
-    products: [],
+    products: [], // add productId in it
     contact_information: {
       phone: phoneNumber,
       email: email,
     },
-    reviews: {},
+    comments: [], // add commentsId in it
   }
   const storesCollection = await stores();
   const newInsertInformation = await storesCollection.insertOne(newStore);
