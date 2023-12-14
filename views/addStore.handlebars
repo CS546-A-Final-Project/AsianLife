@@ -1,27 +1,92 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}} Comments List</title>
-</head>
+<div class="container">
+    <form id="add-store-form" action="/addStore" method="POST">
+        <h2>Add Store</h2>
 
-<body>
-    <h1>{{title}} Comments List</h1>
+        <label for="name">Store Name:</label>
+        <input type="text" id="name" name="name" value="{{name}}" required>
 
-    {{!--未完成： 跟佳骏对接怎么传入的时候确定一个isOwner来保证可以删除answer --}}
-    <ul> 
-        {{#each commentList}}
-        <li><a href="/commentsDetail/{{this._id}}?">{{this.comment}}</a></li>
-        {{else}}
-        <li>No comments for this store now.</li>
-        {{/each}}
-    </ul>
+        <label for="address">Store Address:</label>
+        <input type="text" id="address" name="address" value="{{address}}" required>
 
-    {{#if isUser}}
-    <form id="storecomment-form" action="/:store_id" method="POST">
-        <lable for="comment">Your Comment:</lable>
-        <input type="text" name="commentInput" id="commentInput">
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" value="{{city}}" required>
 
-        <button type="submit">Add New Comment</button> 
+        <label for="state">State:</label>
+        <select id="state" name="state">
+            <option value="" disabled {{selected.default}}>Select</option>
+            <option value="AL" {{selected.AL}}>Alabama</option>
+            <option value="AK" {{selected.AK}}>Alaska</option>
+            <option value="AZ" {{selected.AZ}}>Arizona</option>
+            <option value="AR" {{selected.AR}}>Arkansas</option>
+            <option value="CA" {{selected.CA}}>California</option>
+            <option value="CO" {{selected.CO}}>Colorado</option>
+            <option value="CT" {{selected.CT}}>Connecticut</option>
+            <option value="DE" {{selected.DE}}>Delaware</option>
+            <option value="DC" {{selected.DC}}>District of Columbia</option>
+            <option value="FL" {{selected.FL}}>Florida</option>
+            <option value="GA" {{selected.GA}}>Georgia</option>
+            <option value="HI" {{selected.HI}}>Hawaii</option>
+            <option value="ID" {{selected.ID}}>Idaho</option>
+            <option value="IL" {{selected.IL}}>Illinois</option>
+            <option value="IN" {{selected.IN}}>Indiana</option>
+            <option value="IA" {{selected.IA}}>Iowa</option>
+            <option value="KS" {{selected.KS}}>Kansas</option>
+            <option value="KY" {{selected.KY}}>Kentucky</option>
+            <option value="LA" {{selected.LA}}>Louisiana</option>
+            <option value="ME" {{selected.ME}}>Maine</option>
+            <option value="MD" {{selected.MD}}>Maryland</option>
+            <option value="MA" {{selected.MA}}>Massachusetts</option>
+            <option value="MI" {{selected.MI}}>Michigan</option>
+            <option value="MN" {{selected.MN}}>Minnesota</option>
+            <option value="MS" {{selected.MS}}>Mississippi</option>
+            <option value="MO" {{selected.MO}}>Missouri</option>
+            <option value="MT" {{selected.MT}}>Montana</option>
+            <option value="NE" {{selected.NE}}>Nebraska</option>
+            <option value="NV" {{selected.NV}}>Nevada</option>
+            <option value="NH" {{selected.NH}}>New Hampshire</option>
+            <option value="NJ" {{selected.NJ}}>New Jersey</option>
+            <option value="NM" {{selected.NM}}>New Mexico</option>
+            <option value="NY" {{selected.NY}}>New York</option>
+            <option value="NC" {{selected.NC}}>North Carolina</option>
+            <option value="ND" {{selected.ND}}>North Dakota</option>
+            <option value="OH" {{selected.OH}}>Ohio</option>
+            <option value="OK" {{selected.OK}}>Oklahoma</option>
+            <option value="OR" {{selected.OR}}>Oregon</option>
+            <option value="PA" {{selected.PA}}>Pennsylvania</option>
+            <option value="RI" {{selected.RI}}>Rhode Island</option>
+            <option value="SC" {{selected.SC}}>South Carolina</option>
+            <option value="SD" {{selected.SD}}>South Dakota</option>
+            <option value="TN" {{selected.TN}}>Tennessee</option>
+            <option value="TX" {{selected.TX}}>Texas</option>
+            <option value="UT" {{selected.UT}}>Utah</option>
+            <option value="VT" {{selected.VT}}>Vermont</option>
+            <option value="VA" {{selected.VA}}>Virginia</option>
+            <option value="WA" {{selected.WA}}>Washington</option>
+            <option value="WV" {{selected.WV}}>West Virginia</option>
+            <option value="WI" {{selected.WI}}>Wisconsin</option>
+            <option value="WY" {{selected.WY}}>Wyoming</option>
+        </select>
+
+        <label for="zipCode">Zip Code:</label>
+        <input type="text" id="zipCode" name="zipCode" value="{{zipCode}}" required>
+
+        <label for="phoneNumber">Contact Phone Number:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" value="{{phoneNumber}}" required>
+
+        <label for="email">Contact E-mail Address:</label>
+        <input type="text" id="email" name="email" value="{{email}}" required>
+
+        <button type="submit">Add Store</button>
     </form>
-    <script src="/public/js/front_end_validation.js"></script>
-</body>
+    <ul class="errorContainer" id="errorContainer">
+        {{#if hasErrors}}
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+        {{/if}}
+    </ul>
+</div>
+
+<script src="/public/js/front_end_validation.js"></script>
