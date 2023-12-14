@@ -8,7 +8,7 @@ router.route('/:id').get(async (req, res) => {
     let user = req.session.user//和佳俊对接
     let storeId = req.params.id
     let isAdmin = true;
-    // let isCommentuser = true; ---how
+    // let isCommentuser = true; ---how?
     if(user.role !== 'admin') {
       isAdmin = false;
     }
@@ -38,7 +38,7 @@ router.route('/:id').get(async (req, res) => {
             return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
         }
       })
-      .update(async (req, res) => {
+      .put(async (req, res) => {
           // let {_id, user_id, store_id, comment, answer, answerInput} = req.body //和佳俊对接
           let user = req.session.user;
           let id = req.params.id

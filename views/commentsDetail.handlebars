@@ -20,7 +20,7 @@ You can use this template to render any errors on your site if you wish
     </ul>
 
     {{#if isCommentUser}}
-        <form id="delete-comment-btn" action="/commentDetail/{{comment._id}}" method="Update">Delete Comment
+        <form id="delete-comment-btn" action="/commentDetail/{{comment._id}}" method="PUT">Delete Comment
             <button type="submit" id="delete-comment-btn">Delete Comment</button>
         </form>
     {{/if}}

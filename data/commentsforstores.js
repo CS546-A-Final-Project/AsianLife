@@ -44,7 +44,7 @@ const addComment = async (storeComment) => {
   const newId = newInsertInformation.insertedId;
   return await getCommentById(newId.toString());
 };
-
+ 
 const addAnswer = async(id,  answer) => {
 
   // validation.checkId(id);

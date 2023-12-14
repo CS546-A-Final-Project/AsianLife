@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { commentsforstoresData, storesData } from "../data/index.js";
 const router = express.Router();
 
-
+//当点进storecomments button的时候hit
 router.route('/:id').get(async (req, res) => {
 
     let user = req.session.user 
@@ -21,9 +21,8 @@ router.route('/:id').get(async (req, res) => {
     try{
         let isUser = true;
         const storeName = storesData.getStoreById(storeId).name;
-        const commentList = commentsforstoresData.getAllComments(storeId);
+        const commentList = commentsforstoresData.getAllComments(storeId);//返回id,comment,answer
         const rating = storesData.getStoreById(storeId).rating;
-        // const comment = commentsforstoresData.getCommentById(Id);
         if(user.role !== 'user') {
             isUser = false;
         }
@@ -60,7 +59,7 @@ router.route('/:id').get(async (req, res) => {
             return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
         }
     });
-
+export default router;
 
 function checkString(string, varName) {
     if (!string) throw `You must provide a ${varName}`;
