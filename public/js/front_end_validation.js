@@ -303,35 +303,4 @@
             }
         });
     }
-
-    const storecommentStaticForm = document.getElementById('storecomment-form');
-    if (storecommentStaticForm) {
-        const commentInput = document.getElementById("commentInput");
-        storecommentStaticForm.addEventListener('submit', (event) => {
-            let errors = [];
-            errorContainer.innerHTML = '';
-
-            const comment = commentInput.value.trim();
-            if(!comment || comment === ''){
-                errors.push("You have to enter valid comment!")
-            }
-        })
-    }//addComment页面；
-
-    const commentdetailStaticForm = document.getElementById('commentdetail-form');
-    if (commentdetailStaticForm) {
-        const commentInput = document.getElementById("answerInput");
-        commentdetailStaticForm.addEventListener('submit', (event) => {
-            let errors = [];
-            errorContainer.innerHTML = '';
-
-            const answer = answerInput.value.trim();
-            if (!answer) throw `You must provide a answer`;
-            if (typeof answer !== "string") throw `Error:answer must be a string`;
-            string = string.trim();
-            if (string.length === 0) throw `answer cannot be an empty string or just spaces`;
-            errors.push(e)
-        })
-    }
-    
 })();

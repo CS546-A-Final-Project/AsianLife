@@ -79,58 +79,50 @@ const removeStore = async (id) => {
   return deletionInfo;
 };
 const updateStore = async (id, updatedStore) => {
-  let adminId = xss(updatedStore.adminId).trim();
-  let name = xss(updatedStore.name).trim();
-  let address = xss(updatedStore.address).trim();
-  let city = xss(updatedStore.city).trim();
-  let state = xss(updatedStore.state).trim();
-  let zipCode = xss(updatedStore.zipCode).trim();
-  let phoneNumber = xss(updatedStore.phoneNumber).trim();
-  let email = xss(updatedStore.email).trim().toLowerCase();
-  const location = {
-    address: address,
-    city: city,
-    state: state,
     zip: zipCode,
-  }
-  const admin = await getUser(adminId);
-  console.log(admin);
-  if (admin.role !== "admin") {
-    throw "The user don't have authorization to add a store";
-  }
-  try {
-    validation.checkIfLocationValid(location);
-    validation.checkIfPhoneNumberValid(phoneNumber);
-    validation.checkEmail(email, 'E-mail');
-    validation.checkIfStoreNameValid(name);
-  } catch (e) {
-    throw e;
-  }
-  const updateStoreData = {
-    name: name,
-    store_location: {
-      streetAddress: address,
-      city: city,
-      state: state,
-      zip: zipCode,
-    },
-    contact_information: {
-      phone: phoneNumber,
-      email: email,
-    },
-    reviews: {},
-  }
   const storesCollection = await stores();
- 
+  const updatedStoreData = {};
+  if (updatedStore.admin_id) {
+    updatedStoreData.admin_id = updatedStore.admin_id;
+  }
+  if (updatedStore.photo) {
+    updatedStoreData.photo = updatedStore.photo;
+  }
+  if (updatedStore.category) {
+    updatedStoreData.category = updatedStore.category;
+  }
+  if (updatedStore.established_date) {
+    updatedStoreData.established_date = updatedStore.established_date;
+  }
+  if (updatedStore.store_location) {
+    updatedStoreData.store_location = updatedStore.store_location;
+  }
+  if (updatedStore.store_name) {
+    updatedStoreData.store_name = updatedStore.store_name;
+  }
+  if (updatedStore.rating) {
+    updatedStoreData.rating = updatedStore.rating;
+  }
+  if (updatedStore.products) {
+    updatedStoreData.products = updatedStore.products;
+  }
+  if (updatedStore.contact_information) {
+    updatedStoreData.contact_information = updatedStore.contact_information;
+  }
+  if (updatedStore.comments) {
+    updatedStoreData.comments = updatedStore.comments;
+  }
+  if (updatedStore.reviews) {
+    updatedStoreData.reviews = updatedStore.reviews;
+  }
   let updateCommand = {
-    $set: updateStoreData,
+    $set: updatedStoreData,
   };
 
   const query = {
     _id: new ObjectId(id),
   };
   await storesCollection.updateOne(query, updateCommand);
-  console.log("update store");
   return await getStoreById(id.toString());
 };
 

@@ -19,8 +19,8 @@ router.route('/:id').get(async (req, res) => {
         const store = await storesData.getStoreById(storeId);
         const storeProducts = allProducts.filter(product => product.store_id === storeId);
         if (store === null) 
-            res.status(200).render('home');
-        res.status(200).render('store', { storeProducts: storeProducts, store: store});
+            throw "No store with that ID";
+        res.status(200).render('store', { storeProducts: storeProducts});
     } catch (e) {
         return res.status(404).render('error', { error: e });
     }

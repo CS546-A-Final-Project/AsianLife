@@ -12,10 +12,6 @@ import errorRoutes from './error.js';
 import passwordRoutes from './password.js'
 import editRoutes from './editstore.js'
 
-import storeCommentRoutes from './storeComments.js';
-import commentDetailRoutes from './commentsDetail.js'
-
-
 const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
   app.use('/register', registerRoutes);
@@ -29,8 +25,6 @@ const constructorMethod = (app) => {
   app.use('/error', errorRoutes);
   app.use('/password', passwordRoutes);
   app.use('/editstore', editRoutes);
-  app.use('./storeComments',storeCommentRoutes);
-  app.use('./commentsDetail',commentDetailRoutes);
 
   app.use('*', (req, res) => {
     res.status(404).render('error', { title: "404 NOT FOUND", error: "404 NOT FOUND" });
