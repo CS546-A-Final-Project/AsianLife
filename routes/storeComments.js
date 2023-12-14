@@ -36,14 +36,14 @@ router.route('/:store_id').get(async (req, res) => {//get all comment for this s
     }
     })
     .post(async (req, res) => { //add a comment for this store(realize delete at commentDetail page)
-        console.log("successful hit POST")
+        // console.log("successful hit POST")
         let user = req.session.user;
         let userid = xss(user.id);
-        console.log(userid,"userid")
+        // console.log(userid,"userid")
         let storeid = xss(req.params.store_id)
-        console.log(storeid,"storeid")
+        // console.log(storeid,"storeid")
         let comment = xss(req.body.commentInput);
-        console.log(comment, "comment")
+        // console.log(comment, "comment")
         let store = await storesData.getStoreById(storeid)
         let rating = store.rating;
 

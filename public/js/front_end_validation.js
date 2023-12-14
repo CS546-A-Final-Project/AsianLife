@@ -218,11 +218,22 @@
             errorContainer.innerHTML = '';
 
             const comment = commentInput.value.trim();
-            if(!comment || comment === ''){
-                errors.push("You have to enter valid comment!")
+            if (!comment) errors.push( `You must provide a comment`);
+            if (typeof comment !== "string") errors.push( `Error:comment must be a string`);
+            if (comment.length === 0){
+                errors.push( `comment cannot be an empty string or just spaces`);
+            }
+
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
             }
         })
-    }//addComment页面；
+    }//addComment Page；
 
     const commentdetailStaticForm = document.getElementById('commentdetail-form');
     if (commentdetailStaticForm) {

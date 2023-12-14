@@ -145,7 +145,6 @@ app.use('/addStore', (req, res, next) => {
 });
 
 app.use('/storeComments/:store_id', (req, res, next) => {
-  console.log(req, "123456")
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   } else {
@@ -154,8 +153,6 @@ app.use('/storeComments/:store_id', (req, res, next) => {
 });
 
 app.use('/commentsDetail', (req, res, next) => {
-
-
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   } else {

@@ -6,11 +6,14 @@ const router = express.Router();
 
 
 router.route('/:comment_id').get(async (req, res) => {
-    let user = req.session.user
+
+    let ownedStoreid = req.session.user.ownedStoreId
     let commentId = xss(req.params.comment_id);
+    let comment = await commentsforstoresData.getCommentById(commentId);
+    let storeid = comment.store_id;
    
     let isAdmin = true;
-    if(user.role !== 'admin') {
+    if(ownedStoreid !== storeid) {
       isAdmin = false;
     }
 
@@ -25,15 +28,18 @@ router.route('/:comment_id').get(async (req, res) => {
         // console.log(commentData)
         let comment = commentData.comment;
         let answer = commentData.answer;
-        res.render("commentsDetail", {comment: comment, answer: answer, isAdmin: isAdmin})
+        res.render("commentsDetail", {comment: comment, answer: answer, isAdmin: isAdmin, commentId: commentId})
     }catch(e){
         return res.status(400).render('error', {title: "Error", message: e})
     }
   })
     .post(async (req, res) => {
-        let storeId = xss(req.params.store_id)
-        let commentId = xss(req.params.comment_id);
+    
+
         let answerInput = xss(req.body.answerInput);
+        // console.log(answerInput);
+        let commentId = xss(req.params.comment_id);
+        // console.log(commentId)
 
         try{
           checkId(commentId)
@@ -49,7 +55,8 @@ router.route('/:comment_id').get(async (req, res) => {
 
         try{
             const newAnswer = await commentsforstoresData.addAnswer(commentId, answerInput)
-            res.redirect(`/${storeId}/${commentId}`)
+            console.log(newAnswer)
+            res.redirect(`/commentsDetail/${commentId}`)
         }catch(e){
             return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
         }
