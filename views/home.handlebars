@@ -33,20 +33,4 @@
     </form>
 </div>
 
-<div class="store-grid">
-    {{#if hasStores}}
-    {{#each stores}}
-    <div class="store-card">
-        <a href="/store/{{this._id}}">
-        <img class="store-image" src="/public/images/stores/{{this.photo_id}}" alt="{{this.photo_id}}">
-        <div class="store-info">
-            <h3>{{this.name}}</h3>
-            <p>Description</p>
-        </div>
-        </a>
-    </div>
-    {{/each}}
-    {{/if}}
-</div>
-
 {{searchResult}}
