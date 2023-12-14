@@ -99,6 +99,73 @@ const exportedMethods = {
     const isValidPassword = validator.isStrongPassword(password, passwordRequirements);
     return isValidPassword;
   },
+
+  checkIfLocationValid(location) {
+    if (typeof location !== "object") {
+      throw "The location is not an object!";
+    }
+    if (location.address === undefined) {
+      throw "The address is not supplied!";
+    }
+    if (location.city === undefined) {
+      throw "The city is not supplied!";
+    }
+    if (location.state === undefined) {
+      throw "The state is not supplied!";
+    }
+    if (location.zip === undefined) {
+      throw "The zip is not supplied!";
+    }
+    if (typeof location.address !== "string") {
+      throw "The address must be a string!";
+    }
+    if (typeof location.city !== "string") {
+      throw "The city must be a string!";
+    }
+    if (typeof location.state !== "string") {
+      throw "The state must be a string!";
+    }
+    if (typeof location.zip !== "string") {
+      throw "The zip must be a string!";
+    }
+    if (location.address.trim().length < 3) {
+      throw "Address is less than 3 characters!";
+    }
+    if (location.city.trim().length < 3) {
+      throw "City is less than 3 characters!";
+    }
+    let states = [
+      "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+      "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+      "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+      "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+      "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+    ];
+    if (!states.includes(location.state.trim().toUpperCase())) {
+      throw "State must be valid selected from the list";
+    }
+    if (location.zip.trim().length !== 5) {
+      throw "Zip must contains 5 numbers!";
+    }
+    for (let i of location.zip.trim()) {
+      if (i < '0' || i > '9') {
+        throw "Zip must contain only numbers!";
+      }
+    }
+  },
+
+  checkIfPhoneNumberValid(phoneNumber) {
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phoneNumber))
+      throw "US phone number must contain 10 digits numbers";
+  },
+
+  checkIfStoreNameValid(storeName) {
+    const storeNameRegex = /^[a-zA-Z0-9\s\-&',.()]{3,25}$/;
+    if (!storeNameRegex.test(storeName)) {
+      throw "Invalid store name (the store name should be 3 to 25 characters)";
+    }
+  }
 };
 
 export default exportedMethods;
