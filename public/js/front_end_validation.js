@@ -235,19 +235,26 @@
         })
     }//addComment Page；
 
-    const commentdetailStaticForm = document.getElementById('commentdetail-form');
+    const commentdetailStaticForm = document.getElementById('answer-form');
     if (commentdetailStaticForm) {
-        const commentInput = document.getElementById("answerInput");
+        const answerInput = document.getElementById("answerInput");
         commentdetailStaticForm.addEventListener('submit', (event) => {
             let errors = [];
             errorContainer.innerHTML = '';
 
             const answer = answerInput.value.trim();
-            if (!answer) throw `You must provide a answer`;
-            if (typeof answer !== "string") throw `Error:answer must be a string`;
-            string = string.trim();
-            if (string.length === 0) throw `answer cannot be an empty string or just spaces`;
-            errors.push(e)
+            if (!answer) errors.push( `You must provide a answer`);
+            if (typeof answer !== "string") errors.push( `Error:answer must be a string`);
+            if (answer.length === 0) errors.push( `answer cannot be an empty string or just spaces`);
+            
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
         })
-    }
+    }//add answer page
 })();

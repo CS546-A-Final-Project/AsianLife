@@ -27,7 +27,7 @@ router.route('/:comment_id').get(async (req, res) => {
         let commentData = await commentsforstoresData.getCommentById(commentId);
         // console.log(commentData)
         let comment = commentData.comment;
-        let answer = commentData.answer;
+        let answer = commentData.Answer[0];
         res.render("commentsDetail", {comment: comment, answer: answer, isAdmin: isAdmin, commentId: commentId})
     }catch(e){
         return res.status(400).render('error', {title: "Error", message: e})
@@ -55,10 +55,9 @@ router.route('/:comment_id').get(async (req, res) => {
 
         try{
             const newAnswer = await commentsforstoresData.addAnswer(commentId, answerInput)
-            console.log(newAnswer)
             res.redirect(`/commentsDetail/${commentId}`)
         }catch(e){
-            return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
+            return res.status(500).render('error', {title: "Error", error:"Internal Server Error"})
         }
       })
     //   .put(async (req, res) => {

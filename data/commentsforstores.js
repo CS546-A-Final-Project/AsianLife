@@ -73,7 +73,7 @@ const addAnswer = async(id,  answer) => {
   return await getCommentById(id);
 };
 
-// console.log(await addAnswer("657b2ab6cd44465788d395a6", "this is an answer"))
+// console.log(await addAnswer("657b2c191f5f7e5acebdcdf2", "this is an answer"))
 
 const getAnswerById = async(id) => {
    validation.checkId(id);
@@ -100,7 +100,7 @@ const deleteAnswer = async(id) =>{
   if(!updateInfo.acknowledged) throw 'Could not delete this answer!';
   return await getCommentById(id);
 }
-// console.log(await deleteAnswer("657b2ab6cd44465788d395a6"))
+// console.log(await deleteAnswer("657b2c191f5f7e5acebdcdf2"))
 const removeComment= async (id) => {
 
   validation.checkId(id);
