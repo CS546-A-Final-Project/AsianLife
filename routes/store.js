@@ -14,7 +14,6 @@ router.route('/:id').get(async (req, res) => {
         return res.status(400).render('error', { error: e });
     }
     try {
-
         const allProducts = await productsData.getAllProducts();
         const store = await storesData.getStoreById(storeId);
         const storeProducts = allProducts.filter(product => product.store_id === storeId);

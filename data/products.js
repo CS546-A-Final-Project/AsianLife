@@ -52,6 +52,7 @@ const addProduct = async ( // runs well
         user_id: user_id,
         store_id: store_id,  //storeName: storeName
         productName: productName,
+        productImage: 'default.png',
         productCategory: productCategory,
         productPrice: productPrice,
         manufactureDate: manufactureDate,
@@ -153,6 +154,17 @@ const updateProduct = async (
 
     return updateProduct.value;
 };
+const updateImage = async (id, fileName) => {
+    const productsCollection = await products();
+    await productsCollection.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          productImage: fileName,
+        }
+      },
+      { returnDocument: 'after' });
+  }
 const bindProductWithUser = async (user_id, product_id) => {
     user_id = xss(user_id);
     product_id = xss(product_id);
@@ -179,4 +191,5 @@ export {
     addProduct,
     removeProduct,
     updateProduct,
+    updateImage
 };

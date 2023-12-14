@@ -26,7 +26,7 @@ router
     })
     .post(async (req, res) => { // add a review for a product
         let id = xss(req.params.productId);
-        let addInfo = xss(req.body);
+        let productReviews = xss(req.body.productReviews);
         try {
 
         } catch (e) {

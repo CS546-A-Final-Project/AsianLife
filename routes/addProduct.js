@@ -1,9 +1,22 @@
 import express from 'express';
-import helpers from '../helpers.js';
-import * as productsData from '../data/products.js';
+import multer from 'multer';
+import path from 'path';
 import xss from 'xss';
+import * as productsData from '../data/products.js';
+import helpers from '../helpers.js';
+
 const router = express.Router();
 
+// 配置 multer 用于文件上传
+const upload = multer({
+    dest: path.join(process.cwd(), "/public/images/products"), // 注意更改目录为产品图片目录
+  });
+
+//   router.post("/", upload.single("file"), async (req, res) => {
+//     //console.log(req.file);
+//     await updateAvatar(req.session.user.id, req.file.filename);
+//     res.status(200).redirect("/profile");
+//   });
 router
     .route('/')
     .get(async (req, res) => { // runs well
@@ -13,11 +26,11 @@ router
             selected: { default: 'selected' }
         })
     })
-    .post(async (req, res) => { // runs well!
+    .post(upload.single("file"), async (req, res) => { // runs well!
         // let user_id = xss(req.session.user._id).trim();
         let user_id = xss(req.body.user_id); // 这里要改！！！
         //console.log(user_id);
-        let store_id = xss(req.body.store_id);      
+        let store_id = xss(req.body.store_id);
         let productName = xss(req.body.productName);
         let productCategory = xss(req.body.productCategory);
         let productPrice = parseFloat(xss(req.body.productPrice));
@@ -82,7 +95,9 @@ router
                 productPrice,
                 manufactureDate,
                 expirationDate,
-            ); //add image
+            );
+            //add image
+            productsData.updateImage(productId, productImage);
             //console.log("finished");
             //res.status(200).json(product);
             return res.status(200).redirect(`/products/${productId}`);
@@ -106,6 +121,11 @@ router
                 errors: errors,
             })
         }
+    })
+    .post("/", upload.single("file"), async (req, res) => {
+        //console.log(req.file);
+        await updateAvatar(req.session.user.id, req.file.filename);
+        res.status(200).redirect("/profile");
     });
 
 export default router;

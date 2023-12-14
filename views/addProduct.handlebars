@@ -1,9 +1,12 @@
 <div class="container">
-    <form id="add-product-form" action="/addProduct" method="POST">
+    <form id="add-product-form" action="/addProduct" method="POST" enctype="multipart/form-data">
         <h2>Add Product</h2>
 
         <label for="productName">Product Name:</label>
         <input type="text" id="productName" name="productName" value="{{productName}}" required>
+
+        <label for="productImage">Product Image:</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*" required>
 
         <label for="productCategory">Product Category:</label>
         <select id="productCategory" name="productCategory">
