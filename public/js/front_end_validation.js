@@ -303,6 +303,8 @@
             }
         });
     }
+})();
+
 
     const storecommentStaticForm = document.getElementById('storecomment-form');
     if (storecommentStaticForm) {
