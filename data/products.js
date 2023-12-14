@@ -5,11 +5,27 @@ import { ObjectId } from 'mongodb';
 import helpers from '../helpers.js';
 import xss from 'xss';
 
-const getAllProducts = async () => { // runs well
+const getAllProductsByStoreId = async (store_id) => {
+    const storesCollection = await stores();
     const productsCollection = await products();
-    const allProducts = await productsCollection.find({}).toArray();
+
+    // 首先，根据store_id找到对应的商店
+    const store = await storesCollection.findOne({ _id: store_id });
+    if (!store) {
+        throw new Error(`Store with id ${store_id} not found`);
+    }
+
+    // 获取该商店的所有产品ID
+    const productIds = store.products;
+
+    // 根据产品ID获取产品信息
+    const allProducts = await productsCollection.find({
+        _id: { $in: productIds }
+    }).toArray();
+
     return allProducts;
 };
+
 const getProductById = async (id) => { // runs well
     id = xss(id);
     id = helpers.checkId(id, 'product_id');
@@ -28,7 +44,6 @@ const addProduct = async ( // runs well
     productPrice,
     manufactureDate,
     expirationDate,
- 
     /*
     {
         store_id: "dlsnfmdlsalmds"
@@ -36,7 +51,6 @@ const addProduct = async ( // runs well
     }
     findStoreByStoreName("Walmart")
     */
-
 ) => {
     //console.log("in data")
     // user_id = helpers.checkId(user_id, 'user_id');
@@ -61,17 +75,30 @@ const addProduct = async ( // runs well
         productRating: 0,
         totalAmountOfReviews: 0, // if totalAmountOfReviews = 0
     };
+    const storesCollection = await stores();
     const productsCollection = await products();
     // const store = getStoreByStoreName()
     // insert new product inside 'store'
-    const newInsertInformation = await productsCollection.insertOne(newProduct);
-    if (!newInsertInformation.acknowledged || !newInsertInformation.insertedId) {
+    const newInsertProductInformation = await productsCollection.insertOne(newProduct);
+    if (!newInsertProductInformation.acknowledged || !newInsertProductInformation.insertedId) {
         throw new Error(
-            `New product ${newInsertInformation} could not be added to MongoDB`
+            `New product ${newInsertProductInformation} could not be added to MongoDB`
         )
     };
-    const newId = newInsertInformation.insertedId;
-    return newId.toString(); // get the new product's Id 
+    const newProductId = newInsertProductInformation.insertedId;
+    // update products array
+        
+        const updateStore = await storesCollection.findOneAndUpdate(
+            { _id: store_id }, // use store_id
+            { $push: { products: newProductId } }, // use $push to add
+            { returnDocument: 'after' } // 可选，如果你想获取更新后的文档
+        );
+    
+        if (!updateStore) {
+            throw new Error(`Store with ID ${store_id} could not be updated with new product`);
+        }
+    
+        return newProductId.toString(); // get the new product's Id 
 };
 const removeProduct = async (id) => {
     id = xss(id);
@@ -185,7 +212,7 @@ const bindProductWithUser = async (user_id, product_id) => {
   }
 
 export {
-    getAllProducts,
+    getAllProductsByStoreId,
     getProductById,
     addProduct,
     removeProduct,

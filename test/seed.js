@@ -327,8 +327,7 @@ await db.dropDatabase();
 // products
 
 console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-console.log("products");
-console.log("addproduct");
+console.log("add user!");
 try {
     const user1 = await usersData.addUser(
         "yyy",
@@ -338,28 +337,26 @@ try {
         "Ci1936@Gm",
         "admin"
     )
+    console.log(user1);
     // console.log(await usersData.getUser(user1._id.toString()));
 } catch (e) {
     console.log(e);
 }
-
+console.log("add store!");
 try {
-       const store1 = await storesData.addStore(
+    const store1 = await storesData.addStore(
         {
             // admin_id: "65777bf7fce4b5f608b19219",
             name: "walmart",
-            store_location: {
-              streetAddress: "801 Wshington St",
-              city: "Hoboken",
-              state: "NJ",
-              zip: "07013",
-            },
-            contact_information: {
-              phone: "012345678",
-              email: "yancy@gmail.com",
+            address: "801 Wshington St",
+            city: "Hoboken",
+            state: "NJ",
+            zipCode: "07013",
+            phoneNumber: "0123456789",
+            email: "yancy@gmail.com",
             }
-          }
-       )
+    )
+    console.log(store1);
 } catch (e) {
     console.log(e);
 }
@@ -372,7 +369,7 @@ try {
     // store_id
     const product1 = await productsData.addProduct(
         "userId1",
-        "storeId1",
+        store1,
         'AAA',
         "Fresh Produce",
         13,
@@ -414,22 +411,22 @@ try {
         addReview2._id.toString(),
         "I changed the review bulabulabula",
         5
-        );
+    );
     console.log(updateProduct1Review)
 } catch (e) {
     console.log(e);
 }
 try {
-    const product4 = await productsData.addProduct(        
+    const product4 = await productsData.addProduct(
         "userId2",
         "4",
         "product4",
         "Seafood",
-         45,
+        45,
         "12/06/2023",
         "01/04/2024"
     )
-} catch(e) {
+} catch (e) {
     console.log(e);
 }
 try {
@@ -440,9 +437,9 @@ try {
         'Dairy Products',
         4.50,
         '12/04/2023',
-        '01/02/2024',       
+        '01/02/2024',
     )
-//     //console.log(product2);
+    //     //console.log(product2);
     const product3 = await productsData.addProduct(
         "user_id3",
         "store_id3",
@@ -455,13 +452,13 @@ try {
     const updateProduct = await productsData.updateProduct(
         product2._id.toString(),
         "product2_updated"
-    ) 
+    )
     // const removeProduct2 = await productsData.removeProduct(product2._id.toString());
     // console.log("removeProduct", removeProduct2);
     // const getAllProducts1 = await productsData.getAllProducts();
     //console.log(getAllProducts1);
-    } catch (e) {
-    console.log(e);       
+} catch (e) {
+    console.log(e);
 }
 try {
     // const getProductById1 = await productsData.getProductById(product1._id.toString());

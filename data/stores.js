@@ -16,7 +16,7 @@ const getStoreById = async (id) => {
   return store;
 };
 const addStore = async (store) => {
-  let adminId = xss(store.adminId).trim();
+  // let adminId = xss(store.adminId).trim();
   let name = xss(store.name).trim();
   let address = xss(store.address).trim();
   let city = xss(store.city).trim();

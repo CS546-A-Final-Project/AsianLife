@@ -8,10 +8,12 @@ import xss from 'xss';
 const router = express.Router();
 
 router
-    .route('/') // get all products from store ID?
+    .route('/:store_id') // get all products from store ID?
     .get(async (req, res) => { // runs well
         try {  // should it be get all products by store id?
-            const allProducts = await productsData.getAllProducts();
+            let store_id = req.params.store_id;
+            const allProducts = await productsData.getAllProductsByStoreId();
+            console.log(allProducts);
             if (!allProducts) {
                 return res
                     .status(404)
@@ -54,12 +56,12 @@ router
                 manufactureDate: product.manufactureDate,
                 expirationDate: product.expirationDate,
                 productReviews: product.productReviews,
-                productImage: productImage
+                productImage: product.productImage
             });
+
         } catch (e) {
-            res.status(404).render('products', { 
-                hasErrors: true,
-                errors: e 
+            res.status(404).render('error', { 
+                errors: e.message 
             });
         }
     })
