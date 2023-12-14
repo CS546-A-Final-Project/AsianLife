@@ -5,63 +5,90 @@
   id="uploadForm"
 >
   <input type="file" name="file" id="file" accept="image/*" />
-  
-  <label for="store_name">Store Name:</label>
-  <input
-    type="text"
-    id="store_name"
-    name="store_name"
-    value="{{store_name}}"
-    required
-  />
-  <label for="streetAddress">Store Address:</label>
-  <input
-    type="text"
-    id="streetAddress"
-    name="streetAddress"
-    value="{{streetAddress}}"
-    required
-  />
-   <label for="city">Store city:</label>
-  <input
-    type="text"
-    id="city"
-    name="city"
-    value="{{city}}"
-    required
-  />
-   <label for="state">Store state:</label>
-  <input
-    type="text"
-    id="state"
-    name="state"
-    value="{{state}}"
-    required
-  />
-  <label for="zip">Store zip:</label>
-  <input
-    type="text"
-    id="zip"
-    name="zip"
-    value="{{zip}}"
-    required
-  />
+
+  <label for="name">Store Name:</label>
+  <input type="text" id="name" name="name" value="{{store_name}}" required />
+  <label for="address">Store Address:</label>
+  <input type="text" id="address" name="address" value="{{address}}" required />
+  <label for="city">Store city:</label>
+  <input type="text" id="city" name="city" value="{{city}}" required />
+  <label for="state">Store state:</label>
+  <select id="state" name="state">
+    <option value="" disabled {{selected.default}}>Select</option>
+    <option value="AL" {{selected.AL}}>Alabama</option>
+    <option value="AK" {{selected.AK}}>Alaska</option>
+    <option value="AZ" {{selected.AZ}}>Arizona</option>
+    <option value="AR" {{selected.AR}}>Arkansas</option>
+    <option value="CA" {{selected.CA}}>California</option>
+    <option value="CO" {{selected.CO}}>Colorado</option>
+    <option value="CT" {{selected.CT}}>Connecticut</option>
+    <option value="DE" {{selected.DE}}>Delaware</option>
+    <option value="DC" {{selected.DC}}>District of Columbia</option>
+    <option value="FL" {{selected.FL}}>Florida</option>
+    <option value="GA" {{selected.GA}}>Georgia</option>
+    <option value="HI" {{selected.HI}}>Hawaii</option>
+    <option value="ID" {{selected.ID}}>Idaho</option>
+    <option value="IL" {{selected.IL}}>Illinois</option>
+    <option value="IN" {{selected.IN}}>Indiana</option>
+    <option value="IA" {{selected.IA}}>Iowa</option>
+    <option value="KS" {{selected.KS}}>Kansas</option>
+    <option value="KY" {{selected.KY}}>Kentucky</option>
+    <option value="LA" {{selected.LA}}>Louisiana</option>
+    <option value="ME" {{selected.ME}}>Maine</option>
+    <option value="MD" {{selected.MD}}>Maryland</option>
+    <option value="MA" {{selected.MA}}>Massachusetts</option>
+    <option value="MI" {{selected.MI}}>Michigan</option>
+    <option value="MN" {{selected.MN}}>Minnesota</option>
+    <option value="MS" {{selected.MS}}>Mississippi</option>
+    <option value="MO" {{selected.MO}}>Missouri</option>
+    <option value="MT" {{selected.MT}}>Montana</option>
+    <option value="NE" {{selected.NE}}>Nebraska</option>
+    <option value="NV" {{selected.NV}}>Nevada</option>
+    <option value="NH" {{selected.NH}}>New Hampshire</option>
+    <option value="NJ" {{selected.NJ}}>New Jersey</option>
+    <option value="NM" {{selected.NM}}>New Mexico</option>
+    <option value="NY" {{selected.NY}}>New York</option>
+    <option value="NC" {{selected.NC}}>North Carolina</option>
+    <option value="ND" {{selected.ND}}>North Dakota</option>
+    <option value="OH" {{selected.OH}}>Ohio</option>
+    <option value="OK" {{selected.OK}}>Oklahoma</option>
+    <option value="OR" {{selected.OR}}>Oregon</option>
+    <option value="PA" {{selected.PA}}>Pennsylvania</option>
+    <option value="RI" {{selected.RI}}>Rhode Island</option>
+    <option value="SC" {{selected.SC}}>South Carolina</option>
+    <option value="SD" {{selected.SD}}>South Dakota</option>
+    <option value="TN" {{selected.TN}}>Tennessee</option>
+    <option value="TX" {{selected.TX}}>Texas</option>
+    <option value="UT" {{selected.UT}}>Utah</option>
+    <option value="VT" {{selected.VT}}>Vermont</option>
+    <option value="VA" {{selected.VA}}>Virginia</option>
+    <option value="WA" {{selected.WA}}>Washington</option>
+    <option value="WV" {{selected.WV}}>West Virginia</option>
+    <option value="WI" {{selected.WI}}>Wisconsin</option>
+    <option value="WY" {{selected.WY}}>Wyoming</option>
+  </select>
+
+  <label for="zipCode">Store zip:</label>
+  <input type="text" id="zipCode" name="zipCode" value="{{zip}}" required />
 
   <label for="email">Store Email:</label>
-  <input
-    type="email"
-    id="email"
-    name="email"
-    value="{{email}}"
-    required
-  />
-  <label for="phone">Store Phone:</label>
+  <input type="email" id="email" name="email" value="{{email}}" required />
+  <label for="phoneNumber">Store Phone:</label>
   <input
     type="phone"
-    id="phone"
-    name="phone"
+    id="phoneNumber"
+    name="phoneNumber"
     value="{{phone}}"
     required
   />
-<button type="submit">Update Stroe </button>
+  <button type="submit">Update Stroe </button>
 </form>
+<ul class="errorContainer" id="errorContainer">
+  {{#if hasErrors}}
+    {{#each errors}}
+      <li>
+        {{this}}
+      </li>
+    {{/each}}
+  {{/if}}
+</ul>
