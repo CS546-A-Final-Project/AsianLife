@@ -58,7 +58,7 @@ app.use('/', (req, res, next) => {
     if (!req.session.user) {
       return res.status(200).redirect('/login');
     } else if (req.session.user.role === 'admin' && req.session.user.ownedStoreId) {
-      return res.status(200).redirect('/store');
+      return res.status(200).redirect(`/store/${req.session.user.ownedStoreId}`);
     } else if (req.session.user.role === 'admin' && !req.session.user.ownedStoreId) {
       return res.status(200).redirect('/addStore');
     } else if (req.session.user.role === 'user') {
@@ -72,7 +72,7 @@ app.use('/login', (req, res, next) => {
   if (!req.session.user) {
     next();
   } else if (req.session.user.role === 'admin' && req.session.user.ownedStoreId) {
-    return res.status(200).redirect('/store');
+    return res.status(200).redirect(`/store/${req.session.user.ownedStoreId}`);
   } else if (req.session.user.role === 'admin' && !req.session.user.ownedStoreId) {
     return res.status(200).redirect('/addStore');
   } else if (req.session.user.role === 'user') {
@@ -84,7 +84,7 @@ app.use('/register', (req, res, next) => {
   if (!req.session.user) {
     next();
   } else if (req.session.user.role === 'admin' && req.session.user.ownedStoreId) {
-    return res.status(200).redirect('/store');
+    return res.status(200).redirect(`/store/${req.session.user.ownedStoreId}`);
   } else if (req.session.user.role === 'admin' && !req.session.user.ownedStoreId) {
     return res.status(200).redirect('/addStore');
   } else if (req.session.user.role === 'user') {
@@ -132,6 +132,18 @@ app.use('/password', (req, res, next) => {
   }
 });
 
+app.use('/store', (req, res, next) => {
+  const requestRoute = req.originalUrl;
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  }
+  if (requestRoute === '/store' || requestRoute === '/store/') {
+    return res.status(200).redirect('/home');
+  } else {
+    next();
+  }
+});
+
 app.use('/addStore', (req, res, next) => {
   if (!req.session.user) {
     return res.status(200).redirect('/login');
@@ -139,6 +151,26 @@ app.use('/addStore', (req, res, next) => {
     req.session.error = "The user does not have permission to view the page";
     req.session.errorCode = 403;
     return res.status(403).redirect('/error');
+  } else if (req.session.user.role === 'admin' && req.session.user.ownedStoreId) {
+    return res.status(200).redirect(`/store/${req.session.user.ownedStoreId}`);
+  } else {
+    next();
+  }
+});
+
+app.use('/storeComments', (req, res, next) => {
+  const requestRoute = req.originalUrl;
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+});
+
+app.use('/commentsDetail', (req, res, next) => {
+  const requestRoute = req.originalUrl;
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
   } else {
     next();
   }
