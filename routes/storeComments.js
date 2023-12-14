@@ -1,9 +1,14 @@
 import express from 'express';
+<<<<<<< Updated upstream
 
+=======
+import xss from "xss";
+>>>>>>> Stashed changes
 import { ObjectId } from "mongodb";
 import { commentsforstoresData, storesData } from "../data/index.js";
 const router = express.Router();
 
+<<<<<<< Updated upstream
 //当点进storecomments button的时候hit
 router.route('/:id').get(async (req, res) => {
 
@@ -28,10 +33,36 @@ router.route('/:id').get(async (req, res) => {
         }
         const answer = commentsforstoresData.getAnswerById(Id)
         res.render("storeComment", {title: storeName, commentList: commentList, answer: answer , isUser: isUser, rating:rating})
+=======
+
+router.route('/:store_id').get(async (req, res) => {//get all comment for this store
+
+    let user = req.session.user 
+    
+    let storeid = xss(req.params.store_id)//Noah send a store_id;
+
+    
+    try{
+        checkId(storeid)
+    }catch(e){
+        return res.status(400).render('error', {title: "Error", message: e})
+    }
+
+    try{
+        let isUser = true;//for determining if have right to comment;
+        const storeName = await storesData.getStoreById(storeid).name;
+        const commentList = await commentsforstoresData.getAllComments(storeid);
+        const rating = await storesData.getStoreById(storeid).rating;
+        if(user.role !== 'user') {
+            isUser = false;
+        }
+        res.render("storeComments", {title: storeName, commentList: commentList, isUser: isUser, rating:rating})
+>>>>>>> Stashed changes
     }catch(e){
         return res.status(400).render('error', {title: "Error", message: e})
     }
     })
+<<<<<<< Updated upstream
     .post(async (req, res) => {
         // let { user_id, store_id, commentInput, rating} = req.body //和佳俊对接
 
@@ -47,18 +78,59 @@ router.route('/:id').get(async (req, res) => {
         }
         try{
             checkString(commentInput, "Newcomment");
+=======
+    .post(async (req, res) => { //add a comment for this store(realize delete at commentDetail page)
+        let user = req.session.user;
+        let user_id = xss(user._id);
+        let storeid = xss(req.params.store_id)
+        let comment = xss(req.body.commentInput);
+        let rating = await storesData.getStoreById(storeid).rating;
+
+        try{
+            checkId(user_id)
+        }catch(e){
+            return res.status(400).render('error', {title: "Error", message: e})
+        }
+
+        try{
+            checkId(storeid)
+        }catch(e){
+            return res.status(400).render('error', {title: "Error", message: e})
+        }
+        
+        try{
+            checkString(comment, "Newcomment");
+>>>>>>> Stashed changes
         }catch(e){
             return res.status(400).render('error', {title: "Error", message: "Please enter valid comment"})
         }
 
 
         try{
+<<<<<<< Updated upstream
             const newComment = await commentsforstoresData.addComment(user_id, store_id, commentInput, rating)
             res.redirect(`/${store_id}`)  
+=======
+            if(typeof rating !== 'number') throw 'rating has to be number'
+        }catch(e){
+            return res.status(400).render('error', {title: "Error", message: "Please enter valid rating"})
+        }
+
+        let newComment
+        try{
+            newComment = await commentsforstoresData.addComment({user_id: user_id, store_id: storeid, comment: comment, rating: rating})
+            if(newComment){
+            res.redirect(`/${storeid}`)  
+            }
+>>>>>>> Stashed changes
         }catch(e){
             return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
         }
     });
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 export default router;
 
 function checkString(string, varName) {

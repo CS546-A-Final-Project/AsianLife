@@ -2,7 +2,7 @@ import { commentsforstores } from "../config/mongoCollections.js";
 import validation from "../validation.js";
 import { ObjectId } from "mongodb"; 
 import xss from "xss";
-import { commentsforstoresData } from "./index.js";
+import { storesData } from "./index.js";
 
 const getAllComments = async (storeid) => {
   // validation.checkId(storeid)
@@ -24,19 +24,19 @@ const addComment = async (storeComment) => {
   let user_id = xss(storeComment.user_id).trim();
   let store_id = xss(storeComment.store_id).trim();
   let comment = xss(storeComment.comment).trim();
-  // let rating = xss(storeComment.rating).trim();
-
+  const rating = await storesData.getStoreById(store_id).rating;
+  if(!rating) throw 'there is no rating for this store! ';
   // validation.checkId(user_id);
   // validation.checkId(store_id);
   validation.checkString(comment, "comment");
-  if(typeof storeComment.rating !== 'number') throw 'rating has to be number';
+  
 
    let newstorecomment = {
       user_id: user_id,
       store_id: store_id,
       comment: comment,
       Answer:[],
-      rating: storeComment.rating,
+      rating: rating
   }
   const commentsCollection = await commentsforstores();
   const newInsertInformation = await commentsCollection.insertOne(newstorecomment);

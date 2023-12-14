@@ -12,7 +12,7 @@ import errorRoutes from './error.js';
 import passwordRoutes from './password.js'
 import editRoutes from './editstore.js'
 
-import storeCommentRoutes from './storeComments.js';
+import storeCommentsRoutes from './storeComments.js';
 import commentDetailRoutes from './commentsDetail.js'
 
 
@@ -29,7 +29,7 @@ const constructorMethod = (app) => {
   app.use('/error', errorRoutes);
   app.use('/password', passwordRoutes);
   app.use('/editstore', editRoutes);
-  app.use('./storeComments',storeCommentRoutes);
+  app.use('./storeComments',storeCommentsRoutes);
   app.use('./commentsDetail',commentDetailRoutes);
 
   app.use('*', (req, res) => {
