@@ -133,7 +133,6 @@ const removeProduct = async (id, store_id) => {
 };
 const updateProduct = async (
     id,
-    store_id,
     productName,
     productCategory,
     productPrice,
@@ -141,9 +140,8 @@ const updateProduct = async (
     expirationDate,
 ) => {
     id = xss(id);
-    store_id = xss(store_id);
     id = helpers.checkId(id, 'product_id');
-    store_id = helpers.checkId(store_id, 'store_id');
+
     const productsCollection = await products();
 
     // 获取现有产品信息，以便于与新数据进行比较
@@ -165,6 +163,7 @@ const updateProduct = async (
 
     let updateFields = {};
     // 通过检验后，更新产品名称
+
     if (productName) {
         productName = helpers.checkString(productName, 'productName');
         updateFields.productName = productName;

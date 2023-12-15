@@ -1,4 +1,5 @@
 import { stores } from "../config/mongoCollections.js";
+import { users } from "../config/mongoCollections.js";
 import * as storeFunctions from '../data/stores.js';
 import { products } from "../config/mongoCollections.js";
 import * as productsFunctions from './products.js';
@@ -46,9 +47,9 @@ const getStoreNameByStoreId = async (store_id) => {
     let store = await storeFunctions.getStoreById(store_id);
     return store.name;
 }
-// const getReviewByUserId = async (id, product_id) => { // By review Id!!!
-//     id = xss(id);
-//     id = helpers.checkId(id, "product_id");
+// const getReviewByReviewId = async (user_id, product_id) => { // By review Id!!!
+//     user_id = xss(user_id);
+//     user_id = helpers.checkId(user_id, "user_id");
 //     const productsCollection = await products();
 //     const product = await productsCollection.findOne({ _id: new ObjectId(id) });
 //     if (!product) {
@@ -74,6 +75,7 @@ const addReview = async (
     store_id = helpers.checkId(store_id, 'store_id');
     productReviews = helpers.checkReview(productReviews, 'productReviews');
     rating = helpers.checkRating(rating, ' rating');
+    const usersCollection = await users();
     const productsCollection = await products();
     const product = await productsFunctions.getProductById(product_id);
     const storeCollection = await stores();
@@ -100,6 +102,14 @@ const addReview = async (
                 throw new Error(`This review ${review} has been already existed!`)
             }
         }
+    };
+
+    const updateUser = await usersCollection.updateOne(
+        { _id: new ObjectId(user_id) },
+        { $push: { userReviews: review } }
+    )
+    if (updateUser.modifiedCount === 0) {
+        throw new Error(`Could not update user with id ${user_id}`);
     }
 
     let totalAmountOfReviews = product.totalAmountOfReviews + 1;
@@ -117,17 +127,25 @@ const addReview = async (
         throw new Error("No document was updated in Product Collection. Review might already exist.");
     }
 
-
     // 初始化总评分为0
-    let totalRating = 0;
+    let totalRatingForStore = 0;
+    // 初始化参与评分计算的产品数量为0
+    let ratedProductCount = 0;
+
     // 遍历所有产品ID
     for (const productId of store.products) {
         // 获取每个产品的详细信息
         const product = await productsCollection.findOne({ _id: new ObjectId(productId) });
-        totalRating += product.productRating;
+
+        // 检查产品是否有评分
+        if (product.productRating && product.productRating > 0) {
+            totalRatingForStore += product.productRating;
+            ratedProductCount += 1; // 仅计算有评分的产品
+        }
     }
-    // 计算平均评分
-    let storeRating = totalRating / store.products.length;
+
+    // 计算平均评分，只考虑有评分的产品
+    let storeRating = ratedProductCount > 0 ? totalRatingForStore / ratedProductCount : 0;
 
     const newInsertStoreInformation = await storeCollection.updateOne(
         { _id: new ObjectId(store_id) },
@@ -137,6 +155,7 @@ const addReview = async (
     if (!newInsertStoreInformation) {
         throw new Error("No document was updated in Store Collection.");
     }
+
     review._id = review._id.toString();
 
     return review;
@@ -144,25 +163,37 @@ const addReview = async (
 const removeReview = async (id) => {
     id = xss(id);
     id = helpers.checkId(id, 'review_id');
+
     const productsCollection = await products();
+    const usersCollection = await users();
+    const storeCollection = await stores();
+
+    // 找到包含评论的产品
     const product = await productsCollection.findOne({ "productReviews._id": new ObjectId(id) });
-    // console.log(product);
     if (!product) throw new Error(`Cannot find a product with the review id ${id}.`);
 
     // 找到并移除对应的评论
-    let reviewToRemove;
-    const updatedReview = product.productReviews.filter(
-        (review) => {
-            if (review._id.toString() === id) {
-                reviewToRemove = review;
-                return false;
-            }
-            return true;
+    let reviewToRemove = null;
+    const updatedProductReviews = product.productReviews.filter(review => {
+        if (review._id.toString() === id) {
+            reviewToRemove = review;
+            return false;
         }
-    );
+        return true;
+    });
 
     if (!reviewToRemove) {
         throw new Error(`Review with id ${id} not found in product.`);
+    }
+
+    // 从用户集合中移除评论
+    const updateUserResult = await usersCollection.updateOne(
+        { _id: new ObjectId(reviewToRemove.user_id) },
+        { $pull: { userReviews: { _id: new ObjectId(id) } } }
+    );
+
+    if (updateUserResult.modifiedCount === 0) {
+        throw new Error(`Could not remove review with id ${reviewToRemove._id} from user with id ${reviewToRemove.user_id}`);
     }
 
     // 重新计算产品评分
@@ -177,11 +208,43 @@ const removeReview = async (id) => {
         {
             $inc: { totalAmountOfReviews: -1 },
             $set: {
-                productReviews: updatedReview,
+                productReviews: updatedProductReviews,
                 productRating: productRating
             }
         }
     );
+    // 初始化总评分为0
+    let totalRatingForStore = 0;
+    // 初始化参与评分计算的产品数量为0
+    let ratedProductCount = 0;
+
+    const store = await storeCollection.findOne({ _id: new ObjectId(reviewToRemove.store_id) });
+    if (!store) throw new Error(`Cannot find a store with the review id ${reviewToRemove.store_id}.`);
+
+    // 遍历所有产品ID
+    for (const productId of store.products) {
+        // 获取每个产品的详细信息
+        const product = await productsCollection.findOne({ _id: new ObjectId(productId) });
+
+        // 检查产品是否有评分
+        if (product.productRating && product.productRating > 0) {
+            totalRatingForStore += product.productRating;
+            ratedProductCount += 1; // 仅计算有评分的产品
+        }
+    }
+
+    // 计算平均评分，只考虑有评分的产品
+    let storeRating = ratedProductCount > 0 ? totalRatingForStore / ratedProductCount : 0;
+
+    const newInsertStoreInformation = await storeCollection.updateOne(
+        { _id: new ObjectId(reviewToRemove.store_id) },
+        { $set: { rating: storeRating } }
+    );
+
+    if (!newInsertStoreInformation) {
+        throw new Error("No document was updated in Store Collection.");
+    }
+
     //console.log(updatedInfo);
     return updatedInfo;
 };
@@ -194,8 +257,9 @@ const updateReview = async (
     rating) => {
     // user_id = helpers.checkId(user_id, 'user_id');
     review_id = helpers.checkId(review_id, 'review_id');
-
+    const storeCollection = await stores();
     const productsCollection = await products();
+   
     const product = await productsCollection.findOne({ "productReviews._id": new ObjectId(review_id) });
     //console.log(product);
     if (!product) throw new Error(`Cannot find a product with the review id ${review_id}.`);
@@ -219,6 +283,19 @@ const updateReview = async (
         throw new Error(`Review with id ${review_id} not found.`);
     }
 
+    // 更新用户集合中的评论
+    const usersCollection = await users();
+    const queryUser = { _id: new ObjectId(user_id), 'userReviews._id': new ObjectId(review_id) };
+    const updateUserReview = {
+        $set: {
+            'userReviews.$': updatedReview // 更新整个匹配的 review 对象
+        }
+    };
+
+    const updateUserResult = await usersCollection.updateOne(queryUser, updateUserReview);
+    if (updateUserResult.modifiedCount === 0) {
+        throw new Error(`Could not update review in user with id ${user_id}`);
+    }
     // 重新计算产品评分
     let totalRating = product.productReviews.reduce((sum, review) => sum + review.rating, 0);
     let productRating = totalRating / product.productReviews.length;
@@ -231,8 +308,38 @@ const updateReview = async (
             productRating: productRating
         }
     };
-
     await productsCollection.updateOne(query, updateCommand);
+    // 初始化总评分为0
+    let totalRatingForStore = 0;
+    // 初始化参与评分计算的产品数量为0
+    let ratedProductCount = 0;
+
+    const store = await storeCollection.findOne({ _id: new ObjectId(updatedReview.store_id) });
+    if (!store) throw new Error(`Cannot find a store with the review id ${updatedReview.store_id}.`);
+
+    // 遍历所有产品ID
+    for (const productId of store.products) {
+        // 获取每个产品的详细信息
+        const product = await productsCollection.findOne({ _id: new ObjectId(productId) });
+
+        // 检查产品是否有评分
+        if (product.productRating && product.productRating > 0) {
+            totalRatingForStore += product.productRating;
+            ratedProductCount += 1; // 仅计算有评分的产品
+        }
+    }
+
+    // 计算平均评分，只考虑有评分的产品
+    let storeRating = ratedProductCount > 0 ? totalRatingForStore / ratedProductCount : 0;
+
+    const newInsertStoreInformation = await storeCollection.updateOne(
+        { _id: new ObjectId(updatedReview.store_id) },
+        { $set: { rating: storeRating } }
+    );
+
+    if (!newInsertStoreInformation) {
+        throw new Error("No document was updated in Store Collection.");
+    }
     return updatedReview;
 };
 

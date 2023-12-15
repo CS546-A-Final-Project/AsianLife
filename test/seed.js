@@ -353,7 +353,7 @@ console.log("add store!");
             email: "yancy@gmail.com",
             }
     )
-    console.log("storeid" + store1);
+    console.log("storeid " + store1);
 
     console.log("Add product!")
     // productName,
@@ -380,7 +380,7 @@ console.log("add store!");
                 '12/04/2023',
                 '01/02/2024',
             )
-            // onsole.log(product2);
+            // console.log(product2);
             const product3 = await productsData.addProduct(
                 user1.user_id,
                 store1,
@@ -399,24 +399,23 @@ console.log("add store!");
         "12/06/2023",
         "01/04/2024"
     )
-    const removeProduct2 = await productsData.removeProduct(product2, store1);
-    console.log("removeProduct", removeProduct2);
+    // const removeProduct2 = await productsData.removeProduct(product2, store1);
+    // console.log("removeProduct", removeProduct2);
     const updateProduct1 = await productsData.updateProduct(
         product1,
         "product1",  
         "Fresh Produce",
         15,
     )
-
-    console.log(updateProduct1);
+    // console.log(updateProduct1);
     const addReview1 = await reviewsforproductsData.addReview(
         user1.user_id,
         product1,
         store1,
         "goooooooooooooooooooooooooooooooooood",
-        5
+        4
     )
-    console.log(addReview1);
+    // console.log(addReview1);
     const addReview2 = await reviewsforproductsData.addReview(
         user1.user_id,
         product1,
@@ -424,6 +423,15 @@ console.log("add store!");
         "goooooooooooooooooooooooooooooooooood",
         3
     )
+    const addReview3 = await reviewsforproductsData.addReview(
+        user1.user_id,
+        product3,
+        store1,
+        "goooooooooooooooooooooooooooooooooood",
+        5
+    )
+    // const removeReview1 = await reviewsforproductsData.removeReview(addReview1._id.toString())
+    // const updateReview2 = await reviewsforproductsData.updateReview(user1.user_id, addReview3._id, "", 4)
 } catch (e) {
         console.log(e)
     }
