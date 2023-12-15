@@ -4,6 +4,7 @@ import registerRoutes from './register.js';
 import homeRoutes from './home.js';
 import storeRoutes from './store.js';
 
+
 import addStoreRoutes from './addStore.js';
 import profileRoutes from './profile.js';
 import uploadRoutes from './upload.js';
@@ -14,6 +15,13 @@ import productsRoutes from './products.js';
 import reviewsForProductsRoutes from './reveiwsForProducts.js';
 import editRoutes from './editstore.js'
 import addProductRoutes from './addProduct.js';
+
+
+import storeCommentsRoutes from './storeComments.js';
+import commentDetailRoutes from './commentsDetail.js'
+
+
+
 
 const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
@@ -31,6 +39,10 @@ const constructorMethod = (app) => {
   app.use('/addProduct', addProductRoutes);
   app.use('/products', productsRoutes);
   app.use('/reviewsForProducts', reviewsForProductsRoutes);
+
+  app.use('/storeComments',storeCommentsRoutes);
+  app.use('/commentsDetail',commentDetailRoutes);
+
 
   app.use('*', (req, res) => {
     res.status(404).render('error', { title: "404 NOT FOUND", error: "404 NOT FOUND" });

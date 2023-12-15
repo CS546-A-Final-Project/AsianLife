@@ -1,5 +1,9 @@
-<p>Store</p>
-<button id="store_review" name="store_review">Store Review</button>
+
+<p>{{store.store_name}}</p>
+<div class="store-comment">
+  <a href="/storeComments/{{storeID}}">See {{title}} ALL Comments</a> 
+
+<button id="store_review" name="store_review" hidden>Store Review</button>
 
 <button id="store_edit" name="store_edit" hidden>EDIT</button>
 
@@ -14,8 +18,9 @@
         <p><img src = "/public/images/products/{{this.productImage}}" alt="Image" width="50" height="50"></p>
         <p>Price: ${{this.productPrice}}</p>
         <p>Posted Date: {{this.posted_date}}</p>
+        <a href="/product/{{this.product_id}}">View Product</a>
       </li>
     {{/each}}
   </ul>
 </div>
-{{!-- {{/if}} --}}
+

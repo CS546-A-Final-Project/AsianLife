@@ -303,4 +303,62 @@
             }
         });
     }
+
+
+
+
+    const storecommentStaticForm = document.getElementById('storecomment-form');
+    if (storecommentStaticForm) {
+        const commentInput = document.getElementById("commentInput");
+        storecommentStaticForm.addEventListener('submit', (event) => {
+            let errors = [];
+            errorContainer.innerHTML = '';
+
+            const comment = commentInput.value.trim();
+            if(comment.length > 200) errors.push( 'comment cannot surpass 200 valid characters!');
+            if (!comment) errors.push( `You must provide a comment`);
+            if (typeof comment !== "string") errors.push( `Error:comment must be a string`);
+            if (comment.length === 0){
+                errors.push( `comment cannot be an empty string or just spaces`);
+            }
+
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
+        })
+    }//addComment Page；
+
+    const commentdetailStaticForm = document.getElementById('answer-form');
+    if (commentdetailStaticForm) {
+        const answerInput = document.getElementById("answerInput");
+        commentdetailStaticForm.addEventListener('submit', (event) => {
+            let errors = [];
+            errorContainer.innerHTML = '';
+
+            const answer = answerInput.value.trim();
+            if(answer.length > 200) errors.push( 'answer cannot surpass 200 valid characters!');
+            if (!answer) errors.push( `You must provide a answer`);
+            if (typeof answer !== "string") errors.push( `Error:answer must be a string`);
+            if (answer.length === 0) errors.push( `answer cannot be an empty string or just spaces`);
+            
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
+        })
+    }//add answer page
+
+    
+
+    
+
 })();
