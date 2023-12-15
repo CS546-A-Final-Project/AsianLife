@@ -33,7 +33,7 @@ export async function getProductSearchResults(searchTerm) {
 
     const formattedProdcuts = matchedProducts.map(product => ({
         name: product.name,
-        photo_id: product.productImage
+        productImage: product.productImage
     }));
 
     return formattedProdcuts;
