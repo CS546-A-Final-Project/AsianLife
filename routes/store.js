@@ -20,10 +20,12 @@ router.route('/:id').get(async (req, res) => {
         const store = await storesData.getStoreById(storeId);
         const storeProducts = await productsData.getAllProductsByStoreId(storeId);
         const user = req.session.user;
+        console.log(user)
         if (store === null) 
             throw "No store with that ID";
-
-        res.status(200).render('store', { title: store.name, storeProducts: storeProducts, storeID: storeId, user: userRole});
+        const isOwner = user && user.id === store.admin_id;
+        console.log(isOwner)
+        res.status(200).render('store', { title: store.name, storeProducts: storeProducts, storeID: storeId, user: userRole, isOwner: isOwner});
 
 
     } catch (e) {
