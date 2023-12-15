@@ -12,6 +12,12 @@ import xss from 'xss';
 router.route('/').get(async (req, res) => {
     const title = "Home Page";
     const id = req.session.user.id;
+    const role = req.session.user.role;
+    const storeId = req.session.user.ownedStoreId;
+    let isAdminAndHasAStore = false;
+    if (role === 'admin' && storeId) {
+        isAdminAndHasAStore = true;
+    }
     const user = await getUser(id);
     const name = user.userName;
 
@@ -29,7 +35,9 @@ router.route('/').get(async (req, res) => {
         name: name,
         avatarId: user.avatar,
         recommendedStores: topRatedStores,
-        recommendedProducts: topRatedProducts
+        recommendedProducts: topRatedProducts,
+        isAdminAndHasAStore: isAdminAndHasAStore,
+        storeId: storeId,
     })
 });
 
@@ -83,8 +91,10 @@ router.route('/search').post(async (req, res) => {
         title: title, 
         name: name,
         avatarId: user.avatar,
+        isAdminAndHasAStore: isAdminAndHasAStore,
+        storeId: storeId,
         searchResult: searchResults,
-        noResultsMessage: noResultsMessage
+        noResultsMessage: noResultsMessage,
     })
 });
 
