@@ -1,5 +1,4 @@
 import express from 'express';
-
 import { ObjectId } from "mongodb";
 import { storesData, productsData} from "../data/index.js";
 const router = express.Router();

@@ -15,7 +15,6 @@ const upload = multer({
 router
     .route('/')
     .get(async (req, res) => { // runs well
-        //res.status(200).json('get the page');
         res.status(200).render('addProduct', {
             title: "add Product",
             selected: { default: 'selected' }
@@ -23,15 +22,7 @@ router
     })
     .post(upload.single("productImage"), async (req, res) => { // runs well!
         let user_id = xss(req.session.user.id);
-        console.log("req.session.user" + req.session.user);
-        console.log("user_id" + user_id);
-        // let user_id = xss(req.body.user_id); // 这里要改！！！
-        //console.log(user_id);
-        // let store_id = xss(req.session.user.ownedStoreId);
-        // let user_id = '657bc02fc13e0a261ef35b67'; // for test
         let store_id = xss(req.session.user.ownedStoreId);
-        console.log("store_id" + store_id);
-        // let store_id = '657bc02fc13e0a261ef35b68'; // for test
         let productName = xss(req.body.productName);
         let productCategory = xss(req.body.productCategory);
         let productPrice = parseFloat(xss(req.body.productPrice));
@@ -89,7 +80,6 @@ router
         }
         // after validation, now starts add product
         try {
-            // console.log("addProduct");
             let productId = await productsData.addProduct(
                 user_id,
                 store_id,

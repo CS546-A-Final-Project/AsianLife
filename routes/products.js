@@ -35,6 +35,7 @@ router
     .route('/:productId') // get one product after add it
     .get(async (req, res) => { // runs well
         let productId = xss(req.params.productId); // updateId
+        console.log("----------------------------does it reach here?--------------------------")
         try {
             productId = helpers.checkId(productId, 'productId');
         } catch (e) {
@@ -47,6 +48,7 @@ router
             return res.status(200).render('products', {
                 title: product.productName,
                 hasProduct: true,
+                productId: product._id,
                 productName: product.productName,
                 productCategory: product.productCategory,
                 productPrice: product.productPrice,
