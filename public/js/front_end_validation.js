@@ -1,6 +1,5 @@
 (function () {
     const registerStaticForm = document.getElementById('registration-form');
-
     if (registerStaticForm) {
         const userNameInput = document.getElementById('userName')
         const firstNameInput = document.getElementById('firstName');
@@ -224,7 +223,6 @@
         addStoreStaticForm.addEventListener('submit', (event) => {
             let errors = [];
             errorContainer.innerHTML = '';
-            
             const name = nameInput.value.trim();
             const address = addressInput.value.trim();
             const city = cityInput.value.trim();
@@ -276,9 +274,8 @@
             if (zipCode.length !== 5) {
                 throw "Zip must contain 5 numbers";
             }
-            
-            for(let i of zipCode) {
-                if(i < '0' || i > '9') {
+            for (let i of zipCode) {
+                if (i < '0' || i > '9') {
                     errors.push("Zip must contain only numbers!");
                 }
             }
