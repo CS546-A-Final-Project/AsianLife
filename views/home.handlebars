@@ -21,6 +21,7 @@
             <div class="search-dropdown">
                 <label for="searchType">Search for:</label>
                 <select id="searchType" name="searchType">
+                    <option value="" selected disabled hidden>Select an option</option>
                     <option value="store">Store</option>
                     <option value="product">Product</option>
                 </select>
@@ -33,21 +34,51 @@
     </form>
 </div>
 
-<div class="store-grid">
-    {{#if hasStores}}
-    {{#each stores}}
-    <div class="store-card">
-        <a href="/store/{{this._id}}">
-        <img class="store-image" src="/public/images/stores/{{this.photo_id}}" alt="{{this.photo_id}}">
-        <div class="store-info">
-            <h3>{{this.name}}</h3>
-            <p>Description</p>
-        </div>
-        </a>
+{{!-- Check for no results message --}}
+{{#if noResultsMessage}}
+    <div class="no-results-message">
+        <p>{{noResultsMessage}}</p>
     </div>
-    {{/each}}
-    {{/if}}
-</div>
+{{else}}
+    <div class="search-results">
+        {{#each searchResult}}
+            <div class="search-result-item">
+                <h3>{{this.name}}</h3>
+            </div>
+        {{/each}}
+    </div>
+{{/if}}
 
 
-{{searchResult}}
+<nav>
+    <a href="/store" class="nav-link store-link">All Stores</a>
+</nav>
+
+<nav>
+    <a href="/products" class="nav-link product-link">All Products</a>
+</nav>
+
+<section class="recommendation-section">
+    <h2>Recommended Stores</h2>
+    <div class="recommendation-container">
+        {{#each recommendedStores}}
+            <div class="recommendation-item">
+                <img src="/public/images/stores/{{this.photo_id}}">
+                <p>{{this.name}}</p>
+            </div>
+        {{/each}}
+    </div>
+</section>
+
+
+<section class="recommendation-section">
+    <h2>Recommended Products</h2>
+    <div class="recommendation-container">
+        {{#each recommendedProducts}}
+            <div class="recommendation-item">
+                <img src="/public/images/products/{{this.photo_id}}">
+                <p>{{this.name}}</p>
+            </div>
+        {{/each}}
+    </div>
+</section>
