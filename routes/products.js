@@ -133,25 +133,38 @@ router
             id = helpers.checkId(id, 'productId');
         } catch (e) {
             // res.status(400).json({error: e.message});
-            return res.status(400).render('products', { error: e.message });
+            return res.status(400).render('products', { 
+                hasErrors: true,
+                errors: e.message 
+            });
         }
         try {
             let productReviews = await reviewsForProductsData.getAllReviews(id);
-            //return res.status(200).json(reviewForProducts);
-            return res.status(200).render('products', { 
-                productReviews: productReviews,
-                });
+            return res.status(200).json(productReviews);
+            // return res.status(200).render('products', { 
+            //     productReviews: productReviews,
+            //     });
         } catch (e) {
             // res.status(400).json({error: e.message});
-            return res.status(404).render('products', { error: e.message });
+            return res.status(404).render('products', { 
+                hasErrors: true,
+                errors: e.message 
+            });
         }
     })
     .post(async (req, res) => { // add a review for a product
-        let user_id = xss(req.session.user.id);
+        // let user_id = xss(req.session.user.id);
         let productId = xss(req.params.productId);
+        let user_id = "657bc02fc13e0a261ef35b67"; // for test
+        // let productId = "657bc02fc13e0a261ef35b69"; // for test
         let productReview = xss(req.body.productReviews);
         let rating = xss(req.body.rating);
         let errors = [];
+        try {
+            user_id = helpers.checkId(user_id, 'user_id');
+        } catch (e) {
+            errors.push(e);
+        }
         try {
             productId = helpers.checkId(productId, 'productId');
         } catch (e) {

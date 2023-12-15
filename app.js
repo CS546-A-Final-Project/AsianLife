@@ -144,19 +144,19 @@ app.use('/store', (req, res, next) => {
   }
 });
 
-// app.use('/addStore', (req, res, next) => {
-//   if (!req.session.user) {
-//     return res.status(200).redirect('/login');
-//   } else if (req.session.user.role === 'user') {
-//     req.session.error = "The user does not have permission to view the page";
-//     req.session.errorCode = 403;
-//     return res.status(403).redirect('/error');
-//   } else if (req.session.user.role === 'admin' && req.session.user.ownedStoreId) {
-//     return res.status(200).redirect(`/store/${req.session.user.ownedStoreId}`);
-//   } else {
-//     next();
-//   }
-// });
+app.use('/addStore', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else if (req.session.user.role === 'user') {
+    req.session.error = "The user does not have permission to view the page";
+    req.session.errorCode = 403;
+    return res.status(403).redirect('/error');
+  } else if (req.session.user.role === 'admin' && req.session.user.ownedStoreId) {
+    return res.status(200).redirect(`/store/${req.session.user.ownedStoreId}`);
+  } else {
+    next();
+  }
+});
 // middleware for products
 // app.use('/products', (req, res, next) => {
 //   const requestRoute = req.originalUrl;

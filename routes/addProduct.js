@@ -22,10 +22,12 @@ router
         })
     })
     .post(upload.single("productImage"), async (req, res) => { // runs well!
-        // let user_id = xss(req.session.user._id).trim();
-        let user_id = xss(req.body.user_id); // 这里要改！！！
+        // let user_id = xss(req.session.user._id);
+        // let user_id = xss(req.body.user_id); // 这里要改！！！
         //console.log(user_id);
-        let store_id = xss(req.body.store_id);
+        // let store_id = xss(req.session.user.ownedStoreId);
+        let user_id = '657bc02fc13e0a261ef35b67';
+        let store_id = '657bc02fc13e0a261ef35b68';
         let productName = xss(req.body.productName);
         let productCategory = xss(req.body.productCategory);
         let productPrice = parseFloat(xss(req.body.productPrice));
@@ -42,12 +44,12 @@ router
             return res.status(400).json({ error: "You didn't provide any information." });
         }
         try {
-            // user_id = helpers.checkId(user_id, 'user_id');
+            user_id = helpers.checkId(user_id, 'user_id');
         } catch (e) {
             errors.push(e);
         }
         try {
-            // store_id = helpers.checkId(store_id, 'store_id'); // store应该改成id (store_name = newProduct.store_name); 
+            store_id = helpers.checkId(store_id, 'store_id'); 
         } catch (e) {
             errors.push(e);
         }
@@ -58,11 +60,13 @@ router
         }
         try {
             productCategory = helpers.checkCategories(productCategory, 'productCategory');
+            console.log("I print out here!" + productCategory);
         } catch (e) {
             errors.push(e);
         }
         try {
             productPrice = helpers.checkPrice(productPrice, 'productPrice');
+            console.log("do I print out here?")
         } catch (e) {
             errors.push(e);
         }

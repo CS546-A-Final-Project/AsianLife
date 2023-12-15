@@ -4,18 +4,18 @@
 <button id="store_edit" name="store_edit" hidden>EDIT</button>
 
 <h1>The Products of Store</h1>
-<!--add if hasStoreProducts-->
-{{#if hasStoreProducts}}
+
+{{!-- {{#if hasStoreProducts}} --}}
 <div class="products-container">
   <ul>
     {{#each storeProducts}}
       <li class="product">
         <p>Product Name: {{this.productName}}</p>
-        <p><img src = "/public/images/products/{{this.product_image}}" alt="Image" width="50" height="50"></p>
+        <p><img src = "/public/images/products/{{this.productImage}}" alt="Image" width="50" height="50"></p>
         <p>Price: ${{this.productPrice}}</p>
         <p>Posted Date: {{this.posted_date}}</p>
       </li>
     {{/each}}
   </ul>
 </div>
-{{/if}}
+{{!-- {{/if}} --}}

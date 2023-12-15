@@ -12,17 +12,20 @@ import xss from 'xss';
 //   };
 
 const getAllProductsByStoreId = async (store_id) => {
+    store_id = helpers.checkId(store_id);
     const storesCollection = await stores();
     const productsCollection = await products();
-    const store = await storesCollection.findOne({ _id: store_id });
+    const store = await storesCollection.findOne({ _id: new ObjectId(store_id) });
     if (!store) {
         throw new Error(`Store with id ${store_id} not found`);
     }
     const productIds = store.products;
-    const allProducts = await productsCollection.find({
-        _id: { $in: productIds }
-    }).toArray();
+    console.log(productIds);
+    const objectIds = productIds.map(id => new ObjectId(id));
 
+    const allProducts = await productsCollection.find({
+        _id: { $in: objectIds }
+    }).toArray();
     return allProducts;
 };
 const getProductById = async (id) => { // runs well
@@ -52,8 +55,8 @@ const addProduct = async ( // runs well
     */
 ) => {
     //console.log("in data")
-    user_id = helpers.checkId(user_id, 'user_id');
-    store_id = helpers.checkId(store_id, 'store_id');
+    // user_id = helpers.checkId(user_id, 'user_id');
+    // store_id = helpers.checkId(store_id, 'store_id');
     productName = helpers.checkString(productName, 'productName');
     productCategory = helpers.checkCategories(productCategory, 'productCategory');
     productPrice = helpers.checkPrice(productPrice, 'productPrice');

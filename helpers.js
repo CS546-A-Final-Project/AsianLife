@@ -81,7 +81,7 @@ const checkString = (strVal, varName) => {
     return strVal;
 };
 const checkCategories = (categoryToCheck) => {
-    console.log(categoryToCheck);
+    // console.log(categoryToCheck);
     categoryToCheck = checkString(categoryToCheck, 'categoryToCheck'); // 假设这个函数验证并转换为字符串
 
     const categories = [

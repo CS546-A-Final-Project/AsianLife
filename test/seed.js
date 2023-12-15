@@ -432,6 +432,10 @@ console.log("add store!");
     )
     // const removeReview1 = await reviewsforproductsData.removeReview(addReview1._id.toString())
     // const updateReview2 = await reviewsforproductsData.updateReview(user1.user_id, addReview3._id, "", 4)
+    const getAllProducts = await productsData.getAllProductsByStoreId(store1);
+    console.log(getAllProducts);
+
+
 } catch (e) {
         console.log(e)
     }
