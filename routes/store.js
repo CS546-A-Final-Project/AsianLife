@@ -19,6 +19,9 @@ router.route('/:id').get(async (req, res) => {
         
         const store = await storesData.getStoreById(storeId);
         const storeProducts = await productsData.getAllProductsByStoreId(storeId);
+        storeProducts.forEach(product => {
+            product.firstReview = product.productReviews[0];
+        });
         const user = req.session.user;
         console.log(user)
         if (store === null) 

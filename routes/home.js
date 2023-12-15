@@ -15,6 +15,15 @@ router.route('/').get(async (req, res) => {
     const user = await getUser(id);
     const name = user.userName;
 
+    const stores = await getAllStores();
+    if (!stores) {
+        return res.status(200).render('home',{
+            title: title, 
+            name: name,
+            avatarId: user.avatar,
+            hasStores: false,
+        });
+    }
     //get recommended stores
     const topRatedStores = await getRecommendedStores(id);
     
@@ -28,6 +37,8 @@ router.route('/').get(async (req, res) => {
         title: title, 
         name: name,
         avatarId: user.avatar,
+        hasStores: true,
+        stores: stores,
         recommendedStores: topRatedStores,
         recommendedProducts: topRatedProducts
     })
