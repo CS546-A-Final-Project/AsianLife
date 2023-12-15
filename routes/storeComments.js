@@ -1,10 +1,12 @@
 import express from 'express';
 import xss from "xss";
+import xss from "xss";
 import { ObjectId } from "mongodb";
 import { commentsforstoresData, storesData } from "../data/index.js";
 const router = express.Router();
 
 
+router.route('/:store_id').get(async (req, res) => {//get all comment for this store
 router.route('/:store_id').get(async (req, res) => {//get all comment for this store
 
     let user = req.session.user 
@@ -82,7 +84,7 @@ router.route('/:store_id').get(async (req, res) => {//get all comment for this s
             return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
         }
     });
-    
+
 
 
 

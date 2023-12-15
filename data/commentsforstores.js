@@ -32,7 +32,7 @@ const addComment = async (storeComment) => {
    validation.checkId(user_id);
    validation.checkId(store_id);
   validation.checkString(comment, "comment");
-  
+  if(typeof storeComment.rating !== 'number') throw 'rating has to be number';
 
    let newstorecomment = {
       user_id: user_id,

@@ -56,7 +56,7 @@ router.route('/:comment_id').get(async (req, res) => {
         try{
             checkString(answerInput,"answer");
         }catch(e){
-            return res.status(400).render('error', {title: "Error", message: "please enter valid answer"})
+            return res.status(400).render('error', {title: "Error", message: e})
         }
 
         try{
