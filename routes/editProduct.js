@@ -104,3 +104,4 @@ router
         }
     })
 
+export default router;
