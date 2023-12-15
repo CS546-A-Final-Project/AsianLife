@@ -13,7 +13,7 @@ const getAllStores = async () => {
 const getStoreById = async (id) => {
   const storesCollection = await stores();
   const store = await storesCollection.findOne({ _id: new ObjectId(id) });
-  console.log(store)
+  console.log(store, "store")
   if (!store) throw "Store not found";
   return store;
 };
