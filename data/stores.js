@@ -21,7 +21,7 @@ const getStoreById = async (id) => {
 // const rating = store.rating
 // console.log(rating)
 const addStore = async (store) => {
-  let adminId = xss(store.adminId).trim();
+  // let adminId = xss(store.adminId).trim();
   let name = xss(store.name).trim();
   let address = xss(store.address).trim();
   let city = xss(store.city).trim();
@@ -35,10 +35,10 @@ const addStore = async (store) => {
     state: state,
     zip: zipCode,
   }
-  const admin = await getUser(adminId);
-  if (admin.role !== "admin") {
-    throw "The user don't have authorization to add a store";
-  }
+  // const admin = await getUser(adminId);
+  // if (admin.role !== "admin") {
+  //   throw "The user don't have authorization to add a store";
+  // }
   try {
     validation.checkIfLocationValid(location);
     validation.checkIfPhoneNumberValid(phoneNumber);
@@ -49,7 +49,7 @@ const addStore = async (store) => {
   }
   const currentTime = new Date().toUTCString()
   const newStore = {
-    admin_id: adminId,
+    // admin_id: adminId,
     name: name,
     photo_id: "default.jpg",
     established_date: currentTime,
@@ -60,12 +60,14 @@ const addStore = async (store) => {
       zip: zipCode,
     },
     rating: 0,
-    products: [],
+    products: [], // add productId in it
     contact_information: {
       phone: phoneNumber,
       email: email,
     },
+
     comments: [],
+
   }
   const storesCollection = await stores();
   const newInsertInformation = await storesCollection.insertOne(newStore);

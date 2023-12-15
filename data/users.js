@@ -74,7 +74,9 @@ const addUser = async (
   const userCollection = await users();
   const insertInfo = await userCollection.insertOne(newUser);
   if (!insertInfo.acknowledged || !insertInfo.insertedId) throw 'Could not add user';
-  return { insertedUser: true };
+  return { 
+    user_id: insertInfo.insertedId.toString(),
+    insertedUser: true };
 }
 
 const loginUser = async (email, password) => {
