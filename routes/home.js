@@ -8,6 +8,12 @@ const router = express.Router();
 router.route('/').get(async (req, res) => {
     const title = "Home Page";
     const id = req.session.user.id;
+    const role = req.session.user.role;
+    const storeId = req.session.user.ownedStoreId;
+    let isAdminAndHasAStore = false;
+    if (role === 'admin' && storeId) {
+        isAdminAndHasAStore = true;
+    }
     const user = await getUser(id);
     const name = user.userName;
     const stores = await getAllStores();
@@ -17,6 +23,8 @@ router.route('/').get(async (req, res) => {
             name: name,
             avatarId: user.avatar,
             hasStores: false,
+            isAdminAndHasAStore: isAdminAndHasAStore,
+            storeId: storeId,
         });
     }
     res.status(200).render('home',{
@@ -25,6 +33,8 @@ router.route('/').get(async (req, res) => {
         avatarId: user.avatar,
         hasStores: true,
         stores: stores,
+        isAdminAndHasAStore: isAdminAndHasAStore,
+        storeId: storeId,
     })
 });
 
@@ -38,7 +48,9 @@ router.route('/search').post(async (req, res) => {
         title: title, 
         name: name,
         avatarId: user.avatar,
-        searchResult: "search result here"
+        isAdminAndHasAStore: isAdminAndHasAStore,
+        storeId: storeId,
+        searchResult: "search result here",
     })
 });
 
