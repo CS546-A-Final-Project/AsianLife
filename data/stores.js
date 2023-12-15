@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { getUser } from "./users.js";
 import xss from "xss";
 import validation from "../validation.js";
+import { storesData } from "./index.js";
 
 const getAllStores = async () => {
   const storesCollection = await stores();
@@ -70,6 +71,44 @@ const addStore = async (store) => {
   const newId = newInsertInformation.insertedId;
   return newId.toString();
 };
+const updateCommentofStore = async(id, comment) =>{
+    let storeid = xss(id).trim();
+    try{
+      validation.checkId(storeid)
+    }catch(e){
+      throw e;
+    }
+
+  const storesCollection = await stores();
+  let store = await getStoreById(storeid);
+  let reviews = store.reviews
+  reviews.push(comment);
+  let updatedstore = {
+    admin_id: store.admin_id,
+    name: store.name,
+    photo_id: store.photo_id,
+    established_date:store.established_date,
+    store_location: store.store_location,
+    rating: store.rating,
+    products: store.products,
+    contact_information: store.contact_information,
+    reviews: reviews
+  }
+
+  const updatedInfo = await storesCollection.updateOne(
+    {_id: new ObjectId(id)},
+    {$set: updatedstore},)
+
+   if (!updatedInfo.acknowledged) {
+    throw 'could not update comment for store successfully';
+  }
+  
+  return await getStoreById(storeid);
+    
+}
+
+console.log(await updateCommentofStore())
+
 const removeStore = async (id) => {
   const storesCollection = await stores();
   const deletionInfo = await storesCollection.findOneAndDelete({
@@ -141,4 +180,4 @@ const updateImage = async (id, photo_id) => {
   );
 }
 
-export { getAllStores, getStoreById, addStore, removeStore, updateStore, updateImage };
+export { getAllStores, getStoreById, updateCommentofStore, addStore, removeStore, updateStore, updateImage };

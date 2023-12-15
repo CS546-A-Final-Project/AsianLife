@@ -45,6 +45,7 @@ const addComment = async (storeComment) => {
   const newInsertInformation = await commentsCollection.insertOne(newstorecomment);
   if(!newInsertInformation.acknowledged || !newInsertInformation.insertedId) throw "Could not add this comment"
   const newId = newInsertInformation.insertedId;
+  const userData = await storesData.updateStore(user_id)
   return await getCommentById(newId.toString());
 };
  
@@ -100,7 +101,7 @@ const deleteAnswer = async(id) =>{
   if(!updateInfo.acknowledged) throw 'Could not delete this answer!';
   return await getCommentById(id);
 }
-// console.log(await deleteAnswer("657b2c191f5f7e5acebdcdf2"))
+//   
 const removeComment= async (id) => {
 
   validation.checkId(id);

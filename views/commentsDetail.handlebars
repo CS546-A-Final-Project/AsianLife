@@ -6,13 +6,18 @@ You can use this template to render any errors on your site if you wish
     <h1>Comment Detail</h1>
 
     <ul>
-        <li>{{comment}}</li>
-        {{#if answer}}
+        <li>{{comment}}
+            {{#if isCommenter}}
+            <p>(Your Comment)</p>
+            {{/if}}
+            {{#if answer}}
             <ul>
                 <li>&rarr; {{answer}}</li>
             </ul>
-        {{/if}}
+            {{/if}}
+        </li>
     </ul>
+    
 
      {{#if isAdmin}}
         {{#unless answer}}

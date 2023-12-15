@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.route('/:comment_id').get(async (req, res) => {
 
+    let userid = req.session.user.id;
     let ownedStoreid = req.session.user.ownedStoreId
     let commentId = xss(req.params.comment_id);
     let comment = await commentsforstoresData.getCommentById(commentId);
@@ -27,13 +28,18 @@ router.route('/:comment_id').get(async (req, res) => {
         let commentData = await commentsforstoresData.getCommentById(commentId);
         // console.log(commentData)
         let comment = commentData.comment;
+        let commentuserid = commentData.user_id
+        let isCommenter = true;
+        if(commentuserid !== userid){
+          isCommenter = false;
+        }
         let answer = commentData.Answer[0];
-        res.render("commentsDetail", {comment: comment, answer: answer, isAdmin: isAdmin, commentId: commentId})
+        res.render("commentsDetail", {comment: comment, answer: answer, isAdmin: isAdmin, commentId: commentId, isCommenter:isCommenter, commentId: commentId})
     }catch(e){
         return res.status(400).render('error', {title: "Error", message: e})
     }
   })
-    .post(async (req, res) => {
+    .post(async (req, res) => {//add answer
     
 
         let answerInput = xss(req.body.answerInput);
