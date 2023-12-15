@@ -159,7 +159,6 @@ app.use('/addStore', (req, res, next) => {
 });
 
 app.use('/storeComments', (req, res, next) => {
-  const requestRoute = req.originalUrl;
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   } else {
@@ -168,7 +167,6 @@ app.use('/storeComments', (req, res, next) => {
 });
 
 app.use('/commentsDetail', (req, res, next) => {
-  const requestRoute = req.originalUrl;
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   } else {

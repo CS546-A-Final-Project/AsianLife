@@ -1,6 +1,5 @@
 import express from 'express';
 import xss from "xss";
-import xss from "xss";
 import { ObjectId } from "mongodb";
 import { commentsforstoresData, storesData } from "../data/index.js";
 const router = express.Router();
@@ -23,65 +22,66 @@ router.route('/:store_id').get(async (req, res) => {//get all comment for this s
 
     try{
         let isUser = true;//for determining if have right to comment;
+        let isAdmin = true
         const store = await storesData.getStoreById(storeid);
         const storeName = store.name;
         const commentList = await commentsforstoresData.getAllComments(storeid);
         // console.log(commentList, "this is commentLists")
-        const rating = store.rating;
+
         if(user.role !== 'user') {
             isUser = false;
         }
-        res.render("storeComments", {title: storeName, commentList: commentList, isUser: isUser, rating:rating, storeID: storeid})
+        if(user.id !== store.admin_id){
+            isAdmin = false
+        }
+        res.render("storeComments", {title: storeName, commentList: commentList, isUser: isUser, isAdmin:isAdmin, storeID: storeid})
         // res.redirect(`storeComments/${storeid}`)
     }catch(e){
-        return res.status(400).render('error', {title: "Error", message: e})
+        return res.status(400).render('error', {title: "Error", error: e})
     }
     })
     .post(async (req, res) => { //add a comment for this store(realize delete at commentDetail page)
         // console.log("successful hit POST")
         let user = req.session.user;
-        let userid = xss(user.id);
+        let userid = xss(user.id).trim();
         // console.log(userid,"userid")
-        let storeid = xss(req.params.store_id)
+        let storeid = xss(req.params.store_id).trim()
         // console.log(storeid,"storeid")
-        let comment = xss(req.body.commentInput);
+        let comment = xss(req.body.commentInput).trim();
         // console.log(comment, "comment")
-        let store = await storesData.getStoreById(storeid)
-        let rating = store.rating;
+
 
         try{
             checkId(userid)
         }catch(e){
-            return res.status(400).render('error', {title: "Error", message: e})
+            return res.status(400).render('error', {title: "Error", error: e})
         }
 
         try{
             checkId(storeid)
         }catch(e){
-            return res.status(400).render('error', {title: "Error", message: e})
+            return res.status(400).render('error', {title: "Error", error: e})
         }
         
         try{
             checkString(comment, "Newcomment");
+            if(comment.length > 200) throw 'comment cannot surpass 200 valid characters! '
         }catch(e){
-            return res.status(400).render('error', {title: "Error", message: "Please enter valid comment"})
-        }
-
-
-        try{
-            if(typeof rating !== 'number') throw 'rating has to be number'
-        }catch(e){
-            return res.status(400).render('error', {title: "Error", message: "Please enter valid rating"})
+            return res.status(400).render('error', {title: "Error", error: e})
         }
 
         let newComment
+        let updateStore
         try{
-            newComment = await commentsforstoresData.addComment({user_id: userid, store_id: storeid, comment: comment, rating: rating})
+            newComment = await commentsforstoresData.addComment({user_id: userid, store_id: storeid, comment: comment})
+            updateStore = await storesData.updateCommentofStore(storeid, comment)
+            // console.log(updateStore.comments[3], "comments3")
+            // console.log(newComment,"newcomment")
             if(newComment){
             res.redirect(`/storeComments/${storeid}`)  
             }
         }catch(e){
-            return res.status(500).render('error', {title: "Error", message:"Internal Server Error"})
+            return res.status(500).render('error', {title: "Error", error:"Internal Server Error"})
         }
     });
 

@@ -1,14 +1,9 @@
-{{!
-You can use this template to render any errors on your site if you wish
-}}
 
-{{!-- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}} Comments List</title>
-</head> --}}
 
 <body>
+    {{#if isAdmin}}
+    <p>Welcome Store Owner!</p>
+    {{/if}}
     <h1>{{title}} Comments List</h1>
 
     <ul> 

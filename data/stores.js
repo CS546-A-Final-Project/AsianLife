@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { getUser } from "./users.js";
 import xss from "xss";
 import validation from "../validation.js";
-import { storesData } from "./index.js";
+
 
 const getAllStores = async () => {
   const storesCollection = await stores();
@@ -13,6 +13,7 @@ const getAllStores = async () => {
 const getStoreById = async (id) => {
   const storesCollection = await stores();
   const store = await storesCollection.findOne({ _id: new ObjectId(id) });
+  console.log(store)
   if (!store) throw "Store not found";
   return store;
 };
@@ -64,25 +65,32 @@ const addStore = async (store) => {
       phone: phoneNumber,
       email: email,
     },
-    reviews: {},
+    comments: [],
   }
   const storesCollection = await stores();
   const newInsertInformation = await storesCollection.insertOne(newStore);
   const newId = newInsertInformation.insertedId;
   return newId.toString();
 };
-const updateCommentofStore = async(id, comment) =>{
+const updateCommentofStore = async(id, commentInput) =>{
     let storeid = xss(id).trim();
+    let comment = xss(commentInput).trim();
     try{
       validation.checkId(storeid)
     }catch(e){
       throw e;
     }
 
+    try{
+      validation.checkString(comment)
+    }catch(e){
+      throw e;
+    }
+
   const storesCollection = await stores();
   let store = await getStoreById(storeid);
-  let reviews = store.reviews
-  reviews.push(comment);
+  let comments = store.comments
+  comments.push(comment);
   let updatedstore = {
     admin_id: store.admin_id,
     name: store.name,
@@ -92,22 +100,22 @@ const updateCommentofStore = async(id, comment) =>{
     rating: store.rating,
     products: store.products,
     contact_information: store.contact_information,
-    reviews: reviews
+    comments: comments
   }
 
   const updatedInfo = await storesCollection.updateOne(
-    {_id: new ObjectId(id)},
+    {_id: new ObjectId(storeid)},
     {$set: updatedstore},)
 
    if (!updatedInfo.acknowledged) {
-    throw 'could not update comment for store successfully';
+    throw 'could not update comment for this store successfully';
   }
   
   return await getStoreById(storeid);
     
 }
 
-console.log(await updateCommentofStore())
+// console.log(await updateCommentofStore("657bd5e262038496c68b371a", "this is a comment"))
 
 const removeStore = async (id) => {
   const storesCollection = await stores();
@@ -120,6 +128,7 @@ const removeStore = async (id) => {
   console.log(deletionInfo);
   return deletionInfo;
 };
+
 const updateStore = async (id, updatedStore) => {
   const storesCollection = await stores();
   const updatedStoreData = {};
@@ -179,5 +188,6 @@ const updateImage = async (id, photo_id) => {
     { returnDocument: "after" }
   );
 }
+
 
 export { getAllStores, getStoreById, updateCommentofStore, addStore, removeStore, updateStore, updateImage };
