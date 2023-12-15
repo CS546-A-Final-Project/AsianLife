@@ -1,10 +1,60 @@
-<h1>Products List</h1>
+<h1>{{productName}}</h1>
+<a href='/editProduct/{{productId}}' class="button">EDIT Product</a>
+<a href="/products/{{productId}}" class="button"
+    onclick="return confirm('Are you sure you want to delete this product?');">DELETE Product</a>
 
-<ol>
-          {{#each allProducts}}
-          <li>
-          {{this}}
-          </li>
-          {{/each}}
-</ol>
-<a href="/singleProduct"></a>
+{{#if hasProduct}}
+<div class="products-container">
+    <p><img src="/public/images/products/{{productImage}}" alt="Image" width="200" height="200"></p>
+    <p>Product Category: {{productCategory}}</p>
+    <p>Price: ${{productPrice}}</p>
+    <p>Manufacture Date: {{manufactureDate}}</p>
+    <p>Expiration Date: {{expirationDate}}</p>
+
+    {{#if productReviews}}
+    <ul>
+        {{#each productReviews}}
+        <li>
+            <p>User: {{this.user_id}}</p>
+            <p>Rating: {{this.rating}}</p>
+            <p>Review: {{this.productReview}}</p>
+        </li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p>No reviews found for this product.</p>
+    {{/if}}
+
+
+    <form id="add-review-form" action="/{{product._id}}/reviews" method="POST">
+        <input type="hidden" name="productId" value="{{product._id}}">
+
+        <label for="productReviews">Add Review 'more than 25 characters lengths':</label>
+        <textarea id="productReviews" name="productReviews" value="{{productReviews}}" required></textarea>
+
+        <label for="productRating">Product Rating:</label>
+        <select id="productRating" name="productRating">
+            <option value="" disabled selected>Select</option>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+        </select>
+
+        <button type="submit">Submit Review</button>
+    </form>
+</div>
+{{else}}
+<p>Fail to get the product</p>
+{{/if}}
+
+<ul class="errorContainer" id="errorContainer">
+    {{#if hasErrors}}
+    {{#each errors}}
+    <li>
+        {{this}}
+    </li>
+    {{/each}}
+    {{/if}}
+</ul>

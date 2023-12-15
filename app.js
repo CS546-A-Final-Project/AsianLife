@@ -157,6 +157,19 @@ app.use('/addStore', (req, res, next) => {
     next();
   }
 });
+// middleware for products
+// app.use('/products', (req, res, next) => {
+//   const requestRoute = req.originalUrl;
+//   if (!req.session.user) {
+//     return res.status(200).redirect('/login');
+//   }
+//   if (requestRoute === '/products' || requestRoute === '/store/') {
+//     return res.status(200).redirect('/home');
+//   } else {
+//     next();
+//   }
+// });
+
 
 app.use('/editStore/:id', (req, res, next) => {
   if (!req.session.user) {
