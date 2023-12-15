@@ -19,9 +19,10 @@ let newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-let user1Id = newUser.newUserId;
-await addStore({
-  adminId: user1Id,
+let userId = newUser.newUserId.toString();
+let newStoreId = await storesData.addStore({
+  adminId: userId,
+  name: 'store1',
   address: "address",
   city: "Hoboken",
   state: "NJ",
@@ -29,6 +30,7 @@ await addStore({
   phoneNumber: "1234567890",
   email: "abc1@gmail.com",
 });
+await usersData.bindStoreWithUser(newStoreId, userId);
 
 newUser = await usersData.addUser(
   'bobwen',
@@ -38,16 +40,18 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-let user2Id = newUser.newUserId;
-await addStore({
-  adminId: user2Id,
+userId = newUser.newUserId.toString();
+newStoreId = await storesData.addStore({
+  adminId: userId,
+  name: 'store2',
   address: "address",
   city: "Hoboken",
   state: "NJ",
   zipCode: "07030",
   phoneNumber: "1234567890",
-  email: "abc1@gmail.com",
+  email: "abc2@gmail.com",
 });
+await usersData.bindStoreWithUser(newStoreId, userId);
 
 newUser = await usersData.addUser(
   'bobwen',
@@ -57,8 +61,18 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-let user3Id = newUser.newUserId;
-console.log(newUser);
+userId = newUser.newUserId.toString();
+newStoreId = await storesData.addStore({
+  adminId: userId,
+  name: 'store3',
+  address: "address",
+  city: "Hoboken",
+  state: "NJ",
+  zipCode: "07030",
+  phoneNumber: "1234567890",
+  email: "abc3@gmail.com",
+});
+await usersData.bindStoreWithUser(newStoreId, userId);
 
 newUser = await usersData.addUser(
   'bobwen',
@@ -68,8 +82,18 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-let user4Id = newUser.newUserId;
-console.log(newUser);
+userId = newUser.newUserId.toString();
+newStoreId = await storesData.addStore({
+  adminId: userId,
+  name: 'store4',
+  address: "address",
+  city: "Hoboken",
+  state: "NJ",
+  zipCode: "07030",
+  phoneNumber: "1234567890",
+  email: "abc4@gmail.com",
+});
+await usersData.bindStoreWithUser(newStoreId, userId);
 
 newUser = await usersData.addUser(
   'bobwen',
@@ -79,6 +103,16 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-let user5Id = newUser.newUserId;
-console.log(newUser);
+userId = newUser.newUserId.toString();
+newStoreId = await storesData.addStore({
+  adminId: userId,
+  name: 'store5',
+  address: "address",
+  city: "Hoboken",
+  state: "NJ",
+  zipCode: "07030",
+  phoneNumber: "1234567890",
+  email: "abc5@gmail.com",
+});
+await usersData.bindStoreWithUser(newStoreId, userId);
 await closeConnection();
