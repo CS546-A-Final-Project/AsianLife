@@ -4,6 +4,7 @@ import registerRoutes from './register.js';
 import homeRoutes from './home.js';
 import storeRoutes from './store.js';
 
+
 import addStoreRoutes from './addStore.js';
 import profileRoutes from './profile.js';
 import uploadRoutes from './upload.js';
@@ -14,6 +15,11 @@ import editRoutes from './editstore.js'
 
 import storeCommentsRoutes from './storeComments.js';
 import storeCommentsRoutes from './storeComments.js';
+import commentDetailRoutes from './commentsDetail.js'
+
+import editRoutes from './editstore.js'
+
+import storeCommentRoutes from './storeComments.js';
 import commentDetailRoutes from './commentsDetail.js'
 
 
