@@ -27,9 +27,6 @@ router.route('/').get(async (req, res) => {
     //get recommended products
     const topRatedProducts = await getRecommendedProducts(id);
     
-    console.log(topRatedStores);
-    console.log(topRatedProducts);
-
     res.status(200).render('home',{
         title: title, 
         name: name,
