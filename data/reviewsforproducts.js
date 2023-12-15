@@ -9,32 +9,21 @@ import xss from "xss";
 import helpers from '../helpers.js';
 
 
-const getAllReviews = async (product_id) => { // get all reviews for one product
+const getAllReviews = async (product_id) => {
     product_id = xss(product_id);
     product_id = helpers.checkId(product_id, 'product_id');
     const productsCollection = await products();
+
     const product = await productsCollection.findOne({ _id: new ObjectId(product_id) });
-    console.log(product);
     if (!product) {
-        throw new Error(`Product with id ${product_id} has not been found.`)
+        throw new Error(`Product with id ${product_id} has not been found.`);
     }
-
-    if (product.productReviews && product.productReviews.length > 0) {
-        for (let review of product.productReviews) {
-            review._id = review._id.toString();
-        }
-        //     reviews = await product.productReviews.map(reveiw => {
-        //             user_id: getUserNamebyUserId(user_id), // user name
-        //             product_id: product_id, // product name
-        //             storeName: getStoreNameByStoreId(product.store_id); // get store id from product directly
-        //             productName: product.productName,
-        //             productReviews: productReviews,
-        //             rating: rating
-        //     })
-
-    }
-    return product.productReviews;
+    console.log("product" + product);
+    console.log("product.productReviews" + product.productReviews);
+    return product.productReviews || [];
 };
+
+
 const getUserNamebyUserId = async (user_id) => {
     user_id = xss(user_id);
     user_id = helpers.checkId(user_id, 'user_id');
@@ -84,8 +73,8 @@ const addReview = async (
     let review = {
         _id: new ObjectId(),
         user_id: user_id, // user name
-        store_id: store_id, // get store id from product directly
         product_id: product_id, // get product name by product_Id?
+        store_id: store_id, // get store id from product directly
         productName: product.productName,
         productReviews: productReviews,
         rating: rating
@@ -96,6 +85,7 @@ const addReview = async (
             if (
                 user_id === review.user_id &&
                 product_id === review.product_id &&
+                store_id === review.store_id &&
                 productReviews === review.productReviews &&
                 rating === review.rating
             ) {
@@ -255,7 +245,7 @@ const updateReview = async (
     review_id, // must
     productReview,
     rating) => {
-    // user_id = helpers.checkId(user_id, 'user_id');
+    user_id = helpers.checkId(user_id, 'user_id');
     review_id = helpers.checkId(review_id, 'review_id');
     const storeCollection = await stores();
     const productsCollection = await products();

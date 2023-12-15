@@ -1,14 +1,12 @@
 import express from 'express';
-import validation from '../validation.js';
 import helpers from '../helpers.js';
 import * as productsData from '../data/products.js';
 import * as reviewsForProductsData from '../data/reviewsforproducts.js';
-import { error } from 'console';
 import xss from 'xss';
 const router = express.Router();
 
 router
-    .route('/') // get all products from store ID?
+    .route('/') // 这个route有用吗？
     .get(async (req, res) => { // runs well
         try {  // should it be get all products by store id?
             const allProducts = await productsData.getAllProducts();
@@ -44,7 +42,7 @@ router
         }
         try {
             let product = await productsData.getProductById(productId);
-            console.log(product);
+            // console.log(product);
             // return res.status(200).json(product);
             return res.status(200).render('products', {
                 title: product.productName,
@@ -64,23 +62,23 @@ router
             });
         }
     })
-    .delete(async (req, res) => { // runs well
-        let productId = xss(req.params.productId);
-        try {
-            productId = helpers.checkId(productId, 'product');
-        } catch (e) {
-            res.status(400).json({error: e.message})
-            // res.status(400).render('products', { error: e });
-        }
-        try {
-            let product = await productsData.removeProduct(productId);
-            // return res.status(200).json("Delete successfully!" + product); // 检查删除的信息
-            return res.status(200).render('products', { product, product });
-        } catch (e) {
-            // res.status(404).json({error: e.message});
-            res.status(404).render('products', { error: e.message });
-        }
-    })
+    // .delete(async (req, res) => { // runs well
+    //     let productId = xss(req.params.productId);
+    //     try {
+    //         productId = helpers.checkId(productId, 'product');
+    //     } catch (e) {
+    //         res.status(400).json({error: e.message})
+    //         // res.status(400).render('products', { error: e });
+    //     }
+    //     try {
+    //         let product = await productsData.removeProduct(productId);
+    //         // return res.status(200).json("Delete successfully!" + product); // 检查删除的信息
+    //         return res.status(200).render('products', { product, product });
+    //     } catch (e) {
+    //         // res.status(404).json({error: e.message});
+    //         res.status(404).render('products', { error: e.message });
+    //     }
+    // })
     // .put(async (req, res) => { // runs well
     //     let id = xss(req.params.productId);
     //     let productName = xss(req.body.productName);
@@ -126,7 +124,7 @@ router
     
 
     router
-    .route('/:productId/reviews')
+    .route('/:productId/reviews') // get route没有任何意义！！！
     .get(async (req, res) => { // get all reviews for a product
         let id = xss(req.params.productId);
         try {
@@ -139,11 +137,21 @@ router
             });
         }
         try {
-            let productReviews = await reviewsForProductsData.getAllReviews(id);
-            return res.status(200).json(productReviews);
-            // return res.status(200).render('products', { 
-            //     productReviews: productReviews,
-            //     });
+            let productReviews = await reviewsForProductsData.getAllReviews(id);     
+                let product = await productsData.getProductById(id);
+                // console.log(product);
+                // return res.status(200).json(product);
+                return res.status(200).render('products', {
+                    // title: product.productName,
+                    hasProduct: true,
+                    // productName: product.productName,
+                    // productCategory: product.productCategory,
+                    // productPrice: product.productPrice,
+                    // manufactureDate: product.manufactureDate,
+                    // expirationDate: product.expirationDate,
+                    productReviews: productReviews,
+                    // productImage: product.productImage
+                });
         } catch (e) {
             // res.status(400).json({error: e.message});
             return res.status(404).render('products', { 
@@ -153,12 +161,12 @@ router
         }
     })
     .post(async (req, res) => { // add a review for a product
-        // let user_id = xss(req.session.user.id);
-        let productId = xss(req.params.productId);
-        let user_id = "657bc02fc13e0a261ef35b67"; // for test
-        // let productId = "657bc02fc13e0a261ef35b69"; // for test
-        let productReview = xss(req.body.productReviews);
-        let rating = xss(req.body.rating);
+        let user_id = xss(req.session.user.id);
+        // let user_id = xss(req.body.user_id); // for test
+        let productId = xss(req.params.productId); // for test
+        let store_id = xss(req.session.user.ownedStoreId); // for test
+        let productReviewsG = xss(req.body.productReviews);
+        let rating = parseInt(xss(req.body.productRating));
         let errors = [];
         try {
             user_id = helpers.checkId(user_id, 'user_id');
@@ -171,7 +179,12 @@ router
             errors.push(e);
         }
         try {
-            productReview = helpers.checkReview(productReview, 'productReview');
+            store_id = helpers.checkId(store_id, 'store_id');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            productReviewsG = helpers.checkReview(productReviewsG, 'productReview');
         } catch (e) {
             errors.push(e);
         }
@@ -181,19 +194,22 @@ router
             errors.push(e);
         }
         try {
-            productReview = reviewsForProductsData.addReview(
+            const productReviewsResult = await reviewsForProductsData.addReview(
                 user_id,
                 productId,
-                productReview,
+                store_id,
+                productReviewsG,
                 rating
             )
+            // return res.json(productReviewsResult);
+            res.status(200).redirect(`/product/${productId}`);
         } catch (e) {
             errors.push(e);
         }
         if (errors.length > 0) {
             return res.status(400).render('products', {
                 productName: productName,
-                productReview: productReview,
+                productReviews: productReviewsG,
                 rating: rating,
                 selected: selected,
                 hasErrors: true,
@@ -201,7 +217,7 @@ router
             })
         }
     })
-
+    // 下面两个功能需要从user profile页面实现
     .delete(async (req, res) => { // delete a review for a product
         let productId = xss(req.params.productId);
         try {

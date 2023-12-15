@@ -22,12 +22,16 @@ router
         })
     })
     .post(upload.single("productImage"), async (req, res) => { // runs well!
-        // let user_id = xss(req.session.user._id);
+        let user_id = xss(req.session.user.id);
+        console.log("req.session.user" + req.session.user);
+        console.log("user_id" + user_id);
         // let user_id = xss(req.body.user_id); // 这里要改！！！
         //console.log(user_id);
         // let store_id = xss(req.session.user.ownedStoreId);
-        let user_id = '657bc02fc13e0a261ef35b67';
-        let store_id = '657bc02fc13e0a261ef35b68';
+        // let user_id = '657bc02fc13e0a261ef35b67'; // for test
+        let store_id = xss(req.session.user.ownedStoreId);
+        console.log("store_id" + store_id);
+        // let store_id = '657bc02fc13e0a261ef35b68'; // for test
         let productName = xss(req.body.productName);
         let productCategory = xss(req.body.productCategory);
         let productPrice = parseFloat(xss(req.body.productPrice));
@@ -60,13 +64,11 @@ router
         }
         try {
             productCategory = helpers.checkCategories(productCategory, 'productCategory');
-            console.log("I print out here!" + productCategory);
         } catch (e) {
             errors.push(e);
         }
         try {
             productPrice = helpers.checkPrice(productPrice, 'productPrice');
-            console.log("do I print out here?")
         } catch (e) {
             errors.push(e);
         }
@@ -97,9 +99,7 @@ router
                 manufactureDate,
                 expirationDate,
             );
-            //add image
             await productsData.updateImage(productId, productImage);
-            //res.status(200).json(product);
             return res.status(200).redirect(`/products/${productId}`);
         } catch (e) {
             errors.push(e);

@@ -353,7 +353,7 @@ console.log("add store!");
             email: "yancy@gmail.com",
             }
     )
-    console.log("storeid " + store1);
+    // console.log("storeid " + store1);
 
     console.log("Add product!")
     // productName,
@@ -433,9 +433,9 @@ console.log("add store!");
     // const removeReview1 = await reviewsforproductsData.removeReview(addReview1._id.toString())
     // const updateReview2 = await reviewsforproductsData.updateReview(user1.user_id, addReview3._id, "", 4)
     const getAllProducts = await productsData.getAllProductsByStoreId(store1);
-    console.log(getAllProducts);
-
-
+    // console.log(getAllProducts);
+    const getAllReviews = await reviewsforproductsData.getAllReviews(product1);
+        console.log("get all reviews here! They are objects!" + getAllReviews);
 } catch (e) {
         console.log(e)
     }
