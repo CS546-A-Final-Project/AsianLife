@@ -6,7 +6,7 @@ import { commentsforstoresData, storesData } from "../data/index.js";
 const router = express.Router();
 
 
-router.route('/:store_id').get(async (req, res) => {//get all comment for this store
+
 router.route('/:store_id').get(async (req, res) => {//get all comment for this store
 
     let user = req.session.user 
@@ -113,4 +113,3 @@ function checkId(id) {
     }
     return id;
 }
-
