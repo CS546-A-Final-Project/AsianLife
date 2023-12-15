@@ -18,5 +18,5 @@ export const users = getCollectionFn('users');
 export const stores = getCollectionFn('stores');
 export const products = getCollectionFn('products');
 export const comments = getCollectionFn('comments');
-export const reviewsforstores = getCollectionFn('reviewsforstores');
+export const commentsforstores = getCollectionFn('commentsforstores');
 export const reviewsforproducts = getCollectionFn('reviewsforproducts');

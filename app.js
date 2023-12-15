@@ -171,6 +171,22 @@ app.use('/editStore/:id', (req, res, next) => {
   }
 });
 
+app.use('/storeComments', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+});
+
+app.use('/commentsDetail', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {
