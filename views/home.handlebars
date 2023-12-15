@@ -51,7 +51,7 @@
 
 
 <nav>
-    <a href="/store" class="nav-link store-link">All Stores</a>
+    <a href="/stores" class="nav-link store-link">All Stores</a>
 </nav>
 
 <nav>
@@ -76,7 +76,7 @@
     <div class="recommendation-container">
         {{#each recommendedProducts}}
             <div class="recommendation-item">
-                <img src="/public/images/products/{{this.photo_id}}">
+                <img src="/public/images/products/{{this.productImage}}">
                 <p>{{this.name}}</p>
             </div>
         {{/each}}
