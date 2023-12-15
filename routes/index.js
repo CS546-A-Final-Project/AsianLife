@@ -10,11 +10,8 @@ import profileRoutes from './profile.js';
 import uploadRoutes from './upload.js';
 import logoutRoutes from './logout.js';
 import errorRoutes from './error.js';
-import passwordRoutes from './password.js';
-import productsRoutes from './products.js';
-import reviewsForProductsRoutes from './reveiwsForProducts.js';
+import passwordRoutes from './password.js'
 import editRoutes from './editstore.js'
-import addProductRoutes from './addProduct.js';
 
 
 import storeCommentsRoutes from './storeComments.js';
@@ -36,9 +33,6 @@ const constructorMethod = (app) => {
   app.use('/error', errorRoutes);
   app.use('/password', passwordRoutes);
   app.use('/editstore', editRoutes);
-  app.use('/addProduct', addProductRoutes);
-  app.use('/products', productsRoutes);
-  app.use('/reviewsForProducts', reviewsForProductsRoutes);
 
   app.use('/storeComments',storeCommentsRoutes);
   app.use('/commentsDetail',commentDetailRoutes);

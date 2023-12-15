@@ -1,6 +1,5 @@
 import validator from "validator";
 import { ObjectId } from "mongodb";
-
 const exportedMethods = {
   checkUserName(string, varName) {
     if (!string) throw `You must provide a ${varName}`;
