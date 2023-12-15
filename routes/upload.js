@@ -2,8 +2,10 @@ import express from "express";
 import multer from "multer";
 import { updateAvatar } from "../data/users.js";
 import { ObjectId } from "mongodb";
-import { updateImage, updateStore} from "../data/stores.js";
+import validation from "../validation.js";
+import { updateImage, updateStore } from "../data/stores.js";
 import path from "path";
+import xss from "xss";
 import fs from "fs";
 const router = express.Router();
 
@@ -22,32 +24,119 @@ const uploadStore = multer({
 });
 
 router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
-  console.log(req.file);
-  if(req.file) {
-    await updateImage(req.params.id, req.file.filename);
-  }const store_name = req.body.store_name;
-  const streetAddress = req.body.streetAddress;
-  const city = req.body.city;
-  const state = req.body.state;
-  const zip = req.body.zip;
-  const email = req.body.email;
-  const phone = req.body.phone;
+  console.log(req.params.id);
+  let errors = [];
+  if (req.file) {
+    try {
+      await updateImage(req.params.id, req.file.filename);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  const adminId = req.session.user.id;
+  const storeId = req.params.id;
+  let name = xss(req.body.name).trim();
+  let address = xss(req.body.address).trim();
+  let city = xss(req.body.city).trim();
+  let state = xss(req.body.state).trim();
+  let zipCode = xss(req.body.zipCode).trim();
+  let phoneNumber = xss(req.body.phoneNumber).trim();
+  let email = xss(req.body.email).trim();
 
-  const store_location = {
-    streetAddress: streetAddress,
+  try {
+    validation.checkIfStoreNameValid(name);
+  } catch (e) {
+    errors.push(e);
+  }
+  const location = {
+    address: address,
     city: city,
     state: state,
-    zip: zip,
+    zip: zipCode,
+}
+  const contact_information = {
+    email: email,
+    phoneNumber: phoneNumber,
   };
-    const contact_information = {
-        email: email,
-        phone: phone,
-    };
-  await updateStore(req.params.id, {
-    store_name: store_name,
-    store_location: store_location,
-    contact_information: contact_information,
-  });
-  res.status(200).redirect("/editstore/" + req.params.id);
+  console.log("success");
+  try {
+    validation.checkIfLocationValid(location);
+    console.log("checkIfLocationValid");
+  } catch (e) {
+    errors.push(e);
+    const selected = { default: "selected" };
+    return res.status(400).render("editStore", {
+      title: "editStore",
+      name: name,
+      address: address,
+      city: city,
+      state: state,
+      zipCode: zipCode,
+      phoneNumber: phoneNumber,
+      email: email,
+      selected: selected,
+      hasErrors: true,
+      errors: errors,
+      storeId: storeId,
+    });
+  }
+
+  try {
+    validation.checkIfPhoneNumberValid(phoneNumber);
+    console.log("checkIfPhoneNumberValid");
+    validation.checkEmail(email, "E-mail");
+} catch (e) {
+    errors.push(e);
+    const selected = { default: "selected" };
+    return res.status(400).render("editStore", {
+      title: "editStore",
+      name: name,
+      address: address,
+      city: city,
+      state: state,
+      zipCode: zipCode,
+      phoneNumber: phoneNumber,
+      email: email,
+      selected: selected,
+      hasErrors: true,
+      errors: errors,
+      storeId: storeId,
+    });
+}
+console.log("success");
+  try {
+    await updateStore(req.params.id, {
+      adminId: adminId,
+      name: name,
+      address: address,
+      city: city,
+      state: state,
+      zipCode: zipCode,
+      phoneNumber: phoneNumber,
+      email: email,
+    });
+  } catch (e) {
+    console.log(e);
+    errors.push(e);
+  }
+  if (errors.length > 0) {
+    const selected = { [`${state}`]: 'selected' };
+    return res.status(400).render("editStore", {
+      title: "editStore",
+      name: name,
+      address: address,
+      city: city,
+      state: state,
+      zipCode: zipCode,
+      phoneNumber: phoneNumber,
+      email: email,
+      selected: selected,
+      hasErrors: true,
+      errors: errors,
+      storeId: storeId,
+    });
+  }
+  console.log("success");
+  return res.status(200).redirect("/editstore/" + req.params.id);
 });
 export default router;

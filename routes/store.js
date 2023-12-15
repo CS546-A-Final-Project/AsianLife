@@ -14,13 +14,14 @@ router.route('/:id').get(async (req, res) => {
         return res.status(400).render('error', { error: e });
     }
     try {
-
+        
         const allProducts = await productsData.getAllProducts();
         const store = await storesData.getStoreById(storeId);
         const storeProducts = allProducts.filter(product => product.store_id === storeId);
+        const user = req.session.user;
         if (store === null) 
             throw "No store with that ID";
-        res.status(200).render('store', { storeProducts: storeProducts});
+        res.status(200).render('store', { storeProducts: storeProducts,});
     } catch (e) {
         return res.status(404).render('error', { error: e });
     }
