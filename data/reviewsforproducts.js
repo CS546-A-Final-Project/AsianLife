@@ -17,7 +17,7 @@ const getAllReviews = async (product_id) => { // get all reviews for one product
     if (!product) {
         throw new Error(`Product with id ${product_id} has not been found.`)
     }
-    
+
     if (product.productReviews && product.productReviews.length > 0) {
         for (let review of product.productReviews) {
             review._id = review._id.toString();
@@ -69,10 +69,11 @@ const addReview = async (
     productReviews, // string
     rating
 ) => {
-    //user_id = helpers.checkId(user_id);
-    product_id = helpers.checkId(product_id);
-    productReviews = helpers.checkReview(productReviews);
-    rating = helpers.checkRating(rating);
+    user_id = helpers.checkId(user_id, 'user_id');
+    product_id = helpers.checkId(product_id, 'product_id');
+    store_id = helpers.checkId(store_id, 'store_id');
+    productReviews = helpers.checkReview(productReviews, 'productReviews');
+    rating = helpers.checkRating(rating, ' rating');
     const productsCollection = await products();
     const product = await productsFunctions.getProductById(product_id);
     const storeCollection = await stores();
@@ -81,7 +82,7 @@ const addReview = async (
     let review = {
         _id: new ObjectId(),
         user_id: user_id, // user name
-        store_id: product.store_id, // get store id from product directly
+        store_id: store_id, // get store id from product directly
         product_id: product_id, // get product name by product_Id?
         productName: product.productName,
         productReviews: productReviews,
@@ -117,13 +118,22 @@ const addReview = async (
     }
 
 
-    let storeRating = (rating + store.rating * store.product.length) / product.productReviews.length;
+    // 初始化总评分为0
+    let totalRating = 0;
+    // 遍历所有产品ID
+    for (const productId of store.products) {
+        // 获取每个产品的详细信息
+        const product = await productsCollection.findOne({ _id: new ObjectId(productId) });
+        totalRating += product.productRating;
+    }
+    // 计算平均评分
+    let storeRating = totalRating / store.products.length;
+
     const newInsertStoreInformation = await storeCollection.updateOne(
-        { _id: new ObjectId(store_id)},
-        {
-            $set: {rating: storeRating}
-        }
-    )
+        { _id: new ObjectId(store_id) },
+        { $set: { rating: storeRating } }
+    );
+
     if (!newInsertStoreInformation) {
         throw new Error("No document was updated in Store Collection.");
     }
@@ -180,7 +190,7 @@ const removeReview = async (id) => {
 const updateReview = async (
     user_id, // must
     review_id, // must
-    productReview, 
+    productReview,
     rating) => {
     // user_id = helpers.checkId(user_id, 'user_id');
     review_id = helpers.checkId(review_id, 'review_id');

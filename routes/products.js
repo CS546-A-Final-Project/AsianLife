@@ -8,12 +8,11 @@ import xss from 'xss';
 const router = express.Router();
 
 router
-    .route('/:store_id') // get all products from store ID?
+    .route('/') // get all products from store ID?
     .get(async (req, res) => { // runs well
         try {  // should it be get all products by store id?
-            let store_id = req.params.store_id;
-            const allProducts = await productsData.getAllProductsByStoreId();
-            console.log(allProducts);
+            const allProducts = await productsData.getAllProducts();
+            // console.log(allProducts);
             if (!allProducts) {
                 return res
                     .status(404)
@@ -49,7 +48,7 @@ router
             // return res.status(200).json(product);
             return res.status(200).render('products', {
                 title: product.productName,
-                product: product,
+                hasProduct: true,
                 productName: product.productName,
                 productCategory: product.productCategory,
                 productPrice: product.productPrice,
@@ -141,7 +140,7 @@ router
             //return res.status(200).json(reviewForProducts);
             return res.status(200).render('products', { 
                 productReviews: productReviews,
-                user_id: user_id });
+                });
         } catch (e) {
             // res.status(400).json({error: e.message});
             return res.status(404).render('products', { error: e.message });
