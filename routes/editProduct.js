@@ -100,8 +100,8 @@ router
         try {
             productId = helpers.checkId(productId, 'product');
         } catch (e) {
-            res.status(400).json({ error: e.message })
-            // res.status(400).render('products', { error: e });
+            // res.status(400).json({ error: e.message })
+            res.status(400).render('products', { error: e });
         }
         try {
             let product = await productsData.removeProduct(productId, store_id);
