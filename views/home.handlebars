@@ -62,7 +62,7 @@
                         </div>
                     </a>
                 {{else if this.isProduct}}
-                    <a href="/product/{{this.productId}}">
+                    <a href="/products/{{this.productId}}">
                         <img class="product-image" src="/public/images/products/{{this.productImage}}" alt="{{this.photo_id}}">
                         <div class="product-info">
                             <h3>{{this.name}}</h3>
@@ -114,7 +114,7 @@
     <div class="recommendation-container">
         {{#each recommendedProducts}}
             <div class="recommendation-item">
-                <a href="/product/{{this.productId}}">
+                <a href="/products/{{this.productId}}">
                     <img src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
                 </a>
                 <p>{{this.name}}</p>
