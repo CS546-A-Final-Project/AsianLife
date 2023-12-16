@@ -52,6 +52,12 @@ router.route('/').get(async (req, res) => {
 
 router.route('/search').post(async (req, res) => {
     const title = "Home Page";
+    const storeId = req.session.user.ownedStoreId;
+    const role = req.session.user.role;
+    let isAdminAndHasAStore = false;
+    if (role === 'admin' && storeId) {
+        isAdminAndHasAStore = true;
+    }
     const id = req.session.user.id;
     const user = await getUser(id);
     const name = user.userName;
