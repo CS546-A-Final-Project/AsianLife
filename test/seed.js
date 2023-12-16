@@ -34,115 +34,115 @@ email: "abc1@gmail.com",
 await usersData.bindStoreWithUser(newStoreId, userId);
 
 let product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'AAA',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'AAA',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 let addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
+userId,
+product,
+newStoreId,
+"goooooooooooooooooooooooooooooooooood",
+4
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "gooooooooooooooooooooooooooooooooood",
-  4
+userId,
+product,
+newStoreId,
+"gooooooooooooooooooooooooooooooooood",
+4
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooood",
-  4
+userId,
+product,
+newStoreId,
+"goooooooooooooooooooooooooooooooood",
+4
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooood",
-  4
+userId,
+product,
+newStoreId,
+"goooooooooooooooooooooooooooooood",
+4
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooood",
-  4
+userId,
+product,
+newStoreId,
+"goooooooooooooooooooooooooooood",
+4
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'AAAA',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'AAAA',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'AAAAA',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'AAAAA',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 
 //--------------------admin2-----------------------
 newUser = await usersData.addUser(
-  'bobwen',
-  'Mingzhi',
-  'Wen',
-  'abc2@gmail.com',
-  'Abc123,,',
-  'admin'
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc2@gmail.com',
+'Abc123,,',
+'admin'
 );
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
-  adminId: userId,
-  name: 'store2',
-  address: "address",
-  city: "Hoboken",
-  state: "NJ",
-  zipCode: "07030",
-  phoneNumber: "1234567890",
-  email: "abc2@gmail.com",
+adminId: userId,
+name: 'store2',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc2@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'BBB',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'BBB',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'BBBB',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'BBBB',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'BBBBB',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'BBBBB',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 
 //--------------------admin3-----------------------
@@ -167,31 +167,31 @@ email: "abc2@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'CCC',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'CCC',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'CCCC',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'CCCC',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'CCCCC',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'CCCCC',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 //--------------------admin4-----------------------
 newUser = await usersData.addUser(
@@ -215,31 +215,31 @@ email: "abc3@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'DDD',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'DDD',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'DDDD',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'DDDD',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'DDDDD',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'DDDDD',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 //--------------------admin5-----------------------
 newUser = await usersData.addUser(
@@ -263,31 +263,31 @@ email: "abc4@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'EEE',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'EEE',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'EEEE',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'EEEE',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'EEEEE',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
+userId,
+newStoreId,
+'EEEEE',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
 )
 await closeConnection();
 // // reviewsforproducts
