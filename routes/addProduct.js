@@ -7,7 +7,6 @@ import helpers from '../helpers.js';
 
 const router = express.Router();
 
-// 配置 multer 用于文件上传
 const upload = multer({
     dest: path.join(process.cwd(), "/public/images/products"), // 注意更改目录为产品图片目录
   });
@@ -28,7 +27,7 @@ router
         let productPrice = parseFloat(xss(req.body.productPrice));
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
-        let productImage = req.file.filename;
+        // let productImage = xss(req.file.filename);
         let errors = [];
 
         let newProduct = req.body;
@@ -73,6 +72,17 @@ router
         }
         try {
             helpers.checkDateValid(manufactureDate, expirationDate);
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            if (req.file && req.file.filename) {
+                let productImage = xss(req.file.filename);
+                productImage = helpers.checkString(productImage);
+            } else {
+                productImage = 'default.png'; 
+                console.log(productImage);
+            }
         } catch (e) {
             errors.push(e);
         }

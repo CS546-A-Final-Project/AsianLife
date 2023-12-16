@@ -13,7 +13,8 @@
             <option value="Meat and Poultry" {{selected.MeatAndPoultry}}>Meat and Poultry</option>
             <option value="Seafood" {{selected.Seafood}}>Seafood</option>
             <option value="Frozen Foods" {{selected.FrozenFoods}}>Frozen Foods</option>
-            <option value="Bakery and Confectionery" {{selected.BakeryAndConfectionery}}>Bakery and Confectionery</option>
+            <option value="Bakery and Confectionery" {{selected.BakeryAndConfectionery}}>Bakery and Confectionery
+            </option>
             <option value="Beverages" {{selected.Beverages}}>Beverages</option>
             <option value="Snacks" {{selected.Snacks}}>Snacks</option>
             <option value="Canned and Jarred Goods" {{selected.CannedAndJarredGoods}}>Canned and Jarred Goods</option>
@@ -23,17 +24,18 @@
         <label for="productPrice">Product Price:</label>
         <input type="text" id="productPrice" name="productPrice" value="{{productPrice}}" required>
 
-        <label for="manufactureDate">Manufacture Date "MM/DD/YYYY":</label>
+        <label for="manufactureDate">Manufacture Date (MM/DD/YYYY):</label>
         <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
 
-        <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
+        <label for="expirationDate">Erexpiration Date (MM/DD/YYYY):</label>
         <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
-        
-        <label for="productImage">Product Image:</label>
-        <input type="file" id="productImage" name="productImage" accept="image/*" required>
+
+        <label for="productImage">Product Image (optional):</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*">
+
 
         <button type="submit">Add Product</button>
-    </form>  
+    </form>
     <ul class="errorContainer" id="errorContainer">
         {{#if hasErrors}}
         {{#each errors}}

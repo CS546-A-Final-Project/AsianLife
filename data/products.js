@@ -180,16 +180,24 @@ const updateProduct = async (
 
     return updateProduct.value; // return object
 };
-const updateImage = async (id, fileName) => {
+const updateImage = async (product_id, fileName) => {
+    product_id = xss(product_id);
+    fileName = xss(fileName);
+    product_id = helpers.checkId(product_id, 'product_id');
+    fileName = helpers.checkString(fileName, 'fileName of product')
+    if (!fileName) {
+        fileName = "default.png";
+    }
     const productsCollection = await products();
     await productsCollection.findOneAndUpdate(
-        { _id: new ObjectId(id) },
+        { _id: new ObjectId(product_id) },
         {
             $set: {
                 productImage: fileName,
             }
         },
-        { returnDocument: 'after' });
+        { returnDocument: 'after' }
+    );
 }
 const bindProductWithUser = async (user_id, product_id) => {
     user_id = xss(user_id);
