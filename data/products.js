@@ -15,7 +15,6 @@ const getAllProductsByStoreId = async (store_id) => {
         throw (`Store with id ${store_id} not found`);
     }
     const productIds = store.products;
-    console.log(productIds);
     const objectIds = productIds.map(id => new ObjectId(id));
 
     const allProducts = await productsCollection.find({

@@ -4,11 +4,11 @@ import path from 'path';
 import xss from 'xss';
 import * as productsData from '../data/products.js';
 import helpers from '../helpers.js';
-
 const router = express.Router();
 
 const upload = multer({
-    dest: path.join(process.cwd(), "/public/images/products"), // 注意更改目录为产品图片目录
+    dest: path.join(process.cwd(), "/public/images/products"), 
+    // 注意更改目录为产品图片目录
   });
 
 router
