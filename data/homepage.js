@@ -14,7 +14,9 @@ export async function getStoreSearchResults(searchTerm) {
     
     const formattedStores = matchedStores.map(store => ({
         name: store.name,
+        storeID: store._id,
         photo_id: store.photo_id, 
+        isStore: true
     }));
 
     return formattedStores;
@@ -23,17 +25,18 @@ export async function getStoreSearchResults(searchTerm) {
 
 export async function getProductSearchResults(searchTerm) {
     searchTerm = validation.checkSearchValid(searchTerm);
-
     const productCollection = await products();
 
     const matchedProducts = await productCollection
-        .find({ name: { $regex: searchTerm, $options: 'i' } })
+        .find({ productName: { $regex: searchTerm, $options: 'i' } })
         .limit(10)
         .toArray();
 
     const formattedProdcuts = matchedProducts.map(product => ({
-        name: product.name,
-        productImage: product.productImage
+        name: product.productName,
+        productId: product._id,
+        productImage: product.productImage,
+        isProduct: true
     }));
 
     return formattedProdcuts;
@@ -49,9 +52,10 @@ export async function getRecommendedStores(userId) {
         .sort({ rating: -1 })
         .limit(5)
         .toArray();
-    
+    //console.log(topRatedStores);
     const formattedTopRatedStores = topRatedStores.map(store => ({
         name: store.name,
+        storeId: store._id,
         photo_id: store.photo_id,
         rating: store.rating,
     }));
@@ -71,6 +75,7 @@ export async function getRecommendedProducts(userId) {
     //console.log(topRatedProducts);
     const formattedTopRatedProducts = topRatedProducts.map(product => ({
         name: product.productName,
+        productId: product._id,
         productImage: product.productImage,
         rating: product.rating,
     }));

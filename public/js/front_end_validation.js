@@ -301,7 +301,28 @@
         });
     }
 
-
+    const searchForm = document.getElementById('search-form')
+    if (searchForm){
+        const searchTermInput = document.getElementById("searchTerm");
+        const errorContainer = document.getElementById("errorContainer");
+        searchForm.addEventListener('submit', (event) =>{
+            let errors = [];
+            errorContainer.innerHTML = '';
+            const searchTerm = searchTermInput.value.trim();
+            if (typeof searchTerm !== "string") errors.push('The type of search term must be a string');
+            if (searchTerm.length === 0) errors.push('A search term with only empty spaces is not valid');
+            if (searchTerm.length > 25) errors.push('Search term is too long');
+            
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
+        })
+    }
 
 
     const storecommentStaticForm = document.getElementById('storecomment-form');

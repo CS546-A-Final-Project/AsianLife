@@ -63,6 +63,9 @@ router.route('/search').post(async (req, res) => {
     const name = user.userName;
     let searchType = xss(req.body.searchType);
     let searchTerm = xss(req.body.searchTerm);
+   
+    const topRatedStores = await getRecommendedStores(id);
+    const topRatedProducts = await getRecommendedProducts(id);
 
     let searchResults;
     let noResultsMessage;
@@ -100,15 +103,17 @@ router.route('/search').post(async (req, res) => {
         res.status(400).send('Invalid search type');
         return;
     }
-
+   
     res.status(200).render('home',{
         title: title, 
         name: name,
         avatarId: user.avatar,
-        isAdminAndHasAStore: isAdminAndHasAStore,
-        storeId: storeId,
+        //storeId: store._id,
+        recommendedStores: topRatedStores,
+        recommendedProducts: topRatedProducts,
         searchResult: searchResults,
         noResultsMessage: noResultsMessage,
+        searchTerm: searchTerm
     })
 });
 
