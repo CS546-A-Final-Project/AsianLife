@@ -1,10 +1,10 @@
 import {
-    reviewsforproductsData,
-    reviewsforstoresData,
-    storesData,
-    usersData,
-    commentsData,
-    productsData,
+  reviewsforproductsData,
+  reviewsforstoresData,
+  storesData,
+  usersData,
+  commentsData,
+  productsData,
 } from "../data/index.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 
@@ -13,23 +13,23 @@ await db.dropDatabase();
 
 //--------------------admin1-----------------------
 let newUser = await usersData.addUser(
-  'bobwen',
-  'Mingzhi',
-  'Wen',
-  'abc1@gmail.com',
-  'Abc123,,',
-  'admin'
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc1@gmail.com',
+'Abc123,,',
+'admin'
 );
 let userId = newUser.user_id;
 let newStoreId = await storesData.addStore({
-  adminId: userId,
-  name: 'store1',
-  address: "address",
-  city: "Hoboken",
-  state: "NJ",
-  zipCode: "07030",
-  phoneNumber: "1234567890",
-  email: "abc1@gmail.com",
+adminId: userId,
+name: 'store1',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc1@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 
@@ -147,23 +147,23 @@ product = await productsData.addProduct(
 
 //--------------------admin3-----------------------
 newUser = await usersData.addUser(
-  'bobwen',
-  'Mingzhi',
-  'Wen',
-  'abc3@gmail.com',
-  'Abc123,,',
-  'admin'
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc2@gmail.com',
+'Abc123,,',
+'admin'
 );
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
-  adminId: userId,
-  name: 'store3',
-  address: "address",
-  city: "Hoboken",
-  state: "NJ",
-  zipCode: "07030",
-  phoneNumber: "1234567890",
-  email: "abc3@gmail.com",
+adminId: userId,
+name: 'store2',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc2@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
@@ -195,23 +195,23 @@ product = await productsData.addProduct(
 )
 //--------------------admin4-----------------------
 newUser = await usersData.addUser(
-  'bobwen',
-  'Mingzhi',
-  'Wen',
-  'abc4@gmail.com',
-  'Abc123,,',
-  'admin'
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc3@gmail.com',
+'Abc123,,',
+'admin'
 );
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
-  adminId: userId,
-  name: 'store4',
-  address: "address",
-  city: "Hoboken",
-  state: "NJ",
-  zipCode: "07030",
-  phoneNumber: "1234567890",
-  email: "abc4@gmail.com",
+adminId: userId,
+name: 'store3',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc3@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
@@ -243,23 +243,23 @@ product = await productsData.addProduct(
 )
 //--------------------admin5-----------------------
 newUser = await usersData.addUser(
-  'bobwen',
-  'Mingzhi',
-  'Wen',
-  'abc5@gmail.com',
-  'Abc123,,',
-  'admin'
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc4@gmail.com',
+'Abc123,,',
+'admin'
 );
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
-  adminId: userId,
-  name: 'store5',
-  address: "address",
-  city: "Hoboken",
-  state: "NJ",
-  zipCode: "07030",
-  phoneNumber: "1234567890",
-  email: "abc5@gmail.com",
+adminId: userId,
+name: 'store4',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc4@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
@@ -641,7 +641,7 @@ await closeConnection();
 //     store_id: "1",
 //     product_reviews: ["1", "2"],
 //     });
-    
+  
 // const getAllProducts1 = await productsData.getAllProducts();
 // console.log("getallproducts", getAllProducts1);
 // const getProductById1 = await productsData.getProductById(product1._id.toString());
