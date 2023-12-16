@@ -1,14 +1,3 @@
-
-// import {
-//   reviewsforproductsData,
-//   commentsforstoresData,
-//   storesData,
-//   usersData,
-//   commentsData,
-//   productsData,
-// } from "../data/index.js";
-// import { dbConnection, closeConnection } from "../config/mongoConnection.js";
-
 import {
     reviewsforproductsData,
     reviewsforstoresData,
@@ -19,10 +8,10 @@ import {
 } from "../data/index.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 
+const db = await dbConnection();
+await db.dropDatabase();
 
-// const db = await dbConnection();
-// await db.dropDatabase();
-
+//--------------------admin1-----------------------
 let newUser = await usersData.addUser(
   'bobwen',
   'Mingzhi',
@@ -31,7 +20,7 @@ let newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-let userId = newUser.newUserId.toString();
+let userId = newUser.user_id;
 let newStoreId = await storesData.addStore({
   adminId: userId,
   name: 'store1',
@@ -44,6 +33,70 @@ let newStoreId = await storesData.addStore({
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 
+let product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'AAA',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+let addReview = await reviewsforproductsData.addReview(
+  userId,
+  product,
+  newStoreId,
+  "goooooooooooooooooooooooooooooooooood",
+  4
+)
+addReview = await reviewsforproductsData.addReview(
+  userId,
+  product,
+  newStoreId,
+  "gooooooooooooooooooooooooooooooooood",
+  4
+)
+addReview = await reviewsforproductsData.addReview(
+  userId,
+  product,
+  newStoreId,
+  "goooooooooooooooooooooooooooooooood",
+  4
+)
+addReview = await reviewsforproductsData.addReview(
+  userId,
+  product,
+  newStoreId,
+  "goooooooooooooooooooooooooooooood",
+  4
+)
+addReview = await reviewsforproductsData.addReview(
+  userId,
+  product,
+  newStoreId,
+  "goooooooooooooooooooooooooooood",
+  4
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'AAAA',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'AAAAA',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+
+//--------------------admin2-----------------------
 newUser = await usersData.addUser(
   'bobwen',
   'Mingzhi',
@@ -52,7 +105,7 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-userId = newUser.newUserId.toString();
+userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
   name: 'store2',
@@ -64,7 +117,35 @@ newStoreId = await storesData.addStore({
   email: "abc2@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'BBB',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'BBBB',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'BBBBB',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
 
+//--------------------admin3-----------------------
 newUser = await usersData.addUser(
   'bobwen',
   'Mingzhi',
@@ -73,7 +154,7 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-userId = newUser.newUserId.toString();
+userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
   name: 'store3',
@@ -85,7 +166,34 @@ newStoreId = await storesData.addStore({
   email: "abc3@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
-
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'CCC',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'CCCC',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'CCCCC',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+//--------------------admin4-----------------------
 newUser = await usersData.addUser(
   'bobwen',
   'Mingzhi',
@@ -94,7 +202,7 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-userId = newUser.newUserId.toString();
+userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
   name: 'store4',
@@ -106,7 +214,34 @@ newStoreId = await storesData.addStore({
   email: "abc4@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
-
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'DDD',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'DDDD',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'DDDDD',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+//--------------------admin5-----------------------
 newUser = await usersData.addUser(
   'bobwen',
   'Mingzhi',
@@ -115,7 +250,7 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
-userId = newUser.newUserId.toString();
+userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
   name: 'store5',
@@ -127,6 +262,33 @@ newStoreId = await storesData.addStore({
   email: "abc5@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'EEE',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'EEEE',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'EEEEE',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023'
+)
 await closeConnection();
 // // reviewsforproducts
 // console.log("-----------------------");
