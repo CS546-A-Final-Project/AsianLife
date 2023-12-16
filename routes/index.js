@@ -27,7 +27,6 @@ import commentDetailRoutes from './commentsDetail.js'
 const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
   app.use('/register', registerRoutes);
-
   app.use('/home', homeRoutes);
   app.use('/store', storeRoutes);
   app.use('/addStore', addStoreRoutes);
@@ -40,10 +39,8 @@ const constructorMethod = (app) => {
   app.use('/addProduct', addProductRoutes);
   app.use('/products', productsRoutes);
   app.use('/reviewsForProducts', reviewsForProductsRoutes);
-
   app.use('/storeComments',storeCommentsRoutes);
   app.use('/commentsDetail',commentDetailRoutes);
-
   app.use('/apiForLogin', apiForLoginRoutes);
 
   app.use('*', (req, res) => {
