@@ -36,22 +36,22 @@ const getStoreNameByStoreId = async (store_id) => {
     let store = await storeFunctions.getStoreById(store_id);
     return store.name;
 }
-// const getReviewByReviewId = async (user_id, product_id) => { // By review Id!!!
-//     user_id = xss(user_id);
-//     user_id = helpers.checkId(user_id, "user_id");
-//     const productsCollection = await products();
-//     const product = await productsCollection.findOne({ _id: new ObjectId(id) });
-//     if (!product) {
-//         throw new Error(`Product for _id ${id} dost not found`);
-//     }
-//     const reviewInfo;
-//     for(let review of product.productReviews) {
-//         if (review._id = ) {
-
-//         }
-//     }
-//     return review;
-// };
+const getAllReviewByUserId = async (user_id) => {
+    user_id = xss(user_id);
+    user_id = helpers.checkId(user_id, "user_id");
+    let allReviews = [];
+    const productsCollection = await products();
+    const allProducts = await productsCollection.find({}).toArray();
+    for (let product of allProducts) {
+        let reviews = product.productReviews;
+        for (let review of reviews) {
+            if (review.user_id === user_id) {
+                allReviews.push(review);
+            }
+        }
+    }
+    return allReviews;
+};
 const addReview = async (
     user_id,
     product_id, // ObjectId
@@ -333,11 +333,27 @@ const updateReview = async (
     return updatedReview;
 };
 
-
+const getReviewByReviewId = async (id) => {
+    id = xss(id);
+    id = helpers.checkId(id, "review_id");
+    const productsCollection = await products();
+    const allProducts = await productsCollection.find({}).toArray();
+    for (let product of allProducts) {
+        let reviews = product.productReviews;
+        for (let review of reviews) {
+            if (review._id.toString() === id) {
+                return review;
+            }
+        }
+    }
+    throw "No review with that ID";
+};
 export {
     getAllReviews,
     // getReviewById,
     addReview,
     removeReview,
     updateReview,
+    getAllReviewByUserId,
+    getReviewByReviewId,
 };
