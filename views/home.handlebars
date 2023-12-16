@@ -19,7 +19,7 @@
 </nav>
 
 <div class="searchContainer">
-    <form id="searchForm" action="/home/search" method="POST">
+    <form id="search-form" action="/home/search" method="POST">
         <div class="search-container">
             <div class="search-dropdown">
                 <label for="searchType">Search for:</label>
@@ -30,10 +30,11 @@
                 </select>
             </div>
             <div class="search-input">
-                <input type="text" id="searchTerm" name="searchTerm" placeholder="Enter your search term">
+                <input type="text" id="searchTerm" name="searchTerm" placeholder="Enter your search term" required>
                 <button type="submit">Search</button>
             </div>
         </div>
+        <div id="errorContainer" class="error-messages"></div>
     </form>
 </div>
 
@@ -43,10 +44,27 @@
         <p>{{noResultsMessage}}</p>
     </div>
 {{else}}
+    <div class="search-results-header">
+            <h3>Searched Result for "{{searchTerm}}":</h3>
+        </div>
     <div class="search-results">
         {{#each searchResult}}
             <div class="search-result-item">
-                <h3>{{this.name}}</h3>
+                {{#if this.isStore}}
+                    <a href="/store/{{this.storeID}}">
+                        <img class="store-image" src="/public/images/stores/{{this.photo_id}}" alt="{{this.photo_id}}">
+                        <div class="store-info">
+                        <h3>{{this.name}}</h3>
+                        </div>
+                    </a>
+                {{else if this.isProduct}}
+                    <a href="/product/{{this.productId}}">
+                        <img class="product-image" src="/public/images/products/{{this.productImage}}" alt="{{this.photo_id}}">
+                        <div class = "product-info">
+                        <h3>{{this.name}}</h3>
+                        </div>
+                    </a>
+                {{/if}}
             </div>
         {{/each}}
     </div>
@@ -72,19 +90,14 @@
     {{/if}}
 </div>
 
-
-
-<nav>
-    <a href="/products" class="nav-link product-link">All Products</a>
-</nav>
-
-
 <section class="recommendation-section">
     <h2>Recommended Stores</h2>
     <div class="recommendation-container">
         {{#each recommendedStores}}
             <div class="recommendation-item">
-                <img src="/public/images/stores/{{this.photo_id}}">
+                <a href="/store/{{this.storeId}}">
+                    <img src="/public/images/stores/{{this.photo_id}}" alt="{{this.name}}">
+                </a>
                 <p>{{this.name}}</p>
             </div>
         {{/each}}
@@ -97,9 +110,13 @@
     <div class="recommendation-container">
         {{#each recommendedProducts}}
             <div class="recommendation-item">
-                <img src="/public/images/products/{{this.productImage}}">
+                <a href="/product/{{this.productId}}">
+                    <img src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
+                </a>
                 <p>{{this.name}}</p>
             </div>
         {{/each}}
     </div>
 </section>
+
+<script src="/public/js/front_end_validation.js"></script>
