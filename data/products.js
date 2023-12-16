@@ -152,6 +152,8 @@ const updateProduct = async (
         throw new Error(`Cannot find a product with the id ${id}.`);
     }
 
+    if (currentProduct)
+
     // 检查产品名称是否已存在
     if (productName && productName !== currentProduct.productName) {
         const existingProduct = await productsCollection.findOne({
