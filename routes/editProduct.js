@@ -23,6 +23,7 @@ router
         let productPrice = parseFloat(xss(req.body.productPrice));
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
+        let productImage = req.file.filename;
         let errors = [];
 
         let newProduct = req.body;   
@@ -74,8 +75,6 @@ router
                 manufactureDate,
                 expirationDate
             );
-            // console.log("________________________edit product?_____________________________");
-            // res.status(200).json({ message: `Product ${productId} updated successfully.` });
             await productsData.updateImage(productId, productImage);
             return res.status(200).redirect(`/products/${productId}`);
         } catch (e) {

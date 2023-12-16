@@ -26,10 +26,8 @@ router
         let productName = xss(req.body.productName);
         let productCategory = xss(req.body.productCategory);
         let productPrice = parseFloat(xss(req.body.productPrice));
-        //console.log(typeof productPrice); //xss would make price a string
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
-        // productImage
         let productImage = req.file.filename;
         let errors = [];
 
