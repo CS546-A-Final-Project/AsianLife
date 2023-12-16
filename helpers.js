@@ -96,18 +96,18 @@ const checkCategories = (categoryToCheck) => {
     ];
 
     if (!categories.includes(categoryToCheck)) {
-        throw new Error(`The category ${categoryToCheck} is not a recognized category.`);
+        throw (`The category ${categoryToCheck} is not a recognized category.`);
     }
     return categoryToCheck;
 }
 const checkPrice = (productPrice) => {
     if (typeof productPrice !== "number"){
-        throw new Error (`productPrice ${productPrice} should be a number`);
+        throw (`productPrice ${productPrice} should be a number`);
     }
         
     const reguExForPrice = /^[1-9][0-9]*(\.[0-9]{1,2})?$/;
     if (!reguExForPrice.test(productPrice.toString())) {
-        throw new Error(`${productPrice} should be a positive whole number, positive 2 decimal place float.`);
+        throw (`${productPrice} should be a positive whole number, positive 2 decimal place float.`);
     }      
     
     return productPrice;
@@ -123,7 +123,7 @@ const checkDateFormat = (eventDate, varName) => {
     // ChatGPT: Valid Date format "MM/DD/YYYY"
     const reguExForDate = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
     if (!eventDate.match(reguExForDate))
-        throw new Error(`This event's date ${eventDate} is not in the expected 'MM/DD/YYYY' format.`);
+        throw (`This event's date ${eventDate} is not in the expected 'MM/DD/YYYY' format.`);
 
     // ChatGPT: Check if it is a valid date
     const [month, day, year] = eventDate.split("/").map(Number); // split and convert string into number
@@ -133,7 +133,7 @@ const checkDateFormat = (eventDate, varName) => {
         dateObj.getMonth() !== month - 1 ||
         dateObj.getFullYear() !== year
     ) {
-        throw new Error(`Invalid date ${eventDate} was provided, like 02/30 or 11/31.`);
+        throw (`Invalid date ${eventDate} was provided, like 02/30 or 11/31.`);
     }
     return eventDate;
 };
@@ -162,13 +162,13 @@ const checkDateValid = (manufactureDate, expiryDate) => {
 }
 const checkRating = (rating) => {
     if (typeof rating != "number"){
-        throw new Error (`The product's rating ${rating} should be a number`);
+        throw (`The product's rating ${rating} should be a number`);
     }
     if (!Number.isInteger(rating)) {
-        throw new Error('Rating must be an integer');
+        throw ('Rating must be an integer');
     }
     if (rating < 1 || rating > 5) {
-        throw new Error('Rating must be between 1 and 5');
+        throw ('Rating must be between 1 and 5');
     }
     return rating
 }
