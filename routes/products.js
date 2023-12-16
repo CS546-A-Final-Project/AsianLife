@@ -42,11 +42,15 @@ router
         }
         try {
             let product = await productsData.getProductById(productId);
-            // console.log(product);
-            // return res.status(200).json(product);
+            const storeId = product.store_id;
+            let isAdminOfThisStore = false;
+            if (storeId === req.session.user.ownedStoreId) {
+                isAdminOfThisStore = true;
+            }
             return res.status(200).render('products', {
                 title: product.productName,
                 hasProduct: true,
+                isAdminOfThisStore: isAdminOfThisStore,
                 productName: product.productName,
                 productCategory: product.productCategory,
                 productPrice: product.productPrice,

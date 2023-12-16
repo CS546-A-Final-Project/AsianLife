@@ -1,8 +1,9 @@
 <h1>{{productName}}</h1>
+{{#if isAdminOfThisStore}}
 <a href='/editProduct/{{productId}}' class="button">EDIT Product</a>
 <a href="/products/{{productId}}" class="button"
     onclick="return confirm('Are you sure you want to delete this product?');">DELETE Product</a>
-
+{{/if}}
 {{#if hasProduct}}
 <div class="products-container">
     <p><img src="/public/images/products/{{productImage}}" alt="Image" width="200" height="200"></p>
