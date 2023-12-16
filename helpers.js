@@ -61,7 +61,6 @@ const getUserInfoByEmail = async (email) => {
     }
 }
 
-
 const checkId = (id, varName) => {
     if (!id) throw `Error: You must provide a ${varName}`;
     if (typeof id !== "string") throw `Error:${varName} must be a string`;
@@ -81,7 +80,6 @@ const checkString = (strVal, varName) => {
     return strVal;
 };
 const checkCategories = (categoryToCheck) => {
-    // console.log(categoryToCheck);
     categoryToCheck = checkString(categoryToCheck, 'categoryToCheck'); // 假设这个函数验证并转换为字符串
 
     const categories = [
@@ -135,12 +133,8 @@ const checkDateFormat = (eventDate, varName) => {
         dateObj.getMonth() !== month - 1 ||
         dateObj.getFullYear() !== year
     ) {
-        // if the newly created date object does not match the regular date (09/31 => 10/1)
         throw new Error(`Invalid date ${eventDate} was provided, like 02/30 or 11/31.`);
     }
-    // // Compare date: https://stackoverflow.com/questions/15063670/compare-string-with-todays-date-in-javascript
-    // const currDate = new Date();
-    // if (dateObj <= currDate) throw `${eventDate} should be future events`;
     return eventDate;
 };
 const checkDateValid = (manufactureDate, expiryDate) => {
@@ -150,9 +144,7 @@ const checkDateValid = (manufactureDate, expiryDate) => {
     const manufactureDateObj = new Date(year, month - 1, day);
     // console.log(manufactureDateObj);
     const expiryDateObj = new Date(yearE, monthE - 1, dayE);
-    // console.log(expiryDateObj);
 
-    // check if it is a valid date
     if (isNaN(manufactureDateObj.getTime()) || isNaN(expiryDateObj.getTime())) {
         throw new Error("Invalid date format");
     }

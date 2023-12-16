@@ -11,7 +11,6 @@ import errorRoutes from './error.js';
 import passwordRoutes from './password.js';
 
 import productsRoutes from './products.js';
-import reviewsForProductsRoutes from './reveiwsForProducts.js';
 import editRoutes from './editstore.js'
 import addProductRoutes from './addProduct.js';
 import editProductRoutes from './editProduct.js';
@@ -39,7 +38,6 @@ const constructorMethod = (app) => {
   app.use('/addProduct', addProductRoutes);
   app.use('/products', productsRoutes);
   app.use('/editProduct', editProductRoutes);
-  app.use('/reviewsForProducts', reviewsForProductsRoutes);
 
   app.use('/storeComments',storeCommentsRoutes);
   app.use('/commentsDetail',commentDetailRoutes);

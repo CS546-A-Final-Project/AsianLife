@@ -1,9 +1,9 @@
 <div class="container">
-    <form id="edit-product-form" action="/editProduct/{{productId}}" method="POST" enctype="multipart/form-data">
+    <form id="edit-product-form" action="/editProduct/{{productId}}" method="POST">
         <h2>Update Product</h2>
 
         <label for="productName">Product Name:</label>
-        <input type="text" id="productName" name="productName" value="{{productName}}" required>
+        <input type="text" id="productName" name="productName" value="{{product.productName}}" required>
 
         <label for="productCategory">Product Category:</label>
         <select id="productCategory" name="productCategory">
@@ -21,13 +21,13 @@
         </select>
 
         <label for="productPrice">Product Price:</label>
-        <input type="text" id="productPrice" name="productPrice" value="{{productPrice}}" required>
+        <input type="text" id="productPrice" name="productPrice" value="{{product.productPrice}}" required>
 
         <label for="manufactureDate">Manufacture Date "MM/DD/YYYY":</label>
-        <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
+        <input type="text" id="manufactureDate" name="manufactureDate" value="{{product.manufactureDate}}" required>
 
         <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
-        <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
+        <input type="text" id="expirationDate" name="expirationDate" value="{{product.expirationDate}}" required>
         
         <label for="productImage">Product Image:</label>
         <input type="file" id="productImage" name="productImage" accept="image/*" required>
@@ -35,15 +35,17 @@
         <button type="submit" class="button">Update Product</button>
     </form>  
     <button id="delete-product" type="button" class="button"> delete Product</button>
+     {{#if hasErrors}}
     <ul class="errorContainer" id="errorContainer">
-        {{#if hasErrors}}
+       
         {{#each errors}}
         <li>
             {{this}}
         </li>
         {{/each}}
-        {{/if}}
+        
     </ul>
+    {{/if}}
 </div>
 
 <script src="/public/js/front_end_validation.js"></script>
