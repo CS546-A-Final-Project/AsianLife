@@ -76,6 +76,7 @@ router.route('/')
         try {
             const insertedStore = await bindStoreWithUser(storeId, adminId);
             if (insertedStore.insertStore) {
+                req.session.user.ownedStoreId = storeId;
                 return res.status(200).redirect(`/store/${storeId}`);
             }
         } catch (e) {

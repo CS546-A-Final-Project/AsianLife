@@ -8,10 +8,11 @@ import profileRoutes from './profile.js';
 import uploadRoutes from './upload.js';
 import logoutRoutes from './logout.js';
 import errorRoutes from './error.js';
-import passwordRoutes from './password.js';
-
+import passwordRoutes from './password.js';;
 import productsRoutes from './products.js';
-import editRoutes from './editstore.js'
+import reviewsForProductsRoutes from './reveiwsForProducts.js';
+import editRoutes from './editstore.js';
+import apiForLoginRoutes from './apiForLogin.js';
 import addProductRoutes from './addProduct.js';
 import editProductRoutes from './editProduct.js';
 
@@ -24,7 +25,6 @@ import commentDetailRoutes from './commentsDetail.js'
 const constructorMethod = (app) => {
   app.use('/login', loginRoutes);
   app.use('/register', registerRoutes);
-
   app.use('/home', homeRoutes);
   app.use('/store', storeRoutes);
   app.use('/addStore', addStoreRoutes);
@@ -38,10 +38,9 @@ const constructorMethod = (app) => {
   app.use('/addProduct', addProductRoutes);
   app.use('/products', productsRoutes);
   app.use('/editProduct', editProductRoutes);
-
   app.use('/storeComments',storeCommentsRoutes);
   app.use('/commentsDetail',commentDetailRoutes);
-
+  app.use('/apiForLogin', apiForLoginRoutes);
 
   app.use('*', (req, res) => {
     res.status(404).render('error', { title: "404 NOT FOUND", error: "404 NOT FOUND" });

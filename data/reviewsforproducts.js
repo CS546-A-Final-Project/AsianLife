@@ -33,8 +33,23 @@ const getStoreNameByStoreId = async store_id => {
     store_id = helpers.checkId(store_id, 'store_id');
     let store = await storeFunctions.getStoreById(store_id);
     return store.name;
+}
+const getAllReviewByUserId = async (user_id) => {
+    user_id = xss(user_id);
+    user_id = helpers.checkId(user_id, "user_id");
+    let allReviews = [];
+    const productsCollection = await products();
+    const allProducts = await productsCollection.find({}).toArray();
+    for (let product of allProducts) {
+        let reviews = product.productReviews;
+        for (let review of reviews) {
+            if (review.user_id === user_id) {
+                allReviews.push(review);
+            }
+        }
+    }
+    return allReviews;
 };
-
 const addReview = async (
     user_id,
     product_id,
@@ -344,10 +359,27 @@ const updateReview = async (
     return updatedReview;
 };
 
+const getReviewByReviewId = async (id) => {
+    id = xss(id);
+    id = helpers.checkId(id, "review_id");
+    const productsCollection = await products();
+    const allProducts = await productsCollection.find({}).toArray();
+    for (let product of allProducts) {
+        let reviews = product.productReviews;
+        for (let review of reviews) {
+            if (review._id.toString() === id) {
+                return review;
+            }
+        }
+    }
+    throw "No review with that ID";
+};
 export {
     getAllReviews,
     getUserNamebyUserId,
     addReview,
     removeReview,
     updateReview,
+    getAllReviewByUserId,
+    getReviewByReviewId,
 };

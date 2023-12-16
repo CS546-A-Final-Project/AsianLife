@@ -166,7 +166,30 @@ const exportedMethods = {
     if (!storeNameRegex.test(storeName)) {
       throw "Invalid store name (the store name should be 3 to 25 characters)";
     }
-  }
-};
+  },
 
+
+
+  checkSearchValid(searchTerm){
+    if (!searchTerm) {
+      throw 'Please enter a serchterm';
+  }
+
+    if (typeof searchTerm !== 'string') {
+      throw 'The type of serachterm must be string';
+    }
+
+    searchTerm = searchTerm.trim();
+
+    if (searchTerm.length === 0){
+      throw 'A searchterm all with empty space is not valid';
+     }
+
+    if (searchTerm.length > 25) { 
+      throw 'Search term is too long';
+    }
+
+    return searchTerm;
+  }
+  };
 export default exportedMethods;

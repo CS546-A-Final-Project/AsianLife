@@ -1,6 +1,5 @@
 (function () {
     const registerStaticForm = document.getElementById('registration-form');
-
     if (registerStaticForm) {
         const userNameInput = document.getElementById('userName')
         const firstNameInput = document.getElementById('firstName');
@@ -224,7 +223,6 @@
         addStoreStaticForm.addEventListener('submit', (event) => {
             let errors = [];
             errorContainer.innerHTML = '';
-            
             const name = nameInput.value.trim();
             const address = addressInput.value.trim();
             const city = cityInput.value.trim();
@@ -276,9 +274,8 @@
             if (zipCode.length !== 5) {
                 throw "Zip must contain 5 numbers";
             }
-            
-            for(let i of zipCode) {
-                if(i < '0' || i > '9') {
+            for (let i of zipCode) {
+                if (i < '0' || i > '9') {
                     errors.push("Zip must contain only numbers!");
                 }
             }
@@ -304,7 +301,28 @@
         });
     }
 
-
+    const searchForm = document.getElementById('search-form')
+    if (searchForm){
+        const searchTermInput = document.getElementById("searchTerm");
+        const errorContainer = document.getElementById("errorContainer");
+        searchForm.addEventListener('submit', (event) =>{
+            let errors = [];
+            errorContainer.innerHTML = '';
+            const searchTerm = searchTermInput.value.trim();
+            if (typeof searchTerm !== "string") errors.push('The type of search term must be a string');
+            if (searchTerm.length === 0) errors.push('A search term with only empty spaces is not valid');
+            if (searchTerm.length > 25) errors.push('Search term is too long');
+            
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
+        })
+    }
 
 
     const storecommentStaticForm = document.getElementById('storecomment-form');

@@ -1,5 +1,6 @@
 <h1>{{productName}}</h1>
 {{#if isAdminOfThisStore}}
+{{#if isAdminOfThisStore}}
 <a href='/editProduct/{{productId}}' class="button">EDIT Product</a>
 {{/if}}
 
@@ -18,6 +19,7 @@
             <p>User: {{this.user_id}}</p>
             <p>Rating: {{this.rating}}</p>
             <p>Review: {{this.productReviews}}</p>
+            <p>Review: {{this.productReviews}}</p>
         </li>
         {{/each}}
     </ul>
@@ -30,7 +32,7 @@
 
     <form id="add-review-form" action="/products/{{productId}}" method="POST">
         <label for="productReviews">Add Review 'more than 25 characters lengths':</label>
-        <textarea id="productReviews" name="productReviews" value="{{productReviews}}" required></textarea>
+        <textarea id="productReviews" name="productReviews" required></textarea>
 
         <label for="productRating">Product Rating:</label>
         <select id="productRating" name="productRating">
