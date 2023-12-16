@@ -44,24 +44,28 @@
         <p>{{noResultsMessage}}</p>
     </div>
 {{else}}
-    <div class="search-results-header">
-            <h3>Searched Result for "{{searchTerm}}":</h3>
-        </div>
     <div class="search-results">
+        {{#if searchTerm}}
+            <div class="search-results-header">
+                {{#if searchTerm }}
+                    <h3>Searched Result for "{{searchTerm}}":</h3>
+                {{/if}}
+            </div>
+        {{/if}}
         {{#each searchResult}}
             <div class="search-result-item">
                 {{#if this.isStore}}
                     <a href="/store/{{this.storeID}}">
                         <img class="store-image" src="/public/images/stores/{{this.photo_id}}" alt="{{this.photo_id}}">
                         <div class="store-info">
-                        <h3>{{this.name}}</h3>
+                            <h3>{{this.name}}</h3>
                         </div>
                     </a>
                 {{else if this.isProduct}}
                     <a href="/product/{{this.productId}}">
                         <img class="product-image" src="/public/images/products/{{this.productImage}}" alt="{{this.photo_id}}">
-                        <div class = "product-info">
-                        <h3>{{this.name}}</h3>
+                        <div class="product-info">
+                            <h3>{{this.name}}</h3>
                         </div>
                     </a>
                 {{/if}}
