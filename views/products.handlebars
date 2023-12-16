@@ -1,5 +1,5 @@
 <h1>{{productName}}</h1>
-{{#if isAdminOfThisStore}}
+
 {{#if isAdminOfThisStore}}
 <a href='/editProduct/{{productId}}' class="button">EDIT Product</a>
 {{/if}}
@@ -26,8 +26,6 @@
     {{else}}
     <p>No reviews found for this product.</p>
     {{/if}}
-
-
 
 
     <form id="add-review-form" action="/products/{{productId}}" method="POST">
