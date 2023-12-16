@@ -433,15 +433,6 @@ console.log("add store!");
         '12/06/2023',
         '12/25/2023'
     )
-    const product1_1 = await productsData.addProduct(
-        user1.user_id,
-        store1,
-        'AAA',
-        "Fresh Produce",
-        13,
-        '12/06/2023',
-        '12/25/2023'
-    )
     const product2 = await productsData.addProduct(
         user1.user_id,
         store1,
@@ -474,9 +465,11 @@ console.log("add store!");
     // console.log("removeProduct", removeProduct2);
     const updateProduct1 = await productsData.updateProduct(
         product1,
-        "product1",  
+        "product4",  
         "Fresh Produce",
         15,
+        "12/06/2023",
+        "01/04/2024"
     )
     // console.log(updateProduct1);
     const addReview1 = await reviewsforproductsData.addReview(
