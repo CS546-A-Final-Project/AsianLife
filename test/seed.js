@@ -20,8 +20,8 @@ import {
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 
 
-// const db = await dbConnection();
-// await db.dropDatabase();
+const db = await dbConnection();
+await db.dropDatabase();
 
 // <<<<<<< HEAD
 // let newUser = await usersData.addUser(
@@ -399,7 +399,7 @@ try {
         "Ci1936@Gm",
         "admin"
     )
-    console.log("user1" + user1);
+    // console.log("user1" + user1);
     // console.log(await usersData.getUser(user1._id.toString()));
 
 console.log("add store!");
@@ -425,6 +425,15 @@ console.log("add store!");
     // expirationDate,
     // store_id
     const product1 = await productsData.addProduct(
+        user1.user_id,
+        store1,
+        'AAA',
+        "Fresh Produce",
+        13,
+        '12/06/2023',
+        '12/25/2023'
+    )
+    const product1_1 = await productsData.addProduct(
         user1.user_id,
         store1,
         'AAA',
@@ -497,7 +506,7 @@ console.log("add store!");
     const getAllProducts = await productsData.getAllProductsByStoreId(store1);
     // console.log(getAllProducts);
     const getAllReviews = await reviewsforproductsData.getAllReviews(product1);
-        console.log("get all reviews here! They are objects!" + getAllReviews);
+        // console.log("get all reviews here! They are objects!" + getAllReviews);
 } catch (e) {
         console.log(e)
     }
@@ -597,27 +606,27 @@ console.log("add store!");
 
 
 
-newUser = await usersData.addUser(
-  'bobwen',
-  'Mingzhi',
-  'Wen',
-  'abc4@gmail.com',
-  'Abc123,,',
-  'admin'
-);
-let user4Id = newUser.newUserId;
-console.log(newUser);
+// const newUser = await usersData.addUser(
+//   'bobwen',
+//   'Mingzhi',
+//   'Wen',
+//   'abc4@gmail.com',
+//   'Abc123,,',
+//   'admin'
+// );
+// let user4Id = newUser.newUserId;
+// console.log(newUser);
 
-newUser = await usersData.addUser(
-  'bobwen',
-  'Mingzhi',
-  'Wen',
-  'abc5@gmail.com',
-  'Abc123,,',
-  'admin'
-);
-let user5Id = newUser.newUserId;
-console.log(newUser);
+// newUser = await usersData.addUser(
+//   'bobwen',
+//   'Mingzhi',
+//   'Wen',
+//   'abc5@gmail.com',
+//   'Abc123,,',
+//   'admin'
+// );
+// let user5Id = newUser.newUserId;
+// console.log(newUser);
 await closeConnection();
 // // reviewsforproducts
 // console.log("-----------------------");

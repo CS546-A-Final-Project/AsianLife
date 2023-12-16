@@ -5,11 +5,6 @@ import { ObjectId } from 'mongodb';
 import helpers from '../helpers.js';
 import xss from 'xss';
 
-// const getAllProducts = async () => {
-//     const productsCollection = await products();
-//     const allProducts = await productsCollection.find({}).toArray();
-//     return allProducts;
-//   };
 
 const getAllProductsByStoreId = async (store_id) => {
     store_id = helpers.checkId(store_id);
@@ -28,7 +23,7 @@ const getAllProductsByStoreId = async (store_id) => {
     }).toArray();
     return allProducts;
 };
-const getProductById = async (id) => { // runs well
+const getProductById = async (id) => { 
     id = xss(id);
     id = helpers.checkId(id, 'product_id');
     const productsCollection = await products();
@@ -38,7 +33,7 @@ const getProductById = async (id) => { // runs well
     }
     return product;
 };
-const addProduct = async ( // runs well
+const addProduct = async ( 
     user_id,
     store_id,
     productName,
@@ -46,17 +41,9 @@ const addProduct = async ( // runs well
     productPrice,
     manufactureDate,
     expirationDate,
-    /*
-    {
-        store_id: "dlsnfmdlsalmds"
-        store_name: "Walmart"
-    }
-    findStoreByStoreName("Walmart")
-    */
 ) => {
-    //console.log("in data")
-    // user_id = helpers.checkId(user_id, 'user_id');
-    // store_id = helpers.checkId(store_id, 'store_id');
+    user_id = helpers.checkId(user_id, 'user_id');
+    store_id = helpers.checkId(store_id, 'store_id');
     productName = helpers.checkString(productName, 'productName');
     productCategory = helpers.checkCategories(productCategory, 'productCategory');
     productPrice = helpers.checkPrice(productPrice, 'productPrice');
@@ -66,7 +53,7 @@ const addProduct = async ( // runs well
 
     let newProduct = {
         user_id: user_id,
-        store_id: store_id,  // storeName: storeName
+        store_id: store_id,  
         productName: productName,
         productImage: 'default.png',
         productCategory: productCategory,
@@ -75,10 +62,21 @@ const addProduct = async ( // runs well
         expirationDate: expirationDate,
         productReviews: [],
         productRating: 0,
-        totalAmountOfReviews: 0, // if totalAmountOfReviews = 0
+        totalAmountOfReviews: 0, 
     };
     const storesCollection = await stores();
     const productsCollection = await products();
+    // existing same product?
+    const existingProduct = await productsCollection.findOne({
+        productName: productName,
+        productCategory: productCategory,
+        productPrice: productPrice,
+        manufactureDate: manufactureDate,
+        expirationDate: expirationDate
+    });
+    if (existingProduct) {
+        throw new Error('A product with the same details already exists in the database.');
+    }
 
     // insert new product inside 'store'
     const newInsertProductInformation = await productsCollection.insertOne(newProduct);
@@ -88,13 +86,13 @@ const addProduct = async ( // runs well
         )
     };
     const newProductId = newInsertProductInformation.insertedId;
+    
     // update products array      
     const updateStore = await storesCollection.findOneAndUpdate(
-        { _id: new ObjectId(store_id) }, // use store_id
-        { $push: { products: newProductId.toString() } }, // use $push to add
-        { returnDocument: 'after' } // 可选，如果你想获取更新后的文档
+        { _id: new ObjectId(store_id) }, 
+        { $push: { products: newProductId.toString() } },
+        { returnDocument: 'after' } 
     );
-
     if (!updateStore) {
         throw new Error(`Store with ID ${store_id} could not be updated with new product`);
     }
@@ -110,29 +108,27 @@ const removeProduct = async (id, store_id) => {
     const deletionInfo = await productsCollection.findOneAndDelete({
         _id: new ObjectId(id),
     });
-    //console.log(deletionInfo);
+     
     if (!deletionInfo) {
         throw new Error(`Could not delete product with id of ${id}`);
     }
     const storesCollection = await stores();
-    const store = await storesCollection.findOne({ _id: new ObjectId(store_id)});
+    const store = await storesCollection.findOne({ _id: new ObjectId(store_id) });
     if (!store) {
         throw new Error(`Store with id ${store_id} not found`);
     }
-    // 使用 filter 方法移除产品ID
-    const updatedProductsArray = store.products.filter(productId => productId.toString() !== id);
 
-    // 更新商店文档的 products 数组
+    // remove products in store
+    const updatedProductsArray = store.products.filter(productId => productId.toString() !== id);
     const updateStore = await storesCollection.updateOne(
         { _id: new ObjectId(store_id) },
         { $set: { products: updatedProductsArray } }
     );
-
     if (updateStore.modifiedCount === 0) {
         throw new Error(`Could not update store with id of ${store_id}`);
     }
 
-    return deletionInfo; // return the deleted value
+    return deletionInfo; // return the deleted value(object)
 };
 const updateProduct = async (
     id,
