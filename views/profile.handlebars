@@ -36,10 +36,12 @@
     <label>History Reviews:</label>
     <ul class="userReviews" id="userReviews">
         {{#if hasReviews}}
-        {{#each reviews}}
+        {{#each allReviews}}
+        <a href="/products/{{this.product_id}}/{{this._id}}">
         <li>
-            {{this}}
+            {{this.productReviews}}
         </li>
+        </a>
         {{/each}}
         {{/if}}
         {{#if hasNoReviews}}
