@@ -71,7 +71,15 @@
         </a>
         {{else if this.isProduct}}
         <a href="/products/{{this.productId}}">
-            <img class="product-image" src="/public/images/products/{{this.productImage}}" alt="{{this.photo_id}}">
+            <div class="product-image-container">
+                 <img class="product-image {{#if this.isOutOfStock}}out-of-stock{{else if this.isLowStock}}low-stock{{/if}}" 
+                    src="/public/images/products/{{this.productImage}}" alt="{{this.photo_id}}">
+                {{#if this.isOutOfStock}}
+                <div class="stock-status out-of-stock-text">Out of Stock</div>
+                {{else if this.isLowStock}}
+                <div class="stock-status low-stock-text">Low in Stock</div>
+            {{/if}}
+            </div>
             <div class="product-info">
                 <h3>{{this.name}}</h3>
             </div>
@@ -80,6 +88,23 @@
     </div>
     {{/each}}
 </div>
+{{/if}}
+
+
+{{#if replacements}}
+<section class="replacement-section">
+    <h2>Products You May Like:</h2>
+    <div class="replacement-container">
+        {{#each replacements}}
+        <div class="replacement-item">
+            <a href="/products/{{this.productId}}">
+                <img src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
+            </a>
+            <p>{{this.name}}</p>
+        </div>
+        {{/each}}
+    </div>
+</section>
 {{/if}}
 
 <section class="recommendation-section">
@@ -103,9 +128,14 @@
         {{#each recommendedProducts}}
         <div class="recommendation-item">
             <a href="/products/{{this.productId}}">
-                <img src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
+                <div class="product-image-container">
+                    <img class="product-image {{#if this.isLowStock}}low-stock{{/if}}" src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
+                    {{#if this.isLowStock}}
+                    <div class="stock-status low-stock-text">Low in Stock</div>
+                    {{/if}}
+                </div>
+                <p>{{this.name}}</p>
             </a>
-            <p>{{this.name}}</p>
         </div>
         {{/each}}
     </div>
