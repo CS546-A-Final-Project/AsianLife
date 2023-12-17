@@ -1,39 +1,38 @@
 <nav>
     <a href="/home">Home</a>
 </nav>
-    <h1>{{title}} Comment Detail</h1>
+<h1>{{title}} Comment Detail</h1>
 
-    <ul>
-        <li>{{comment}}
-            {{#if isCommenter}}
-            <p>(Your Comment)</p>
-            {{/if}}
-            {{#if answer}}
-            <ul>
-                <li>&rarr; {{answer}}</li>
-            </ul>
-            {{/if}}
-        </li>
-    </ul>
-    
+<ul>
+    <li>{{comment}}
+        {{#if isCommenter}}
+        <p>(Your Comment)</p>
+        {{/if}}
+        {{#if answer}}
+        <ul>
+            <li>&rarr; {{answer}}</li>
+        </ul>
+        {{/if}}
+    </li>
+</ul>
 
-     {{#if isAdmin}}
-        {{#unless answer}}
-            <form id="answer-form" action="/commentsDetail/{{commentId}}" method="POST">
-                <label for="answer">Owner Answer:</label>
-                <input type="text" name="answerInput" id="answerInput">
-                <button type="submit">Add answer</button>
-            </form>
-            <ul class="errorContainer" id="errorContainer">
-                {{#if hasErrors}}
-                    {{#each errors}}
-                        <li>{{this}}</li>
-                    {{/each}}
-                {{/if}}
-            </ul>
-            <script src="/public/js/front_end_validation.js"></script>
-        {{/unless}}
-    {{else}}
-        <p>Only store Owner can answer the comment</p>
+
+{{#if isAdmin}}
+{{#unless answer}}
+<form id="answer-form" action="/commentsDetail/{{commentId}}" method="POST">
+    <label for="answer">Owner Answer:</label>
+    <input type="text" name="answerInput" id="answerInput">
+    <button type="submit">Add answer</button>
+</form>
+<ul class="errorContainer" id="errorContainer">
+    {{#if hasErrors}}
+    {{#each errors}}
+    <li>{{this}}</li>
+    {{/each}}
     {{/if}}
-   
+</ul>
+{{/unless}}
+{{else}}
+<p>Only store Owner can answer the comment</p>
+{{/if}}
+<script src="/public/js/front_end_validation.js"></script>
