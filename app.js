@@ -163,7 +163,7 @@ app.use('/editStore/:id', (req, res, next) => {
     req.session.errorCode = 403;
     return res.status(403).redirect('/error');
   } else if (req.session.user.role === 'admin' && req.session.user.ownedStoreId === req.params.id) {
-    
+
     next();
   }
 });
@@ -201,16 +201,22 @@ app.use('/reviewsForProducts', (req, res, next) => {
 });
 
 app.use('/storeComments', (req, res, next) => {
+  const requestRoute = req.originalUrl;
   if (!req.session.user) {
     return res.status(200).redirect('/login');
+  } else if (requestRoute === '/storeComments' || requestRoute === '/storeComments/') {
+    return res.status(200).redirect('/home');
   } else {
     next();
   }
 });
 
 app.use('/commentsDetail', (req, res, next) => {
+  const requestRoute = req.originalUrl;
   if (!req.session.user) {
     return res.status(200).redirect('/login');
+  } else if (requestRoute === '/commentsDetail' || requestRoute === '/commentsDetail/') {
+    return res.status(200).redirect('/home');
   } else {
     next();
   }

@@ -462,8 +462,38 @@
         })
     }//add answer page
 
-    
+    const addReviewStaticForm = document.getElementById('add-review-form');
+    if (addReviewStaticForm) {
+        const errorContainer = document.getElementById('errorContainer');
+        const reviewInput = document.getElementById("productReviews");
+        const ratingInput = document.getElementById("productRating");
+        addReviewStaticForm.addEventListener('submit', (event) => {
+            let errors = [];
+            errorContainer.innerHTML = '';
 
+            const review = reviewInput.value.trim();
+            const rating = ratingInput.value.trim();
+            
+            reviewInput.value = review;
+            ratingInput.value = rating;
+
+            if (review.length < 25 || review.length > 200) {
+                errors.push("Review must be 25 - 200 characters")
+            }
+
+            if (rating !== '1' && rating !== '2' && rating !== '3' && rating !== '4' && rating !== '5') {
+                errors.push("Rating should be 1 - 5");
+            }
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
+        })
+    }
     
 
 })();
