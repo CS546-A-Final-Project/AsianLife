@@ -333,12 +333,9 @@
             errorContainer.innerHTML = '';
 
             const comment = commentInput.value.trim();
+            if(!comment || comment.length < 25) errors.push( 'comment must more than 25 characters and not just space!');
             if(comment.length > 200) errors.push( 'comment cannot surpass 200 valid characters!');
-            if (!comment) errors.push( `You must provide a comment`);
             if (typeof comment !== "string") errors.push( `Error:comment must be a string`);
-            if (comment.length === 0){
-                errors.push( `comment cannot be an empty string or just spaces`);
-            }
 
             if (errors.length > 0) {
                 event.preventDefault();

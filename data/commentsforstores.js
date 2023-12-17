@@ -39,6 +39,7 @@ const addComment = async (storeComment) => {
   const store= await storesData.getStoreById(store_id)
 
   try{
+    if(comment.length < 25) throw 'comment must more than 25 characters!';
     if(comment.length > 200) throw 'comment cannot surpass 200 valid characters! '
     validation.checkId(user_id);
     validation.checkId(store_id);
