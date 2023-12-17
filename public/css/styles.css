@@ -406,6 +406,23 @@ button:hover {
   text-decoration: underline;
 }
 
+.store-description {
+  text-align: center;
+  margin-top: 20px; 
+}
+
+.store-greeting {
+  color: #333; 
+  font-size: 2em; 
+  margin-bottom: 0.25em; 
+}
+
+.store-motto {
+  color: #555; 
+  font-size: 1em; 
+  max-width: 600px; 
+  margin: 0 auto; 
+}
 
 
 html, body {
