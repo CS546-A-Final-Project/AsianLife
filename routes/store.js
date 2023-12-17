@@ -35,18 +35,18 @@ router.route('/:id').get(async (req, res) => {
         if (role === 'admin' && user.ownedStoreId && storeId !== user.ownedStoreId) {
             isAdminAndHasAStore = true;
         }
-        const productReviews =
-            res.status(200).render('store', {
-                name: theUser.userName,
-                avatarId: theUser.avatar,
-                storeId: user.ownedStoreId,
-                isAdminAndHasAStore: isAdminAndHasAStore,
-                title: store.name,
-                storeProducts: storeProducts,
-                storeID: storeId,
-                user: userRole,
-                isOwner: isOwner
-            });
+        const productReviews = 
+        res.status(200).render('store', {
+            name: theUser.userName,
+            avatarId: theUser.avatar,
+            storeId: user.ownedStoreId,
+            isAdminAndHasAStore: isAdminAndHasAStore,
+            title: store.name,
+            storeProducts: storeProducts,
+            storeID: storeId,
+            user: userRole,
+            isOwner: isOwner
+        });
 
 
     } catch (e) {

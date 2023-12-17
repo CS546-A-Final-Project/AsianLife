@@ -1,34 +1,52 @@
-<form enctype="multipart/form-data" method="put" action="/edit/{{productId}}" id="uploadForm">
+<div class="container">
+    <form id="edit-product-form" action="/editProduct/{{productId}}" method="POST">
+        <h2>Update Product</h2>
 
-    <label for="productName">Product Name:</label>
-    <input type="text" id="productName" name="productName" value="{{productName}}" required />
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" value="{{product.productName}}" required>
 
-    <label for="productCategory">Product Category:</label>
-    <select id="productCategory" name="productCategory">
-        <option value="" disabled {{selected.default}}>Select</option>
-        <option value="Fresh Produce" {{selected.FreshProduce}}>Fresh Produce</option>
-        <option value="Dairy Products" {{selected.DairyProducts}}>Dairy Products</option>
-        <option value="Meat and Poultry" {{selected.MeatAndPoultry}}>Meat and Poultry</option>
-        <option value="Seafood" {{selected.Seafood}}>Seafood</option>
-        <option value="Frozen Foods" {{selected.FrozenFoods}}>Frozen Foods</option>
-        <option value="Bakery and Confectionery" {{selected.BakeryAndConfectionery}}>Bakery and Confectionery</option>
-        <option value="Beverages" {{selected.Beverages}}>Beverages</option>
-        <option value="Snacks" {{selected.Snacks}}>Snacks</option>
-        <option value="Canned and Jarred Goods" {{selected.CannedAndJarredGoods}}>Canned and Jarred Goods</option>
-        <option value="Dry Goods and Staples" {{selected.DryGoodsAndStaples}}>Dry Goods and Staples</option>
-    </select>
+        <label for="productCategory">Product Category:</label>
+        <select id="productCategory" name="productCategory">
+            <option value="" disabled {{selected.default}}>Select</option>
+            <option value="Fresh Produce" {{selected.FreshProduce}}>Fresh Produce</option>
+            <option value="Dairy Products" {{selected.DairyProducts}}>Dairy Products</option>
+            <option value="Meat and Poultry" {{selected.MeatAndPoultry}}>Meat and Poultry</option>
+            <option value="Seafood" {{selected.Seafood}}>Seafood</option>
+            <option value="Frozen Foods" {{selected.FrozenFoods}}>Frozen Foods</option>
+            <option value="Bakery and Confectionery" {{selected.BakeryAndConfectionery}}>Bakery and Confectionery</option>
+            <option value="Beverages" {{selected.Beverages}}>Beverages</option>
+            <option value="Snacks" {{selected.Snacks}}>Snacks</option>
+            <option value="Canned and Jarred Goods" {{selected.CannedAndJarredGoods}}>Canned and Jarred Goods</option>
+            <option value="Dry Goods and Staples" {{selected.DryGoodsAndStaples}}>Dry Goods and Staples</option>
+        </select>
 
-    <label for="productPrice">Product Price:</label>
-    <input type="text" id="productPrice" name="productPrice" value="{{productPrice}}" required>
+        <label for="productPrice">Product Price:</label>
+        <input type="text" id="productPrice" name="productPrice" value="{{product.productPrice}}" required>
 
-    <label for="manufactureDate">Manufacture Date:</label>
-    <input type="text" id="manufactureDate" name="manufactureDate" value="{{manufactureDate}}" required>
+        <label for="manufactureDate">Manufacture Date "MM/DD/YYYY":</label>
+        <input type="text" id="manufactureDate" name="manufactureDate" value="{{product.manufactureDate}}" required>
 
-    <label for="expirationDate">Erexpiration Date:</label>
-    <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
+        <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
+        <input type="text" id="expirationDate" name="expirationDate" value="{{product.expirationDate}}" required>
+        
+        <label for="productImage">Product Image:</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*" >
 
-    <label for="productImage">Product Image:</label>
-    <input type="file" id="productImage" name="productImage" accept="image/*" required>
+        <button type="submit" class="button">Update Product</button>
+    </form>  
+    <button id="delete-product" type="button" class="button"> delete Product</button>
+     {{#if hasErrors}}
+    <ul class="errorContainer" id="errorContainer">
+       
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+        
+    </ul>
+    {{/if}}
+</div>
 
-    <button type="submit">Update Product</button>
-</form>
+<script src="/public/js/front_end_validation.js"></script>
+<script src="/public/js/front-end-update.js"></script>
