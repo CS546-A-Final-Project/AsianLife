@@ -87,7 +87,11 @@ const loginUser = async (email, password) => {
   if (!validator.isEmail(email)) throw "Email address should be a valid email address format. example@example.com";
 
   password = password.trim();
-  if (!validation.checkIfPasswordValid(password)) throw "Password must have at least 8 characters, with at least 1 uppercase letter, 1 number, and 1 symbol";
+  try {
+    password = validation.checkPassword(password, 'password');
+  } catch (e) {
+    throw e;
+  }
 
   if (!await helpers.checkIfEmailExists(email)) throw "Either the email address or password is invalid";
 

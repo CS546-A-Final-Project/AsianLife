@@ -184,8 +184,12 @@ app.use('/addProduct', (req, res, next) => {
 });
 
 app.use('/products', (req, res, next) => {
+  const requestRoute = req.originalUrl;
   if (!req.session.user) {
     return res.status(200).redirect('/login');
+  }
+  if (requestRoute === '/products' || requestRoute === '/products/') {
+    return res.status(200).redirect('/home');
   } else {
     next();
   }
