@@ -451,3 +451,28 @@ p {
   margin: 5px 0;
   font-size: 14px;
 }
+
+.contact-info {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-item {
+  margin-bottom: 15px;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.value {
+  display: inline-block;
+}
+
