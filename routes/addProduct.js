@@ -30,6 +30,7 @@ router
         let productPrice = parseFloat(xss(req.body.productPrice));
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
+        let stock = xss(req.body.stock);
         let productImage;
         if (req.file && req.file.filename) {
             productImage = req.file.filename;
@@ -82,6 +83,14 @@ router
         } catch (e) {
             errors.push(e);
         }
+        if (/^\d+$/.test(stock)) {
+            stock = parseInt(stock, 10);
+            if (stock < 1 || stock > 999) {
+                errors.push("Stock should be 1 - 999");
+            }
+        } else {
+            errors.push('Stock should be an integer');
+        }
         if (errors.length > 0) {
             const selected = { [`${productCategory}`]: 'selected' };
             return res.status(400).render('addProduct', {
@@ -91,6 +100,7 @@ router
                 productPrice: productPrice,
                 manufactureDate: manufactureDate,
                 expirationDate: expirationDate,
+                stock: stock,
                 selected: selected,
                 hasErrors: true,
                 errors: errors,
@@ -106,6 +116,7 @@ router
                 productPrice,
                 manufactureDate,
                 expirationDate,
+                stock,
             );
             await productsData.updateImage(productId, productImage);
             return res.status(200).redirect(`/products/${productId}`);
@@ -121,6 +132,7 @@ router
                 productPrice: productPrice,
                 manufactureDate: manufactureDate,
                 expirationDate: expirationDate,
+                stock: stock,
                 selected: selected,
                 hasErrors: true,
                 errors: errors,
