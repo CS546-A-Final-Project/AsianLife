@@ -15,7 +15,7 @@ const getAllComments = async (storeId) => {
   const comments = await commentsCollection.find({store_id: storeid}).project({_id:1, comment:1, Answer: 1}).toArray();
   return comments;
 };
-// console.log(await getAllComments("657b2761bd1b4f1cadcc4b28"))
+
 const getCommentById = async (Id) => {
 
   let id = xss(Id).trim();
@@ -29,7 +29,7 @@ const getCommentById = async (Id) => {
   if (!storecomment) throw "comment cannot found";
   return storecomment;
 };
-// console.log(await getCommentById("657b2ab6cd44465788d395a6"))
+
 
 const addComment = async (storeComment) => {
   let user_id = xss(storeComment.user_id).trim();
@@ -57,12 +57,11 @@ const addComment = async (storeComment) => {
   const newInsertInformation = await commentsCollection.insertOne(newstorecomment);
   if(!newInsertInformation.acknowledged || !newInsertInformation.insertedId) throw "Could not add this comment"
   const newId = newInsertInformation.insertedId;
-  // const userData = await storesData.updateStore(user_id)
+
   return await getCommentById(newId.toString());
 };
  
-// const newcomment = await addComment({user_id: "657b2751bd1b4f1cadcc4b27", store_id: "657b2761bd1b4f1cadcc4b28", comment: "This is a comment"})
-// console.log(newcomment)
+
 const addAnswer = async(Id,  Answer) => {
   let id = xss(Id).trim();
   let answer = xss(Answer).trim();
@@ -94,7 +93,6 @@ const addAnswer = async(Id,  Answer) => {
   return await getCommentById(id);
 };
 
-// console.log(await addAnswer("657b2c191f5f7e5acebdcdf2", "this is an answer"))
 
 const getAnswerById = async(Id) => {
   let id = xss(Id).trim();
@@ -108,7 +106,7 @@ const getAnswerById = async(Id) => {
   if (!commentAnswer) throw "no answer from owner for now";
   return commentAnswer;
 }
-// console.log(await getAnswerById("657b2ab6cd44465788d395a6"))
+
 const deleteAnswer = async(Id) =>{
   let id = xss(Id).trim();
   try{
@@ -149,7 +147,7 @@ const removeComment= async (Id) => {
   console.log(deletionInfo);
   return deletionInfo;
 };
-// console.log(await removeComment("657b2ab6cd44465788d395a6"))
+
 export  {
   getAllComments,
   getCommentById,
