@@ -14,9 +14,10 @@ const upload = multer({
 });
 
 router.post("/", upload.single("file"), async (req, res) => {
-  //console.log(req.file);
-  await updateAvatar(req.session.user.id, req.file.filename);
-  res.status(200).redirect("/profile");
+  if (req.file) {
+    await updateAvatar(req.session.user.id, req.file.filename);
+  }
+  return res.status(200).redirect("/profile");
 });
 
 const uploadStore = multer({
@@ -137,10 +138,7 @@ console.log("success");
     });
   }
   console.log("success");
-  return res.status(200).render("editStore", {
-    title: "editStore",
-    message:"edit store successfully",
-  });
+  return res.redirect(`/store/${storeId}`);
 
 });
 export default router;

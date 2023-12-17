@@ -45,6 +45,13 @@ router.route('/')
         const title = "Profile";
         const id = req.session.user.id;
         let user = await getUser(id);
+        let hasReviews = false;
+        let hasNoReviews = true;
+        let allReviews = await getAllReviewByUserId(id);
+        if (allReviews.length > 0) {
+            hasReviews = true;
+            hasNoReviews = false;
+        }
         let cleanUserName = xss(req.body.userName);
         let cleanFirstName = xss(req.body.firstName);
         let cleanLastName = xss(req.body.lastName);
@@ -89,7 +96,7 @@ router.route('/')
             } else if (cleanGender === "female") {
                 selectedFemale = "selected";
             }
-            return res.status(200).render('profile', {
+            return res.status(400).render('profile', {
                 title: title,
                 avatarId: user.avatar,
                 userName: cleanUserName,
@@ -128,7 +135,7 @@ router.route('/')
             } else if (cleanGender === "female") {
                 selectedFemale = "selected";
             }
-            return res.status(200).render('profile', {
+            return res.status(400).render('profile', {
                 title: title,
                 avatarId: user.avatar,
                 userName: cleanUserName,

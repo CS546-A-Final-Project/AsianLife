@@ -1,3 +1,23 @@
+<nav>
+    <a href="/home">Home</a>
+    <a href="/profile">{{name}}</a>
+    {{#if isAdminAndHasAStore}}
+    <a href="/store/{{storeId}}">My Store</a>
+    {{/if}}
+    <a href="/profile" id="avatar">
+        <img src="/public/images/users/{{avatarId}}" alt="Avatar">
+    </a>
+    <div class="dropdown">
+        <button class="dropbtn">Personal Center</button>
+        <div class="dropdown-content">
+            <a href="/profile">Profile</a>
+            <a href="/password">Password Change</a>
+            <a href="/logout">Logout</a>
+        </div>
+
+    </div>
+</nav>
+
 <h1>{{productName}}</h1>
 <div class="products-container">
     <p><img src="/public/images/products/{{product.productImage}}" alt="Image" width="200" height="200"></p>

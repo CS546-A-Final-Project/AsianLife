@@ -3,8 +3,16 @@ import helpers from '../helpers.js';
 import * as productsData from '../data/products.js';
 import * as reviewsForProductsData from '../data/reviewsforproducts.js';
 import { getReviewByReviewId, updateReview } from '../data/reviewsforproducts.js';
+import { getUser } from '../data/users.js';
 import xss from 'xss';
 const router = express.Router();
+
+router
+    .route('/')
+    .get(async (req, res) => {
+        res.status(400).json('Cannot be here');
+    })
+
 
 router
     .route('/:productId') // get one product after add it
@@ -21,6 +29,14 @@ router
             });
         }
         try {
+            const id = req.session.user.id;
+            const role = req.session.user.role;
+            let isAdminAndHasAStore = false;
+            if (role === 'admin' && req.session.user.ownedStoreId) {
+                isAdminAndHasAStore = true;
+            }
+            const user = await getUser(id);
+            const name = user.userName;
             let product = await productsData.getProductById(productId);
             // let userName = await reviewsForProductsData.get(user_id);
             const storeId = product.store_id;
@@ -30,6 +46,10 @@ router
             }
             return res.status(200).render('products', {
                 title: product.productName,
+                name: name,
+                storeId: req.session.user.ownedStoreId,
+                isAdminAndHasAStore: isAdminAndHasAStore,
+                avatarId: user.avatar,
                 hasProduct: true,
                 isAdminOfThisStore: isAdminOfThisStore,
                 // userName:userName,
@@ -119,6 +139,14 @@ router
 router
     .route('/:productId/:reviewId')
     .get(async (req, res) => {
+        const userId = req.session.user.id;
+        const role = req.session.user.role;
+        let isAdminAndHasAStore = false;
+        if (role === 'admin' && req.session.user.ownedStoreId) {
+            isAdminAndHasAStore = true;
+        }
+        const user = await getUser(userId);
+        const name = user.userName;
         let id = xss(req.params.productId);
         let reviewId = xss(req.params.reviewId);
         try {
@@ -157,6 +185,11 @@ router
             }
 
             return res.status(200).render('updateReview', {
+                title: 'Update Review',
+                name: name,
+                storeId: req.session.user.ownedStoreId,
+                isAdminAndHasAStore: isAdminAndHasAStore,
+                avatarId: user.avatar,
                 product: product,
                 reviewId: reviewId,
                 review: content,

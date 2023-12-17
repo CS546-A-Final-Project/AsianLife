@@ -2,6 +2,7 @@ import { stores } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 import { getUser } from "./users.js";
 import xss from "xss";
+import helpers from "../helpers.js";
 import validation from "../validation.js";
 
 
@@ -20,7 +21,7 @@ const getStoreById = async (id) => {
 // const rating = store.rating
 // console.log(rating)
 const addStore = async (store) => {
-  // let adminId = xss(store.adminId).trim();
+  let adminId = xss(store.adminId).trim();
   let name = xss(store.name).trim();
   let address = xss(store.address).trim();
   let city = xss(store.city).trim();
@@ -34,10 +35,10 @@ const addStore = async (store) => {
     state: state,
     zip: zipCode,
   }
-  // const admin = await getUser(adminId);
-  // if (admin.role !== "admin") {
-  //   throw "The user don't have authorization to add a store";
-  // }
+  const admin = await getUser(adminId);
+  if (admin.role !== "admin") {
+    throw "The user don't have authorization to add a store";
+  }
   try {
     validation.checkIfLocationValid(location);
     validation.checkIfPhoneNumberValid(phoneNumber);
@@ -45,10 +46,13 @@ const addStore = async (store) => {
     validation.checkIfStoreNameValid(name);
   } catch (e) {
     throw e;
+  }ß
+  if (await helpers.checkIfStoreNameExists(name)) {
+    throw "Store name exists";
   }
   const currentTime = new Date().toUTCString()
   const newStore = {
-    // admin_id: adminId,
+    admin_id: adminId,
     name: name,
     photo_id: "default.jpg",
     established_date: currentTime,
@@ -73,20 +77,20 @@ const addStore = async (store) => {
   const newId = newInsertInformation.insertedId;
   return newId.toString();
 };
-const updateCommentofStore = async(id, commentInput) =>{
-    let storeid = xss(id).trim();
-    let comment = xss(commentInput).trim();
-    try{
-      validation.checkId(storeid)
-    }catch(e){
-      throw e;
-    }
+const updateCommentofStore = async (id, commentInput) => {
+  let storeid = xss(id).trim();
+  let comment = xss(commentInput).trim();
+  try {
+    validation.checkId(storeid)
+  } catch (e) {
+    throw e;
+  }
 
-    try{
-      validation.checkString(comment)
-    }catch(e){
-      throw e;
-    }
+  try {
+    validation.checkString(comment)
+  } catch (e) {
+    throw e;
+  }
 
   const storesCollection = await stores();
   let store = await getStoreById(storeid);
@@ -96,7 +100,7 @@ const updateCommentofStore = async(id, commentInput) =>{
     admin_id: store.admin_id,
     name: store.name,
     photo_id: store.photo_id,
-    established_date:store.established_date,
+    established_date: store.established_date,
     store_location: store.store_location,
     rating: store.rating,
     products: store.products,
@@ -105,15 +109,15 @@ const updateCommentofStore = async(id, commentInput) =>{
   }
 
   const updatedInfo = await storesCollection.updateOne(
-    {_id: new ObjectId(storeid)},
-    {$set: updatedstore},)
+    { _id: new ObjectId(storeid) },
+    { $set: updatedstore },)
 
-   if (!updatedInfo.acknowledged) {
+  if (!updatedInfo.acknowledged) {
     throw 'could not update comment for this store successfully';
   }
-  
+
   return await getStoreById(storeid);
-    
+
 }
 
 // console.log(await updateCommentofStore("657bd5e262038496c68b371a", "this is a comment"))
@@ -173,7 +177,7 @@ const updateStore = async (id, updatedStore) => {
     reviews: {},
   }
   const storesCollection = await stores();
- 
+
   let updateCommand = {
     $set: updateStoreData,
   };
