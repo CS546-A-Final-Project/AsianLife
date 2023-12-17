@@ -34,7 +34,7 @@
 
         <button type="submit" class="button">Update Product</button>
     </form>  
-    <form id="delete-review-form" action="/editProduct/{{productId}}">
+    <form id="delete-product-form" action="/editProduct/{{productId}}">
         <button type="submit">Delete Review</button>
     </form>
 
@@ -52,4 +52,9 @@
 </div>
 
 <script src="/public/js/front_end_validation.js"></script>
-<script src="/public/js/front-end-update.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+<script src="/public/js/delete_product_ajax.js"></script>

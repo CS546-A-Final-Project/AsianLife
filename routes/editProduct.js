@@ -22,8 +22,14 @@ router
             selected: { [`${product.productCategory.replace(/\s+/g, '')}`]: "selected" }
         })
     })
-    .post(upload.single("productImage"), async (req, res) => { // runs well
+    .post(upload.single("productImage"), async (req, res) => {
+        let role = req.session.user.role;
         let productId = xss(req.params.productId);
+        let product = await productsData.getProductById(productId);
+        store_id = product.store_id;
+        if (role !== 'admin' || req.session.user.ownedStoreId !== store_id) {
+            return res.status(403).render('error', { error: "You don't have the authority to update this product." });
+        }
         let productName = xss(req.body.productName);
         let productCategory = xss(req.body.productCategory);
         let productPrice = parseFloat(xss(req.body.productPrice));
@@ -31,7 +37,7 @@ router
         let expirationDate = xss(req.body.expirationDate);
         let productImage;
         if (req.file && req.file.filename) {
-            productImage = xss(req.file.filename);
+            productImage = req.file.filename;
         } else {
             const product = await productsData.getProductById(productId);
             productImage = product.productImage;
@@ -39,7 +45,6 @@ router
         let errors = [];
 
         let newProduct = req.body;   
-        // console.log(req);   
         if (!newProduct || Object.keys(newProduct).length === 0) {
             return res.status(400).json({ error: "You didn't provide any information to update." });
         }
@@ -78,9 +83,22 @@ router
         } catch (e) {
             errors.push(e);
         }
+        if (errors.length > 0) {
+            const product = await productsData.getProductById(productId);
+            const selected = { [`${productCategory}`]: 'selected' };
+            return res.status(400).render('editProduct', {
+                title: "edit Product",
+                productId: productId,
+                product: product,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            })
+        }
+        errors = [];
         try {
           await productsData.updateProduct(
-                productId, // must
+                productId,
                 productName,
                 productCategory,
                 productPrice,
@@ -93,7 +111,6 @@ router
             errors.push(e);
         };
         if (errors.length > 0) {
-            const productId = req.params.productId;
             const product = await productsData.getProductById(productId);
             const selected = { [`${productCategory}`]: 'selected' };
             return res.status(400).render('editProduct', {
@@ -108,7 +125,12 @@ router
     })
     .delete(async (req, res) => { // runs well
         let productId = xss(req.params.productId);
-        let store_id = xss(req.session.user.ownedStoreId);
+        let product = await productsData.getProductById(productId);
+        let role = req.session.user.role;
+        let store_id = product.store_id;
+        if (role !== 'admin' || req.session.user.ownedStoreId !== store_id) {
+            return res.status(403).render('error', { error: "You don't have the authority to update this product." });
+        }
         try {
             productId = helpers.checkId(productId, 'product');
         } catch (e) {
@@ -124,7 +146,7 @@ router
             if (!product) {
                 return res.json({ deleteReview: false });
             }
-            return res.json({ deleteReview: true });
+            return res.json({ deleteReview: true, store_id: store_id});
         } catch (e) {
             return res.status(400).render('error', { error: e });
         }
