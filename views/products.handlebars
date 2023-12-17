@@ -18,14 +18,14 @@
     </div>
 </nav>
 <h1>{{productName}}</h1>
+
 {{#if isAdminOfThisStore}}
 <a href='/editProduct/{{productId}}' class="button">EDIT Product</a>
-<a href="/products/{{productId}}" class="button"
-    onclick="return confirm('Are you sure you want to delete this product?');">DELETE Product</a>
 {{/if}}
+
 {{#if hasProduct}}
 <div class="products-container">
-    <p><img src="/public/images/products/{{productImage}}" alt="Image" width="200" height="200"></p>
+<p><img src="/public/images/products/{{#if productImage}}{{productImage}}{{else}}default.png{{/if}}" alt="Product Image" width="200" height="200"></p>
     <p>Product Category: {{productCategory}}</p>
     <p>Price: ${{productPrice}}</p>
     <p>Manufacture Date: {{manufactureDate}}</p>
@@ -33,9 +33,10 @@
 
     {{#if productReviews}}
     <ul>
+        
         {{#each productReviews}}
-        <li>
-            <p>User: {{this.user_id}}</p>
+        <li> 
+            <p>User: {{this.userName}}</p>       
             <p>Rating: {{this.rating}}</p>
             <p>Review: {{this.productReviews}}</p>
         </li>
@@ -47,8 +48,6 @@
 
 
     <form id="add-review-form" action="/products/{{productId}}" method="POST">
-        <input type="hidden" name="productId" value="{{product._id}}">
-
         <label for="productReviews">Add Review 'more than 25 characters lengths':</label>
         <textarea id="productReviews" name="productReviews" required></textarea>
 

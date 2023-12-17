@@ -19,7 +19,7 @@
 </nav>
 
 <p>{{store.store_name}}</p>
-<div class="store-comment">
+
   <a class="link-button" href="/storeComments/{{storeID}}">
     Store Comments
   </a>
@@ -35,6 +35,10 @@
     EDITSTORE
   </a>
   {{/if}}
+  <p>Contact Infomation</p>
+  <p>Phone:{{contact_information.phone}}</p>
+  <p>Email:{{contact_information.email}}</p>
+  <p>Address:{{store_location.streetAddress}},{{store_location.city}},{{store_location.state}}</p>
 
   <h1>The Products of {{title}}</h1>
 

@@ -16,12 +16,17 @@ router
 
 router
     .route('/:productId') // get one product after add it
-    .get(async (req, res) => { // runs well
-        let productId = xss(req.params.productId); // updateId
+    .get(async (req, res) => {
+        let productId = xss(req.params.productId);
+        // let user_id = xss(req.session.user.id);
         try {
             productId = helpers.checkId(productId, 'productId');
+            // user_id = helpers.checkId(user_id, "user_id");
         } catch (e) {
-            return res.status(400).render('products', { error: e });
+            return res.status(400).render('products', {
+                hasErrors: true,
+                errors: e
+            });
         }
         try {
             const id = req.session.user.id;
@@ -33,6 +38,7 @@ router
             const user = await getUser(id);
             const name = user.userName;
             let product = await productsData.getProductById(productId);
+            // let userName = await reviewsForProductsData.get(user_id);
             const storeId = product.store_id;
             let isAdminOfThisStore = false;
             if (storeId === req.session.user.ownedStoreId) {
@@ -46,21 +52,95 @@ router
                 avatarId: user.avatar,
                 hasProduct: true,
                 isAdminOfThisStore: isAdminOfThisStore,
+                // userName:userName,
                 productName: product.productName,
                 productCategory: product.productCategory,
                 productPrice: product.productPrice,
                 manufactureDate: product.manufactureDate,
                 expirationDate: product.expirationDate,
                 productReviews: product.productReviews,
-                productImage: product.productImage
+                productImage: product.productImage,
+                productId: productId // for add reviews
             });
-
         } catch (e) {
-            res.status(404).render('error', {
-                errors: e.message
+            return res.status(404).render('error', {
+                errors: e
             });
         }
     })
+    .post(async (req, res) => { // 加评论！！！add a review for a product
+        let user_id = xss(req.session.user.id);
+        let productId = xss(req.params.productId); // for test
+        let storeIdForOwner = xss(req.session.user.ownedStoreId); // for test
+        let store_id;
+        let productReviews = xss(req.body.productReviews);
+        let rating = parseInt(xss(req.body.productRating));
+        let errors = [];
+        try {
+            user_id = helpers.checkId(user_id, 'user_id');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            productId = helpers.checkId(productId, 'productId');
+            let product = await productsData.getProductById(productId);
+            store_id = product.store_id;
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            store_id = helpers.checkId(store_id, 'store_id');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            productReviews = helpers.checkReview(productReviews, 'productReview');
+        } catch (e) {
+            errors.push(e);
+        }
+        try {
+            rating = helpers.checkRating(rating, 'rating');
+        } catch (e) {
+            errors.push(e);
+        }
+        if (errors.length > 0) {
+            return res.status(400).render('products', {
+                productName: productName,
+                productReviews: productReviews,
+                rating: rating,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            })
+        }
+        errors = [];
+        try {
+            if (storeIdForOwner === store_id) {
+                throw "You can not add review for your store's products."
+            }
+            await reviewsForProductsData.addReview(
+                user_id,
+                productId,
+                store_id,
+                productReviews,
+                rating
+            )
+            res.status(200).redirect(`/products/${productId}`);
+        } catch (e) {
+            errors.push(e);
+        }
+        if (errors.length > 0) {
+            return res.status(400).render('products', {
+                productName: productName,
+                productReviews: productReviews,
+                rating: rating,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            })
+        }
+    })
+
 
 router
     .route('/:productId/:reviewId')

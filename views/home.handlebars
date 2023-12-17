@@ -1,5 +1,6 @@
 <nav>
     <a href="/home">Home</a>
+    <a href="/store">All Store</a>
     <a href="/profile">{{name}}</a>
     {{#if isAdminAndHasAStore}}
     <a href="/store/{{storeId}}">My Store</a>
@@ -41,69 +42,50 @@
 
 {{!-- Check for no results message --}}
 {{#if noResultsMessage}}
-    <div class="no-results-message">
-        <p>{{noResultsMessage}}</p>
-    </div>
+<div class="no-results-message">
+    <p>{{noResultsMessage}}</p>
+</div>
 {{else}}
-    <div class="search-results">
-        {{#if searchTerm}}
-            <div class="search-results-header">
-                {{#if searchTerm }}
-                    <h3>Searched Result for "{{searchTerm}}":</h3>
-                {{/if}}
-            </div>
+<div class="search-results">
+    {{#if searchTerm}}
+    <div class="search-results-header">
+        {{#if searchTerm }}
+        <h3>Searched Result for "{{searchTerm}}":</h3>
         {{/if}}
-        {{#each searchResult}}
-            <div class="search-result-item">
-                {{#if this.isStore}}
-                    <a href="/store/{{this.storeID}}">
-                        <img class="store-image" src="/public/images/stores/{{this.photo_id}}" alt="{{this.photo_id}}">
-                        <div class="store-info">
-                            <h3>{{this.name}}</h3>
-                        </div>
-                    </a>
-                {{else if this.isProduct}}
-                    <a href="/products/{{this.productId}}">
-                        <img class="product-image" src="/public/images/products/{{this.productImage}}" alt="{{this.photo_id}}">
-                        <div class="product-info">
-                            <h3>{{this.name}}</h3>
-                        </div>
-                    </a>
-                {{/if}}
-            </div>
-        {{/each}}
     </div>
-{{/if}}
-
-
-
-    <a href="/store" class="nav-link store-link">All Stores</a>
-    <div class="store-grid">
-    {{#if hasStores}}
-    {{#each stores}}
-    <div class="store-card">
-        <a href="/store/{{this._id}}">
-        <img class="store-image" src="/public/images/stores/{{this.photo_id}}" alt="{{this.photo_id}}">
-        <div class="store-info">
-            <h3>{{this.name}}</h3>
-            <p>Description</p>
-        </div>
+    {{/if}}
+    {{#each searchResult}}
+    <div class="search-result-item">
+        {{#if this.isStore}}
+        <a href="/store/{{this.storeID}}">
+            <img class="store-image" src="/public/images/stores/{{this.photo_id}}" alt="{{this.photo_id}}">
+            <div class="store-info">
+                <h3>{{this.name}}</h3>
+            </div>
         </a>
+        {{else if this.isProduct}}
+        <a href="/products/{{this.productId}}">
+            <img class="product-image" src="/public/images/products/{{this.productImage}}" alt="{{this.photo_id}}">
+            <div class="product-info">
+                <h3>{{this.name}}</h3>
+            </div>
+        </a>
+        {{/if}}
     </div>
     {{/each}}
-    {{/if}}
 </div>
+{{/if}}
 
 <section class="recommendation-section">
     <h2>Recommended Stores</h2>
     <div class="recommendation-container">
         {{#each recommendedStores}}
-            <div class="recommendation-item">
-                <a href="/store/{{this.storeId}}">
-                    <img src="/public/images/stores/{{this.photo_id}}" alt="{{this.name}}">
-                </a>
-                <p>{{this.name}}</p>
-            </div>
+        <div class="recommendation-item">
+            <a href="/store/{{this.storeId}}">
+                <img src="/public/images/stores/{{this.photo_id}}" alt="{{this.name}}">
+            </a>
+            <p>{{this.name}}</p>
+        </div>
         {{/each}}
     </div>
 </section>
@@ -113,12 +95,12 @@
     <h2>Recommended Products</h2>
     <div class="recommendation-container">
         {{#each recommendedProducts}}
-            <div class="recommendation-item">
-                <a href="/products/{{this.productId}}">
-                    <img src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
-                </a>
-                <p>{{this.name}}</p>
-            </div>
+        <div class="recommendation-item">
+            <a href="/products/{{this.productId}}">
+                <img src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
+            </a>
+            <p>{{this.name}}</p>
+        </div>
         {{/each}}
     </div>
 </section>

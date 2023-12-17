@@ -26,7 +26,7 @@ router.route('/').get(async (req, res) => {
     const name = user.userName;
     const stores = await getAllStores();
     if (!stores) {
-        return res.status(200).render('home',{
+        return res.status(400).render('home',{
             title: title, 
             name: name,
             avatarId: user.avatar,

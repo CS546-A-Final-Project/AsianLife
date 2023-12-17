@@ -46,7 +46,7 @@ const addStore = async (store) => {
     validation.checkIfStoreNameValid(name);
   } catch (e) {
     throw e;
-  }ß
+  }
   if (await helpers.checkIfStoreNameExists(name)) {
     throw "Store name exists";
   }
