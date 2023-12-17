@@ -181,7 +181,7 @@ app.use('/addProduct', (req, res, next) => {
 });
 
 app.use('/products', (req, res, next) => {
-  const requestRoute = req.originalUrl;
+  const requestRoute = req.originalUrl.toLowerCase();
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   }
@@ -201,10 +201,10 @@ app.use('/reviewsForProducts', (req, res, next) => {
 });
 
 app.use('/storeComments', (req, res, next) => {
-  const requestRoute = req.originalUrl;
+  const requestRoute = req.originalUrl.toLowerCase();
   if (!req.session.user) {
     return res.status(200).redirect('/login');
-  } else if (requestRoute === '/storeComments' || requestRoute === '/storeComments/') {
+  } else if (requestRoute === '/storecomments' || requestRoute === '/storecomments/') {
     return res.status(200).redirect('/home');
   } else {
     next();
@@ -212,10 +212,10 @@ app.use('/storeComments', (req, res, next) => {
 });
 
 app.use('/commentsDetail', (req, res, next) => {
-  const requestRoute = req.originalUrl;
+  const requestRoute = req.originalUrl.toLowerCase();
   if (!req.session.user) {
     return res.status(200).redirect('/login');
-  } else if (requestRoute === '/commentsDetail' || requestRoute === '/commentsDetail/') {
+  } else if (requestRoute === '/commentsdetail' || requestRoute === '/commentsdetail/') {
     return res.status(200).redirect('/home');
   } else {
     next();
