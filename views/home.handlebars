@@ -4,6 +4,9 @@
     {{#if isAdminAndHasAStore}}
     <a href="/store/{{storeId}}">My Store</a>
     {{/if}}
+    {{#if isAdminAndHasNoStore}}
+    <a href="/addstore">Add Store</a>
+    {{/if}}
     <a href="/profile" id="avatar">
         <img src="/public/images/users/{{avatarId}}" alt="Avatar">
     </a>
