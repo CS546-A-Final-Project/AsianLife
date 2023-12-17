@@ -40,6 +40,7 @@ const addProduct = async (
     productPrice,
     manufactureDate,
     expirationDate,
+    stock,
 ) => {
     user_id = helpers.checkId(user_id, 'user_id');
     store_id = helpers.checkId(store_id, 'store_id');
@@ -49,6 +50,10 @@ const addProduct = async (
     manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
     expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     helpers.checkDateValid(manufactureDate, expirationDate);
+    if (!stock) throw "Stock cannot be empty";
+    if (typeof stock !== 'number') throw "Type of stock should be a number";
+    if (!Number.isInteger(stock)) throw "Stock should be an integer";
+    if (stock < 1 || stock > 999) throw "Stock should be 1 - 999";
 
     const productsCollection = await products();
     const storesCollection = await stores();
@@ -73,6 +78,7 @@ const addProduct = async (
         productPrice: productPrice,
         manufactureDate: manufactureDate,
         expirationDate: expirationDate,
+        stock: stock,
         productReviews: [],
         productRating: 0,
         totalAmountOfReviews: 0,
@@ -134,7 +140,8 @@ const updateProduct = async (
     productCategory,
     productPrice,
     manufactureDate,
-    expirationDate
+    expirationDate,
+    stock,
 ) => {
     id = xss(id);
     id = helpers.checkId(id, 'product_id');
@@ -145,6 +152,10 @@ const updateProduct = async (
     manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
     expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     helpers.checkDateValid(manufactureDate, expirationDate);
+    if (typeof stock === 'undefined') throw "Stock cannot be empty";
+    if (typeof stock !== 'number') throw "Type of stock should be a number";
+    if (!Number.isInteger(stock)) throw "Stock should be an integer";
+    if (stock < 0 || stock > 999) throw "Stock should be 0 - 999";
 
     const productsCollection = await products();
 
@@ -172,7 +183,8 @@ const updateProduct = async (
         productCategory,
         productPrice,
         manufactureDate,
-        expirationDate
+        expirationDate,
+        stock,
     };
 
     const updateResult = await productsCollection.findOneAndUpdate(
