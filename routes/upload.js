@@ -138,10 +138,7 @@ console.log("success");
     });
   }
   console.log("success");
-  return res.status(200).render("editStore", {
-    title: "editStore",
-    message:"edit store successfully",
-  });
+  return res.redirect(`/store/${storeId}`);
 
 });
 export default router;
