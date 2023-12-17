@@ -54,7 +54,7 @@ router
             errors.push(e);
         }
         try {
-            productName = helpers.checkString(productName, 'productName');
+            productName = helpers.checkProductName(productName);
         } catch (e) {
             errors.push(e);
         }
