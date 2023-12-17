@@ -1,5 +1,6 @@
 import validator from "validator";
 import { ObjectId } from "mongodb";
+
 const exportedMethods = {
   checkUserName(string, varName) {
     if (!string) throw `You must provide a ${varName}`;
@@ -57,10 +58,15 @@ const exportedMethods = {
       minNumbers: 1,
       minSymbols: 1,
     };
-    const isValidPassword = validator.isStrongPassword(
-      password,
-      passwordRequirements
-    );
+    let isValidPassword;
+    try {
+      isValidPassword = validator.isStrongPassword(
+        password,
+        passwordRequirements
+      );
+    } catch (e) {
+      throw e;
+    }
     if (password.includes(' '))
       throw `${password} should not contain any space`;
     if (!isValidPassword) {
@@ -165,7 +171,30 @@ const exportedMethods = {
     if (!storeNameRegex.test(storeName)) {
       throw "Invalid store name (the store name should be 3 to 25 characters)";
     }
+  },
+
+
+
+  checkSearchValid(searchTerm) {
+    if (!searchTerm) {
+      throw 'Please enter a serchterm';
+    }
+
+    if (typeof searchTerm !== 'string') {
+      throw 'The type of serachterm must be string';
+    }
+
+    searchTerm = searchTerm.trim();
+
+    if (searchTerm.length === 0) {
+      throw 'A searchterm all with empty space is not valid';
+    }
+
+    if (searchTerm.length > 25) {
+      throw 'Search term is too long';
+    }
+
+    return searchTerm;
   }
 };
-
 export default exportedMethods;

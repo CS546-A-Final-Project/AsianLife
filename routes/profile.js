@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import { getUser, updateUser } from '../data/users.js'
+import { getAllReviewByUserId } from '../data/reviewsforproducts.js';
 import validation from '../validation.js'
 import helper from '../helpers.js';
 import xss from 'xss';
@@ -10,6 +11,13 @@ router.route('/')
         const title = "Profile";
         const id = req.session.user.id;
         let user = await getUser(id);
+        let hasReviews = false;
+        let hasNoReviews = true;
+        let allReviews = await getAllReviewByUserId(id);
+        if (allReviews.length > 0) {
+            hasReviews = true;
+            hasNoReviews = false;
+        }
         let selectedNull = "", selectedMale = "", selectedFemale = "";
         if (user.gender === null) {
             selectedNull = "selected";
@@ -28,14 +36,22 @@ router.route('/')
             selectedNull: selectedNull,
             selectedMale: selectedMale,
             selectedFemale: selectedFemale,
-            hasReviews: false,
-            hasNoReviews: true,
+            hasReviews: hasReviews,
+            hasNoReviews: hasNoReviews,
+            allReviews: allReviews,
         });
     })
     .post(async (req, res) => {
         const title = "Profile";
         const id = req.session.user.id;
         let user = await getUser(id);
+        let hasReviews = false;
+        let hasNoReviews = true;
+        let allReviews = await getAllReviewByUserId(id);
+        if (allReviews.length > 0) {
+            hasReviews = true;
+            hasNoReviews = false;
+        }
         let cleanUserName = xss(req.body.userName);
         let cleanFirstName = xss(req.body.firstName);
         let cleanLastName = xss(req.body.lastName);
@@ -80,7 +96,7 @@ router.route('/')
             } else if (cleanGender === "female") {
                 selectedFemale = "selected";
             }
-            return res.status(200).render('profile', {
+            return res.status(400).render('profile', {
                 title: title,
                 avatarId: user.avatar,
                 userName: cleanUserName,
@@ -90,9 +106,10 @@ router.route('/')
                 selectedNull: selectedNull,
                 selectedMale: selectedMale,
                 selectedFemale: selectedFemale,
-                hasReviews: false,
-                hasNoReviews: true,
+                hasReviews: hasReviews,
+                hasNoReviews: hasNoReviews,
                 hasErrors: true,
+                allReviews: allReviews,
                 errors: errors,
             });
         }
@@ -118,7 +135,7 @@ router.route('/')
             } else if (cleanGender === "female") {
                 selectedFemale = "selected";
             }
-            return res.status(200).render('profile', {
+            return res.status(400).render('profile', {
                 title: title,
                 avatarId: user.avatar,
                 userName: cleanUserName,
@@ -128,8 +145,9 @@ router.route('/')
                 selectedNull: selectedNull,
                 selectedMale: selectedMale,
                 selectedFemale: selectedFemale,
-                hasReviews: false,
-                hasNoReviews: true,
+                hasReviews: hasReviews,
+                hasNoReviews: hasNoReviews,
+                allReviews: allReviews,
                 hasErrors: true,
                 errors: errors,
             });

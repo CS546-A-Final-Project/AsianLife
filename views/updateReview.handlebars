@@ -1,0 +1,66 @@
+<nav>
+    <a href="/home">Home</a>
+    <a href="/profile">{{name}}</a>
+    {{#if isAdminAndHasAStore}}
+    <a href="/store/{{storeId}}">My Store</a>
+    {{/if}}
+    <a href="/profile" id="avatar">
+        <img src="/public/images/users/{{avatarId}}" alt="Avatar">
+    </a>
+    <div class="dropdown">
+        <button class="dropbtn">Personal Center</button>
+        <div class="dropdown-content">
+            <a href="/profile">Profile</a>
+            <a href="/password">Password Change</a>
+            <a href="/logout">Logout</a>
+        </div>
+
+    </div>
+</nav>
+
+<h1>{{productName}}</h1>
+<div class="products-container">
+    <p><img src="/public/images/products/{{product.productImage}}" alt="Image" width="200" height="200"></p>
+    <p>Product Category: {{product.productCategory}}</p>
+    <p>Price: ${{product.productPrice}}</p>
+    <p>Manufacture Date: {{product.manufactureDate}}</p>
+    <p>Expiration Date: {{product.expirationDate}}</p>
+
+    <form id="update-review-form" action="/products/{{product._id}}/{{reviewId}}" method="POST">
+
+        <label for="productReviews">Update Review 'more than 25 characters lengths':</label>
+        <textarea id="productReviews" name="productReviews" required>{{review}}</textarea>
+
+        <label for="productRating">Product Rating:</label>
+        <select id="productRating" name="productRating">
+            <option value="" disabled {{selected.default}}>Select</option>
+            <option value="1" {{selected.a}}>1 - Poor</option>
+            <option value="2" {{selected.b}}>2 - Fair</option>
+            <option value="3" {{selected.c}}>3 - Good</option>
+            <option value="4" {{selected.d}}>4 - Very Good</option>
+            <option value="5" {{selected.e}}>5 - Excellent</option>
+        </select>
+
+        <button type="submit">Update Review</button>
+    </form>
+    <form id="delete-review-form" action="/products/{{product._id}}/{{reviewId}}">
+        <button type="submit">Delete Review</button>
+    </form>
+</div>
+
+<ul class="errorContainer" id="errorContainer">
+    {{#if hasErrors}}
+    {{#each errors}}
+    <li>
+        {{this}}
+    </li>
+    {{/each}}
+    {{/if}}
+</ul>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+<script src="/public/js/update_review_ajax.js"></script>

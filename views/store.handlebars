@@ -1,19 +1,72 @@
-<p>{{store.store_name}}</p>
-<button id="store_comment" name="store_comment">Store Comment</button>
-<button id="store_edit" name="store_edit" hidden>EDIT</button>
-<button id = "add_product" name = "add_product" hidden>App Product</button>
+<nav>
+  <a href="/home">Home</a>
+  <a href="/profile">{{name}}</a>
+  {{#if isAdminAndHasAStore}}
+  <a href="/store/{{storeId}}">My Store</a>
+  {{/if}}
+  <a href="/profile" id="avatar">
+    <img src="/public/images/users/{{avatarId}}" alt="Avatar">
+  </a>
+  <div class="dropdown">
+    <button class="dropbtn">Personal Center</button>
+    <div class="dropdown-content">
+      <a href="/profile">Profile</a>
+      <a href="/password">Password Change</a>
+      <a href="/logout">Logout</a>
+    </div>
 
-<h1>The Products of Store</h1>
-<div class="products-container">
-  <ul>
-    {{#each storeProducts}}
-      <li class="product">
-        <p>Product Name: {{this.product_name}}</p>
-        <p><img src = "/public/images/products/{{this.product_image}}" alt="Image" width="50" height="50"></p>
-        <p>Price: ${{this.product_price}}</p>
-        <p>Posted Date: {{this.posted_date}}</p>
-        <a href="/product/{{this.product_id}}">View Product</a>
-      </li>
-    {{/each}}
-  </ul>
+  </div>
+</nav>
+
+<p>{{store.store_name}}</p>
+
+  <a class="link-button" href="/storeComments/{{storeID}}">
+    Store Comments
+  </a>
+
+  {{#if isOwner}}
+  <a class="link-button" href="/addproduct">
+    ADDPRODUCT
+  </a>
+  <a class="link-button" href="/editstore/{{storeID}}">
+    EDITSTORE
+  </a>
+  {{/if}}
+  <div class="contact-info">
+  <h2>Contact Information</h2>
+  <div class="info-item">
+    <p class="label">Store Name:</p>
+    <p class="value">{{title}}</p>
+  </div>
+  <div class="info-item">
+    <p class="label">Phone:</p>
+    <p class="value">{{contact_information.phone}}</p>
+  </div>
+  <div class="info-item">
+    <p class="label">Email:</p>
+    <p class="value">{{contact_information.email}}</p>
+  </div>
+  <div class="info-item">
+    <p class="label">Address:</p>
+    <p class="value">{{store_location.streetAddress}}, {{store_location.city}}, {{store_location.state}}</p>
+  </div>
 </div>
+
+
+
+  {{!-- {{#if hasStoreProducts}} --}}
+  <div class="product-grid">
+    {{#each storeProducts}}
+    <div class="product-card">
+      <a href="/products/{{this._id}}">
+        <img class="product-image" src="/public/images/products/{{this.productImage}}" alt="{{this.productImage}}">
+        <div class="product-info">
+          <h3>{{this.productName}}</h3>
+          <p>Price: ${{this.productPrice}}</p>
+          <p>Rating: {{this.productRating}}</p>
+          <p>Review:{{this.firstReview}}</p>
+        </div>
+      </a>
+    </div>
+    {{/each}}
+  </div>

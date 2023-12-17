@@ -14,9 +14,10 @@ const upload = multer({
 });
 
 router.post("/", upload.single("file"), async (req, res) => {
-  console.log(req.file);
-  await updateAvatar(req.session.user.id, req.file.filename);
-  res.status(200).redirect("/profile");
+  if (req.file) {
+    await updateAvatar(req.session.user.id, req.file.filename);
+  }
+  return res.status(200).redirect("/profile");
 });
 
 const uploadStore = multer({
@@ -47,18 +48,32 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
     validation.checkIfStoreNameValid(name);
   } catch (e) {
     errors.push(e);
+    const selected = { default: "selected" };
+    return res.status(400).render("editStore", {
+      title: "editStore",
+      name: name,
+      address: address,
+      city: city,
+      state: state,
+      zipCode: zipCode,
+      phoneNumber: phoneNumber,
+      email: email,
+      selected: selected,
+      hasErrors: true,
+      errors: errors,
+      storeId: storeId,
+    });
   }
   const location = {
     address: address,
     city: city,
     state: state,
     zip: zipCode,
-}
+  };
   const contact_information = {
     email: email,
     phoneNumber: phoneNumber,
   };
-  console.log("success");
   try {
     validation.checkIfLocationValid(location);
     console.log("checkIfLocationValid");
@@ -85,7 +100,7 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
     validation.checkIfPhoneNumberValid(phoneNumber);
     console.log("checkIfPhoneNumberValid");
     validation.checkEmail(email, "E-mail");
-} catch (e) {
+  } catch (e) {
     errors.push(e);
     const selected = { default: "selected" };
     return res.status(400).render("editStore", {
@@ -102,8 +117,8 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
       errors: errors,
       storeId: storeId,
     });
-}
-console.log("success");
+  }
+ 
   try {
     await updateStore(req.params.id, {
       adminId: adminId,
@@ -118,9 +133,8 @@ console.log("success");
   } catch (e) {
     console.log(e);
     errors.push(e);
-  }
-  if (errors.length > 0) {
-    const selected = { [`${state}`]: 'selected' };
+     
+    const selected = { [`${state}`]: "selected" };
     return res.status(400).render("editStore", {
       title: "editStore",
       name: name,
@@ -135,8 +149,9 @@ console.log("success");
       errors: errors,
       storeId: storeId,
     });
+  
   }
-  console.log("success");
-  return res.status(200).redirect("/editstore/" + req.params.id);
+  
+  return res.redirect(`/store/${storeId}`);
 });
 export default router;

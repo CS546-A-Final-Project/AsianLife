@@ -19,8 +19,16 @@ router.route('/')
       return res.json(errorMessage);
     }
 
-    if (!validator.isEmail(cleanEmail)) errors.push("Email address should be a valid email address format. example@example.com");
-    if (!validation.checkPassword(cleanPassword)) errors.push("Password must have 8 characters, with at least 1 lowercase letters, 1 uppercase letters, 1 numbers, and 1 symbols");
+    try {
+      if (!validator.isEmail(cleanEmail)) errors.push("Email address should be a valid email address format. example@example.com");
+    } catch (e) {
+      errors.push(e);
+    }
+    try {
+      validation.checkPassword(cleanPassword, 'Password')
+    } catch (e) {
+      errors.push(e);
+    }
 
     if (errors.length > 0) {
         let errorMessage = {login: false, error: []};

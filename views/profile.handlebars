@@ -32,25 +32,6 @@
 
         <button type="submit">Update</button>
     </form>
-
-    <label>History Reviews:</label>
-    <ul class="userReviews" id="userReviews">
-        {{#if hasReviews}}
-        {{#each reviews}}
-        <li>
-            {{this}}
-        </li>
-        {{/each}}
-        {{/if}}
-        {{#if hasNoReviews}}
-        <li>
-            You didn't leave any reviews before.
-        </li>
-        {{/if}}
-    </ul>
-    
-    <br>
-    <a href="/password" class="link-button">Change Your Password</a>
     <ul class="errorContainer" id="errorContainer">
         {{#if hasErrors}}
         {{#each errors}}
@@ -60,6 +41,26 @@
         {{/each}}
         {{/if}}
     </ul>
+    <label>History Reviews:</label>
+    <ul class="userReviews" id="userReviews">
+        {{#if hasReviews}}
+            {{#each allReviews}}
+                <li>
+                    <a href="/products/{{this.product_id}}/{{this._id}}">
+                        {{this.productReviews}}
+                    </a>
+                </li>
+            {{/each}}
+        {{/if}}
+        {{#if hasNoReviews}}
+        <li>
+            You didn't leave any reviews before.
+        </li>
+        {{/if}}
+    </ul>
+
+    <br>
+    <a href="/password" class="link-button">Change Your Password</a>
 </div>
 
 <script src="/public/js/front_end_validation.js"></script>
