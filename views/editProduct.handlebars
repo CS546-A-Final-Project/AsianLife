@@ -1,5 +1,5 @@
 <div class="container">
-    <form id="edit-product-form" action="/editProduct/{{productId}}" method="POST">
+    <form id="edit-product-form" action="/editProduct/{{productId}}" method="POST" enctype="multipart/form-data">
         <h2>Update Product</h2>
 
         <label for="productName">Product Name:</label>
@@ -29,8 +29,8 @@
         <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
         <input type="text" id="expirationDate" name="expirationDate" value="{{product.expirationDate}}" required>
         
-        <label for="productImage">Product Image:</label>
-        <input type="file" id="productImage" name="productImage" accept="image/*" >
+        <label for="productImage">Product Image "optional":</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*">
 
         <button type="submit" class="button">Update Product</button>
     </form>  

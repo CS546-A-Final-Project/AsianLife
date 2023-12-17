@@ -1,8 +1,14 @@
 import express from 'express';
+import multer from 'multer';
+import path from 'path';
 import helpers from '../helpers.js';
 import * as productsData from '../data/products.js';
 import xss from 'xss';
 const router = express.Router();
+
+const upload = multer({
+    dest: path.join(process.cwd(), "/public/images/products"), 
+  });
 
 router
     .route('/:productId')
@@ -16,7 +22,7 @@ router
             selected: { [`${product.productCategory.replace(/\s+/g, '')}`]: "selected" }
         })
     })
-    .post(async (req, res) => { // runs well
+    .post(upload.single("productImage"), async (req, res) => { // runs well
         let productId = xss(req.params.productId);
         let productName = xss(req.body.productName);
         let productCategory = xss(req.body.productCategory);

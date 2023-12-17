@@ -8,7 +8,6 @@ const router = express.Router();
 
 const upload = multer({
     dest: path.join(process.cwd(), "/public/images/products"), 
-    // 注意更改目录为产品图片目录
   });
 
 router
