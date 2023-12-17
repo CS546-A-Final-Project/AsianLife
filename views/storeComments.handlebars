@@ -1,37 +1,36 @@
 <nav>
     <a href="/home">Home</a>
 </nav>
-    {{#if isAdmin}}
-    <p>Welcome Store Owner!</p>
-    {{/if}}
-    <h1>{{title}} Comments List</h1>
+{{#if isAdmin}}
+<p>Welcome Store Owner!</p>
+{{/if}}
+<h1>{{title}} Comments List</h1>
 
-    <ul> 
-        {{#each commentList}}
-            <li><a href="/commentsDetail/{{this._id}}">{{this.comment}}</a></li>
-        {{else}}
-            <li>No comments for this store now.</li>
-        {{/each}}
-    </ul>
-
-    {{#if isUser}}
-        <form id="storecomment-form" action="/storeComments/{{storeID}}" method="POST">
-            <label for="commentInput">Your Comment:</label>
-            <input type="text" name="commentInput" id="commentInput">
-
-            <button type="submit">Add New Comment</button> 
-        </form>
-        <ul class="errorContainer" id="errorContainer">
-        {{#if hasErrors}}
-        {{#each errors}}
-        <li>
-            {{this}}
-        </li>
-        {{/each}}
-        {{/if}}
-        </ul>
-        <script src="/public/js/front_end_validation.js"></script>
+<ul>
+    {{#each commentList}}
+    <li><a href="/commentsDetail/{{this._id}}">{{this.comment}}</a></li>
     {{else}}
-        <p>Only User can comment store</p>
-    {{/if}}
+    <li>No comments for this store now.</li>
+    {{/each}}
+</ul>
 
+{{#if isUser}}
+<form id="storecomment-form" action="/storeComments/{{storeID}}" method="POST">
+    <label for="commentInput">Your Comment:</label>
+    <input type="text" name="commentInput" id="commentInput" value="{{comment}}">
+
+    <button type="submit">Add New Comment</button>
+</form>
+<ul class="errorContainer" id="errorContainer">
+    {{#if hasErrors}}
+    {{#each errors}}
+    <li>
+        {{this}}
+    </li>
+    {{/each}}
+    {{/if}}
+</ul>
+{{else}}
+<p>Only User can comment store</p>
+{{/if}}
+<script src="/public/js/front_end_validation.js"></script>
