@@ -374,6 +374,11 @@ button:hover {
   color: #333;
 }
 
+.all-stores-header {
+  text-align: left;
+  margin: 20px 0;
+}
+
 h3 {
   margin: 0;
   font-size: 18px;

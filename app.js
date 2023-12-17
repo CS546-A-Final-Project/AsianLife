@@ -105,9 +105,10 @@ app.use('/store', (req, res, next) => {
   if (!req.session.user) {
     return res.status(200).redirect('/login');
   }
-  if (requestRoute === '/store' || requestRoute === '/store/') {
-    return res.status(200).redirect('/home');
-  } else {
+  //if (requestRoute === '/store' || requestRoute === '/store/') {
+    //return res.status(200).redirect('/home');
+  //} 
+  else {
     next();
   }
 });

@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { storesData, productsData } from "../data/index.js";
 const router = express.Router();
 
-router.route('/:id').get(async (req, res) => {
+    router.route('/:id').get(async (req, res) => {
     const storeId = req.params.id;
     const userRole = req.session.user.role
     try {
@@ -47,6 +47,21 @@ router.route('/:id').get(async (req, res) => {
     } catch (e) {
         return res.status(404).render('error', { error: e });
     }
-});
+}),
+
+router.route('/').get(async (req, res) => {
+    const id = req.session.user.id;
+    const user = await getUser(id);
+    const name = user.userName;
+    try {
+        const allStores = await storesData.getAllStores();
+    
+        res.status(200).render('storeList', { stores: allStores,
+                                                name: name,
+                                                avatarId: user.avatar}); 
+    } catch (e) {
+        return res.status(500).render('error', { error: 'Error fetching stores' }); 
+    }
+})
 
 export default router;
