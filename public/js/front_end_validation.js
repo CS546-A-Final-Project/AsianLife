@@ -495,5 +495,195 @@
         })
     }
     
+    const addProductStaticForm = document.getElementById('add-product-form');
+    if(addProductStaticForm){
+        const productNameInput = document.getElementById('productName');
+        const productCategoryInput = document.getElementById('productCategory');
+        const productPriceInput = document.getElementById('productPrice');
+        const manufactureDateInput = document.getElementById('manufactureDate');
+        const expirationDateInput = document.getElementById('expirationDate');
+        addProductStaticForm.addEventListener('submit', (event) => {
+            let errors = [];
+            errorContainer.innerHTML = '';
+            const productName = productNameInput.value.trim();
+            const productCategory = productCategoryInput.value.trim();
+            const productPrice = productPriceInput.value.trim();
+            const manufactureDate = manufactureDateInput.value.trim();
+            const expirationDate = expirationDateInput.value.trim();
+            productNameInput.value = productName;
+            productCategoryInput.value = productCategory;
+            productPriceInput.value = productPrice;
+            manufactureDateInput.value = manufactureDate;
+            expirationDateInput.value = expirationDate;
 
+            if (!/^[a-zA-Z0-9\s\-&',.()]{3,25}$/.test(productName)) {
+                errors.push("Invalid product name (the product name should be 3 to 25 characters)");
+            }
+            const categories = [
+            "Fresh Produce",
+            "Dairy Products",
+            "Meat and Poultry",
+            "Seafood",
+            "Frozen Foods",
+            "Bakery and Confectionery",
+            "Beverages",
+            "Snacks",
+            "Canned and Jarred Goods",
+            "Dry Goods and Staples"
+            ];
+            if (!categories.includes(productCategory)) {
+                errors.push("The category should be valid selected from the list");
+            }
+
+            const reguExForPrice = /^[1-9][0-9]*(\.[0-9]{1,2})?$/;
+            if (!reguExForPrice.test(productPrice.toString())) {
+                errors.push("Product price should be a positive whole number, positive 2 decimal place float.");
+            }
+            if(manufactureDate.length === 0 || expirationDate.length === 0){
+                errors.push("Manufacture date and expiration date should not be empty");
+            }
+            const reguExForDate = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+            if (!manufactureDate.match(reguExForDate) || !expirationDate.match(reguExForDate)){
+                errors.push("Manufacture date and expiration date should be in the format of MM/DD/YYYY");
+            }
+            const [month, day, year] = manufactureDate.split("/").map(Number); // split and convert string into number
+            const dateObj = new Date(year, month - 1, day); // create a date object with the input date
+            if (
+                dateObj.getDate() !== day ||
+                dateObj.getMonth() !== month - 1 ||
+                dateObj.getFullYear() !== year
+            ){
+                errors.push("Manufacture date should be a valid date");
+            }
+            const [month1, day1, year1] = expirationDate.split("/").map(Number); // split and convert string into number
+            const dateObj1 = new Date(year1, month1 - 1, day1); // create a date object with the input date
+            if (
+                dateObj1.getDate() !== day1 ||
+                dateObj1.getMonth() !== month1 - 1 ||
+                dateObj1.getFullYear() !== year1
+            ){
+                errors.push("Expiration date should be a valid date");
+            }
+
+            if(isNaN(dateObj.getTime()) || isNaN(dateObj1.getTime())){
+                errors.push("Manufacture date and expiration date should be a valid format");
+            }
+
+            const today = new Date();
+            if(dateObj.getTime() > today.getTime()){
+                errors.push("Manufacture date should not be future date");
+            }
+            if(dateObj1.getTime() < today.getTime()){
+                errors.push("Expiration date should be future date");
+            }
+
+            
+            if (manufactureDate > expirationDate) {
+                errors.push("Manufacture date should be earlier than expiration date");
+            }
+            if (errors.length > 0) {
+                event.preventDefault();
+                for(let i = 0; i < errors.length; i++){
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
+        })
+    }
+    const editProductStaticForm = document.getElementById('edit-product-form');
+    if(editProductStaticForm){
+        const productNameInput = document.getElementById('productName');
+        const productCategoryInput = document.getElementById('productCategory');
+        const productPriceInput = document.getElementById('productPrice');
+        const manufactureDateInput = document.getElementById('manufactureDate');
+        const expirationDateInput = document.getElementById('expirationDate');
+        editProductStaticForm.addEventListener('submit', (event) => {
+            let errors = [];
+            errorContainer.innerHTML = '';
+            const productName = productNameInput.value.trim();
+            const productCategory = productCategoryInput.value.trim();
+            const productPrice = productPriceInput.value.trim();
+            const manufactureDate = manufactureDateInput.value.trim();
+            const expirationDate = expirationDateInput.value.trim();
+            productNameInput.value = productName;
+            productCategoryInput.value = productCategory;
+            productPriceInput.value = productPrice;
+            manufactureDateInput.value = manufactureDate;
+            expirationDateInput.value = expirationDate;
+            if (!/^[a-zA-Z0-9\s\-&',.()]{3,25}$/.test(productName)) {
+                errors.push("Invalid product name (the product name should be 3 to 25 characters)");
+            }
+            const categories = [
+                "Fresh Produce",
+                "Dairy Products",
+                "Meat and Poultry",
+                "Seafood",
+                "Frozen Foods",
+                "Bakery and Confectionery",
+                "Beverages",
+                "Snacks",
+                "Canned and Jarred Goods",
+                "Dry Goods and Staples"
+                ];
+                if (!categories.includes(productCategory)) {
+                    errors.push("The category should be valid selected from the list");
+                }
+    
+                const reguExForPrice = /^[1-9][0-9]*(\.[0-9]{1,2})?$/;
+                if (!reguExForPrice.test(productPrice.toString())) {
+                    errors.push("Product price should be a positive whole number, positive 2 decimal place float.");
+                }
+                if(manufactureDate.length === 0 || expirationDate.length === 0){
+                    errors.push("Manufacture date and expiration date should not be empty");
+                }
+                const reguExForDate = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+                if (!manufactureDate.match(reguExForDate) || !expirationDate.match(reguExForDate)){
+                    errors.push("Manufacture date and expiration date should be in the format of MM/DD/YYYY");
+                }
+                const [month, day, year] = manufactureDate.split("/").map(Number); // split and convert string into number
+                const dateObj = new Date(year, month - 1, day); // create a date object with the input date
+                if (
+                    dateObj.getDate() !== day ||
+                    dateObj.getMonth() !== month - 1 ||
+                    dateObj.getFullYear() !== year
+                ){
+                    errors.push("Manufacture date should be a valid date");
+                }
+                const [month1, day1, year1] = expirationDate.split("/").map(Number); // split and convert string into number
+                const dateObj1 = new Date(year1, month1 - 1, day1); // create a date object with the input date
+                if (
+                    dateObj1.getDate() !== day1 ||
+                    dateObj1.getMonth() !== month1 - 1 ||
+                    dateObj1.getFullYear() !== year1
+                ){
+                    errors.push("Expiration date should be a valid date");
+                }
+    
+                if(isNaN(dateObj.getTime()) || isNaN(dateObj1.getTime())){
+                    errors.push("Manufacture date and expiration date should be a valid format");
+                }
+    
+                const today = new Date();
+                if(dateObj.getTime() > today.getTime()){
+                    errors.push("Manufacture date should not be future date");
+                }
+                if(dateObj1.getTime() < today.getTime()){
+                    errors.push("Expiration date should be future date");
+                }
+    
+                
+                if (manufactureDate > expirationDate) {
+                    errors.push("Manufacture date should be earlier than expiration date");
+                }
+                if (errors.length > 0) {
+                    event.preventDefault();
+                    for(let i = 0; i < errors.length; i++){
+                        const addLi = document.createElement('li');
+                        addLi.textContent = errors[i];
+                        errorContainer.appendChild(addLi);
+                    }
+                }
+            })
+        }
 })();

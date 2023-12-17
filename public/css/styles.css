@@ -374,6 +374,74 @@ button:hover {
   color: #333;
 }
 
+.all-stores-header {
+  text-align: left;
+  margin: 20px 0;
+}
+
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333; 
+  
+  color: white;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-block {
+  margin: 0 20px; 
+}
+
+.footer-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+.store-description {
+  text-align: center;
+  margin-top: 20px; 
+}
+
+.store-greeting {
+  color: #333; 
+  font-size: 2em; 
+  margin-bottom: 0.25em; 
+}
+
+.store-motto {
+  color: #555; 
+  font-size: 1em; 
+  max-width: 600px; 
+  margin: 0 auto; 
+}
+
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 0 auto; 
+}
+
+.site-footer {
+  flex-shrink: 0;
+}
+
 h3 {
   margin: 0;
   font-size: 18px;

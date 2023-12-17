@@ -5,7 +5,7 @@ import { storesData, productsData } from "../data/index.js";
 import { getAllStores } from '../data/stores.js';
 const router = express.Router();
 
-router.route('/:id').get(async (req, res) => {
+    router.route('/:id').get(async (req, res) => {
     const storeId = req.params.id;
     const userRole = req.session.user.role
     try {
@@ -35,7 +35,8 @@ router.route('/:id').get(async (req, res) => {
         if (role === 'admin' && user.ownedStoreId && storeId !== user.ownedStoreId) {
             isAdminAndHasAStore = true;
         }
-        const productReviews = 
+        const contact_information = store.contact_information;
+        const store_location = store.store_location;
         res.status(200).render('store', {
             name: theUser.userName,
             avatarId: theUser.avatar,
@@ -45,14 +46,31 @@ router.route('/:id').get(async (req, res) => {
             storeProducts: storeProducts,
             storeID: storeId,
             user: userRole,
-            isOwner: isOwner
+            isOwner: isOwner,
+            contact_information:contact_information,
+            store_location:store_location
         });
 
 
     } catch (e) {
         return res.status(404).render('error', { error: e });
     }
-});
+}),
+
+router.route('/').get(async (req, res) => {
+    const id = req.session.user.id;
+    const user = await getUser(id);
+    const name = user.userName;
+    try {
+        const allStores = await storesData.getAllStores();
+    
+        res.status(200).render('storeList', { stores: allStores,
+                                                name: name,
+                                                avatarId: user.avatar}); 
+    } catch (e) {
+        return res.status(500).render('error', { error: 'Error fetching stores' }); 
+    }
+})
 
 router.route('/').get(async (req, res) => {
     const title = "All Store";
