@@ -20,7 +20,6 @@ router.route('/').get(async (req, res) => {
     }
     const user = await getUser(id);
     const name = user.userName;
-
     const stores = await getAllStores();
     if (!stores) {
         return res.status(200).render('home',{
