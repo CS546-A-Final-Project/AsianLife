@@ -5,20 +5,32 @@
         <label for="productName">Product Name:</label>
         <input type="text" id="productName" name="productName" value="{{productName}}" required>
 
+        <label for="productImage">Product Image "optional":</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*">
+        
         <label for="productCategory">Product Category:</label>
         <select id="productCategory" name="productCategory">
-            <option value="" disabled {{selected.default}}>Select</option>
-            <option value="Fresh Produce" {{selected.FreshProduce}}>Fresh Produce</option>
-            <option value="Dairy Products" {{selected.DairyProducts}}>Dairy Products</option>
-            <option value="Meat and Poultry" {{selected.MeatAndPoultry}}>Meat and Poultry</option>
-            <option value="Seafood" {{selected.Seafood}}>Seafood</option>
-            <option value="Frozen Foods" {{selected.FrozenFoods}}>Frozen Foods</option>
-            <option value="Bakery and Confectionery" {{selected.BakeryAndConfectionery}}>Bakery and Confectionery
-            </option>
-            <option value="Beverages" {{selected.Beverages}}>Beverages</option>
-            <option value="Snacks" {{selected.Snacks}}>Snacks</option>
-            <option value="Canned and Jarred Goods" {{selected.CannedAndJarredGoods}}>Canned and Jarred Goods</option>
-            <option value="Dry Goods and Staples" {{selected.DryGoodsAndStaples}}>Dry Goods and Staples</option>
+            <option value="" disabled {{selectedCategory.default}}>Select</option>
+            <option value="Fresh Produce" {{selectedCategory.FreshProduce}}>Fresh Produce</option>
+            <option value="Dairy Products" {{selectedCategory.DairyProducts}}>Dairy Products</option>
+            <option value="Meat and Poultry" {{selectedCategory.MeatAndPoultry}}>Meat and Poultry</option>
+            <option value="Seafood" {{selectedCategory.Seafood}}>Seafood</option>
+            <option value="Frozen Foods" {{selectedCategory.FrozenFoods}}>Frozen Foods</option>
+            <option value="Bakery and Confectionery" {{selectedCategory.BakeryAndConfectionery}}>Bakery and Confectionery</option>
+            <option value="Beverages" {{selectedCategory.Beverages}}>Beverages</option>
+            <option value="Snacks" {{selectedCategory.Snacks}}>Snacks</option>
+            <option value="Canned and Jarred Goods" {{selectedCategory.CannedAndJarredGoods}}>Canned and Jarred Goods</option>
+            <option value="Dry Goods and Staples" {{selectedCategory.DryGoodsAndStaples}}>Dry Goods and Staples</option>
+            <option value="Miscellaneous" {{selectedCategory.Miscellaneous}}>Dry Goods and Staples</option>
+        </select>
+
+        <label for="stockStatus">Stock Status:</label>
+        <select id="stockStatus" name="stockStatus">
+            <option value="" disabled {{selectedStockStatus.default}}>Select</option>
+            <option value="Out of Stock" {{selectedStockStatus.OutOfStock}}>Out of Stock</option>
+            <option value="Low Stock" {{selectedStockStatus.LowStock}}>Low Stock</option>
+            <option value="Normal Stock" {{selectedStockStatus.NormalStock}}>Normal Stock</option>
+            <option value="Overstock" {{selectedStockStatus.Overstock}}>Overstock</option>
         </select>
 
         <label for="productPrice">Product Price:</label>
@@ -29,9 +41,6 @@
 
         <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
         <input type="text" id="expirationDate" name="expirationDate" value="{{expirationDate}}" required>
-
-        <label for="productImage">Product Image "optional":</label>
-        <input type="file" id="productImage" name="productImage" accept="image/*">
 
 
         <button type="submit">Add Product</button>

@@ -12,10 +12,11 @@ const upload = multer({
 
 router
     .route('/')
-    .get(async (req, res) => { // runs well
+    .get(async (req, res) => { 
         res.status(200).render('addProduct', {
             title: "add Product",
-            selected: { default: 'selected' }
+            selectedCategory: { default: 'selected' },
+            selectedStockStatus: { default: 'selected' },
         })
     })
     .post(upload.single("productImage"), async (req, res) => { 
@@ -30,6 +31,7 @@ router
         let productPrice = parseFloat(xss(req.body.productPrice));
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
+        let stockStatus = xss(req.body.stockStatus);
         let productImage;
         if (req.file && req.file.filename) {
             productImage = req.file.filename;
@@ -58,12 +60,12 @@ router
             errors.push(e);
         }
         try {
-            productCategory = helpers.checkCategories(productCategory, 'productCategory');
+            productCategory = helpers.checkCategories(productCategory);
         } catch (e) {
             errors.push(e);
         }
         try {
-            productPrice = helpers.checkPrice(productPrice, 'productPrice');
+            productPrice = helpers.checkPrice(productPrice);
         } catch (e) {
             errors.push(e);
         }
@@ -82,16 +84,23 @@ router
         } catch (e) {
             errors.push(e);
         }
+        try {
+            helpers.checkStockStatus(stockStatus);
+        } catch (e) {
+            errors.push(e);
+        }
         if (errors.length > 0) {
-            const selected = { [`${productCategory}`]: 'selected' };
+            let selectedCategory = { [`${productCategory}`]: 'selected' };
+            let selectedStockStatus = { [`${stockStatus}`]: 'selected' };
             return res.status(400).render('addProduct', {
                 title: "add Product",
                 productName: productName,
-                productCategory: productCategory,
+                // productCategory: productCategory,
                 productPrice: productPrice,
                 manufactureDate: manufactureDate,
                 expirationDate: expirationDate,
-                selected: selected,
+                selectedCategory: selectedCategory,
+                selectedStockStatus: selectedStockStatus,
                 hasErrors: true,
                 errors: errors,
             })
@@ -113,15 +122,17 @@ router
             errors.push(e);
         }
         if (errors.length > 0) {
-            const selected = { [`${productCategory}`]: 'selected' };
+            let selectedCategory = { [`${productCategory}`]: 'selected' };
+            let selectedStockStatus = { [`${stockStatus}`]: 'selected' };
             return res.status(400).render('addProduct', {
                 title: "add Product",
                 productName: productName,
-                productCategory: productCategory,
+                // productCategory: productCategory,
                 productPrice: productPrice,
                 manufactureDate: manufactureDate,
                 expirationDate: expirationDate,
-                selected: selected,
+                selectedCategory: selectedCategory,
+                selectedStockStatus: selectedStockStatus,
                 hasErrors: true,
                 errors: errors,
             })

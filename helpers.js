@@ -93,7 +93,8 @@ const checkCategories = (categoryToCheck) => {
         "Beverages",
         "Snacks",
         "Canned and Jarred Goods",
-        "Dry Goods and Staples"
+        "Dry Goods and Staples",
+        "Miscellaneous"
     ];
 
     if (!categories.includes(categoryToCheck)) {
@@ -173,6 +174,20 @@ const checkRating = (rating) => {
     }
     return rating
 }
+const checkStockStatus = async (stockStatus) => {
+    stockStatus = checkString(stockStatus, 'stockStatus');
+    const validStockStatuses = [
+        "Out of Stock",
+        "Low Stock",
+        "Normal Stock",
+        "Overstock"
+    ];
+    if (!validStockStatuses.includes(stockStatus)) {
+        throw (`The product's stock status '${stockStatus}' is not a recognized stock status.`);
+    }
+    return stockStatus;   
+};
+
 
 const checkIfStoreNameExists = async (name) => {
     name = name.replace(/\s/g, "").toLowerCase();
@@ -201,4 +216,5 @@ export default {
     checkCategories,
     checkRating,
     checkIfStoreNameExists,
+    checkStockStatus
 };

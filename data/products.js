@@ -55,14 +55,14 @@ const addProduct = async (
     // 获取商店信息，包括产品ID数组
     const store = await storesCollection.findOne({ _id: new ObjectId(store_id) });
     if (!store) {
-        throw new Error(`Store with ID ${store_id} not found.`);
+        throw (`Store with ID ${store_id} not found.`);
     }
 
     // 遍历商店中的每个产品ID
     for (let productId of store.products) {
         let product = await productsCollection.findOne({ _id: new ObjectId(productId) });
         if (product && product.productName === productName) {
-            throw new Error(`A product with the name "${productName}" already exists in the store.`);
+            throw (`A product with the name "${productName}" already exists in the store.`);
         }
     }
 
@@ -78,7 +78,7 @@ const addProduct = async (
         productReviews: [],
         productRating: 0,
         totalAmountOfReviews: 0,
-        stockStatus: "out of stock"
+        stockStatus: "Normal Stock"
     };
 
     // insert new product inside 'store'
@@ -158,7 +158,7 @@ const updateProduct = async (
     // 获取现有产品信息
     const currentProduct = await productsCollection.findOne({ _id: new ObjectId(id) });
     if (!currentProduct) {
-        throw new Error(`Cannot find a product with the id ${id}.`);
+        throw (`Cannot find a product with the id ${id}.`);
     }
 
     // 检查产品名称是否已存在（在除此产品之外的同一商店中）
@@ -169,7 +169,7 @@ const updateProduct = async (
             store_id: currentProduct.store_id  // 与当前产品同一商店
         });
         if (existingProduct) {
-            throw new Error(`Another product with the name ${productName} already exists in the same store.`);
+            throw (`Another product with the name ${productName} already exists in the same store.`);
         }
     }
 
@@ -188,7 +188,7 @@ const updateProduct = async (
         { returnDocument: "after" }
     );
     if (!updateResult) {
-        throw new Error(`The product of ${id} could not be updated successfully.`);
+        throw (`The product of ${id} could not be updated successfully.`);
     }
 
     return updateResult; // 返回更新后的产品对象

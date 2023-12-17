@@ -62,7 +62,7 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
 )
 let addReview = await reviewsforproductsData.addReview(
 userId,
@@ -99,7 +99,7 @@ newStoreId,
 "goooooooooooooooooooooooooooood",
 4
 )
-product = await productsData.addProduct(
+const product2 = await productsData.addProduct(
 userId,
 newStoreId,
 'AAAA',
@@ -108,16 +108,24 @@ newStoreId,
 '12/06/2023',
 '12/25/2023'
 )
-product = await productsData.addProduct(
-userId,
-newStoreId,
-'AAAAA',
-"Fresh Produce",
-13,
-'12/06/2023',
-'12/25/2023'
-)
-
+// product3 = await productsData.addProduct(
+// userId,
+// newStoreId,
+// 'AAAAA',
+// "Fresh Produce",
+// 13,
+// '12/06/2023',
+// '12/25/2023'
+// )
+// await productsData.updateProduct(
+//   product,
+//   'AAAA',
+//   "Fresh Produce",
+//   13,
+//   '12/06/2023',
+//   '12/25/2023',
+//   "Low Stock"
+//   )
 //--------------------admin2-----------------------
 newUser = await usersData.addUser(
 'bobwenpp',
