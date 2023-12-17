@@ -71,10 +71,12 @@ router
     .post(async (req, res) => { // 加评论！！！add a review for a product
         let user_id = xss(req.session.user.id);
         let productId = xss(req.params.productId); // for test
+        let product;
         let storeIdForOwner = xss(req.session.user.ownedStoreId); // for test
         let store_id;
         let productReviews = xss(req.body.productReviews);
         let rating = parseInt(xss(req.body.productRating));
+
         let errors = [];
         try {
             user_id = helpers.checkId(user_id, 'user_id');
@@ -83,7 +85,7 @@ router
         }
         try {
             productId = helpers.checkId(productId, 'productId');
-            let product = await productsData.getProductById(productId);
+            product = await productsData.getProductById(productId);
             store_id = product.store_id;
         } catch (e) {
             errors.push(e);
@@ -104,10 +106,11 @@ router
             errors.push(e);
         }
         if (errors.length > 0) {
+            const selected = { [`${product.productCategory}`]: 'selected' };
             return res.status(400).render('products', {
-                productName: productName,
-                productReviews: productReviews,
-                rating: rating,
+                
+                productReviews: product.productReviews,
+                rating: product.rating,
                 selected: selected,
                 hasErrors: true,
                 errors: errors,
@@ -130,8 +133,8 @@ router
             errors.push(e);
         }
         if (errors.length > 0) {
+            const selected = { [`${productCategory}`]: 'selected' };
             return res.status(400).render('products', {
-                productName: productName,
                 productReviews: productReviews,
                 rating: rating,
                 selected: selected,

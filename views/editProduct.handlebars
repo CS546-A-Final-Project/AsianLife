@@ -34,7 +34,10 @@
 
         <button type="submit" class="button">Update Product</button>
     </form>  
-    <button id="delete-product" type="button" class="button"> delete Product</button>
+    <form id="delete-review-form" action="/editProduct/{{productId}}">
+        <button type="submit">Delete Review</button>
+    </form>
+
      {{#if hasErrors}}
     <ul class="errorContainer" id="errorContainer">
        

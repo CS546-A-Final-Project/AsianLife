@@ -103,19 +103,19 @@ const checkCategories = (categoryToCheck) => {
 }
 const checkPrice = (productPrice) => {
     if (typeof productPrice !== "number"){
-        throw (`productPrice ${productPrice} should be a number`);
+        throw (`ProductPrice ${productPrice} should be a number`);
     }
         
     const reguExForPrice = /^[1-9][0-9]*(\.[0-9]{1,2})?$/;
     if (!reguExForPrice.test(productPrice.toString())) {
-        throw (`${productPrice} should be a positive whole number, positive 2 decimal place float.`);
+        throw (`ProductPrice ${productPrice} should be a positive whole number, positive 2 decimal place float.`);
     }      
     
     return productPrice;
 };
 const checkReview = (review) => {
     review = checkString(review, "review"); // description are already trimmed
-    if (review.length < 25)
+    if (review.length < 25 || review.length > 200)
         throw `This product's review ${review} should not be less than 25 characters.`;
     return review;
 };

@@ -112,18 +112,21 @@ router
         try {
             productId = helpers.checkId(productId, 'product');
         } catch (e) {
-            // res.status(400).json({ error: e.message })
-            res.status(400).render('products', { error: e });
+            return res.status(400).render('error', { error: e });
+        }
+        try {
+            store_id = helpers.checkId(store_id, 'product');
+        } catch (e) {
+            return res.status(400).render('error', { error: e });
         }
         try {
             let product = await productsData.removeProduct(productId, store_id);
-            return res.status(200).json("Delete successfully!" + product); // 检查删除的信息
-            // return res.status(200).render('products', { product, product });
+            if (!product) {
+                return res.json({ deleteReview: false });
+            }
+            return res.json({ deleteReview: true });
         } catch (e) {
-            console.log("--------------------------What's wrong-----------------------------")
-            res.status(404).json({error: e});
-
-            // res.status(404).render('products', { error: e.message });
+            return res.status(400).render('error', { error: e });
         }
     })
 
