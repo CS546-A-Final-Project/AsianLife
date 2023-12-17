@@ -39,9 +39,26 @@ router
             if (storeId === req.session.user.ownedStoreId) {
                 isAdminOfThisStore = true;
             }
+            let stockMessage, stockStyle;
+            if (product) {
+                if (product.stock > 100) {
+                    stockMessage = `${product.stock}`;
+                    stockStyle = 'high';
+                }
+                if (product.stock >= 1 && product.stock <= 100) {
+                    stockMessage = 'Low stock';
+                    stockStyle = 'low';
+                }
+                if (product.stock === 0) {
+                    stockMessage = 'Out of stock';
+                    stockStyle = 'none';
+                }
+            }
             return res.status(200).render('products', {
                 title: product.productName,
                 name: name,
+                stockMessage: stockMessage,
+                stockStyle: stockStyle,
                 storeId: req.session.user.ownedStoreId,
                 isAdminAndHasAStore: isAdminAndHasAStore,
                 avatarId: user.avatar,
