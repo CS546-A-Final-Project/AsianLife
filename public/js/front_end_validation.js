@@ -422,7 +422,7 @@
             let errors = [];
             errorContainer.innerHTML = '';
 
-            const comment = commentInput.value.trim();
+            const comment = xss(commentInput.value).trim();
             if(!comment || comment.length < 25) errors.push( 'comment must more than 25 characters and not just space!');
             if(comment.length > 200) errors.push( 'comment cannot surpass 200 valid characters!');
             if (typeof comment !== "string") errors.push( `Error:comment must be a string`);
@@ -445,7 +445,7 @@
             let errors = [];
             errorContainer.innerHTML = '';
 
-            const answer = answerInput.value.trim();
+            const answer = xss(answerInput.value).trim();
             if(answer.length > 200) errors.push( 'answer cannot surpass 200 valid characters!');
             if (!answer) errors.push( `You must provide a answer`);
             if (typeof answer !== "string") errors.push( `Error:answer must be a string`);
