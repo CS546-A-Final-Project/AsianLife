@@ -71,7 +71,8 @@ router
     .post(async (req, res) => { // 加评论！！！add a review for a product
         let user_id = xss(req.session.user.id);
         let productId = xss(req.params.productId); // for test
-        let store_id = xss(req.session.user.ownedStoreId); // for test
+        let storeIdForOwner = xss(req.session.user.ownedStoreId); // for test
+        let store_id;
         let productReviews = xss(req.body.productReviews);
         let rating = parseInt(xss(req.body.productRating));
         let errors = [];
@@ -82,6 +83,8 @@ router
         }
         try {
             productId = helpers.checkId(productId, 'productId');
+            let product = await productsData.getProductById(productId);
+            store_id = product.store_id;
         } catch (e) {
             errors.push(e);
         }
@@ -112,6 +115,9 @@ router
         }
         errors = [];
         try {
+            if (storeIdForOwner === store_id) {
+                throw "You can not add review for your store's products."
+            }
             await reviewsForProductsData.addReview(
                 user_id,
                 productId,
@@ -119,7 +125,7 @@ router
                 productReviews,
                 rating
             )
-            res.status(200).redirect(`/product/${productId}`);
+            res.status(200).redirect(`/products/${productId}`);
         } catch (e) {
             errors.push(e);
         }
