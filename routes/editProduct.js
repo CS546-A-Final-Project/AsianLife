@@ -26,7 +26,7 @@ router
         let role = req.session.user.role;
         let productId = xss(req.params.productId);
         let product = await productsData.getProductById(productId);
-        store_id = product.store_id;
+        let store_id = product.store_id;
         if (role !== 'admin' || req.session.user.ownedStoreId !== store_id) {
             return res.status(403).render('error', { error: "You don't have the authority to update this product." });
         }
