@@ -3,33 +3,14 @@ import helpers from '../helpers.js';
 import * as productsData from '../data/products.js';
 import * as reviewsForProductsData from '../data/reviewsforproducts.js';
 import { getReviewByReviewId, updateReview } from '../data/reviewsforproducts.js';
+import { getUser } from '../data/users.js';
 import xss from 'xss';
 const router = express.Router();
 
 router
-    .route('/') // 这个route有用吗？
-    .get(async (req, res) => { // runs well
-        try {  // should it be get all products by store id?
-            const allProducts = await productsData.getAllProducts();
-            // console.log(allProducts);
-            if (!allProducts) {
-                return res
-                    .status(404)
-                    .render('error', {
-                        title: 'Products Error',
-                        error: 'Products Not Found',
-                    });
-            }
-            // res.status(200).json(allProducts); // for postman test
-            res.status(200).render('products', {
-                title: 'product details',
-                allProducts: allProducts
-            });
-        } catch (e) {
-            return res
-                .status(500)
-                .render('error', { title: 'Internal Server Error', error: e });
-        }
+    .route('/')
+    .get(async (req, res) => {
+        res.status(400).json('Cannot be here');
     })
 
 
@@ -40,9 +21,17 @@ router
         try {
             productId = helpers.checkId(productId, 'productId');
         } catch (e) {
-            res.status(400).render('products', { error: e });
+            return res.status(400).render('products', { error: e });
         }
         try {
+            const id = req.session.user.id;
+            const role = req.session.user.role;
+            let isAdminAndHasAStore = false;
+            if (role === 'admin' && req.session.user.ownedStoreId) {
+                isAdminAndHasAStore = true;
+            }
+            const user = await getUser(id);
+            const name = user.userName;
             let product = await productsData.getProductById(productId);
             const storeId = product.store_id;
             let isAdminOfThisStore = false;
@@ -51,6 +40,10 @@ router
             }
             return res.status(200).render('products', {
                 title: product.productName,
+                name: name,
+                storeId: req.session.user.ownedStoreId,
+                isAdminAndHasAStore: isAdminAndHasAStore,
+                avatarId: user.avatar,
                 hasProduct: true,
                 isAdminOfThisStore: isAdminOfThisStore,
                 productName: product.productName,
@@ -72,6 +65,14 @@ router
 router
     .route('/:productId/:reviewId')
     .get(async (req, res) => {
+        const userId = req.session.user.id;
+        const role = req.session.user.role;
+        let isAdminAndHasAStore = false;
+        if (role === 'admin' && req.session.user.ownedStoreId) {
+            isAdminAndHasAStore = true;
+        }
+        const user = await getUser(userId);
+        const name = user.userName;
         let id = xss(req.params.productId);
         let reviewId = xss(req.params.reviewId);
         try {
@@ -110,6 +111,11 @@ router
             }
 
             return res.status(200).render('updateReview', {
+                title: 'Update Review',
+                name: name,
+                storeId: req.session.user.ownedStoreId,
+                isAdminAndHasAStore: isAdminAndHasAStore,
+                avatarId: user.avatar,
                 product: product,
                 reviewId: reviewId,
                 review: content,
