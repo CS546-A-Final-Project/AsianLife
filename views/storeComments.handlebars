@@ -2,35 +2,40 @@
     <a href="/home">Home</a>
 </nav>
 {{#if isAdmin}}
-<p>Welcome Store Owner!</p>
+  <div class="admin-welcome">
+    <p>Welcome Store Owner!</p>
+  </div>
 {{/if}}
-<h1>{{title}} Comments List</h1>
 
-<ul>
+<div class="comments-section">
+  <h1>{{title}} Comments List</h1>
+
+  <ul class="comment-list">
     {{#each commentList}}
-    <li><a href="/commentsDetail/{{this._id}}">{{this.comment}}</a></li>
+      <li><a href="/commentsDetail/{{this._id}}">{{this.comment}}</a></li>
     {{else}}
-    <li>No comments for this store now.</li>
+      <li>No comments for this store now.</li>
     {{/each}}
-</ul>
+  </ul>
 
-{{#if isUser}}
-<form id="storecomment-form" action="/storeComments/{{storeID}}" method="POST">
-    <label for="commentInput">Your Comment:</label>
-    <input type="text" name="commentInput" id="commentInput" value="{{comment}}">
+  {{#if isUser}}
+    <form id="storecomment-form" action="/storeComments/{{storeID}}" method="POST" class="comment-form">
+      <label for="commentInput">Your Comment:</label>
+      <input type="text" name="commentInput" id="commentInput" value="{{comment}}" class="comment-input">
 
-    <button type="submit">Add New Comment</button>
-</form>
-<ul class="errorContainer" id="errorContainer">
-    {{#if hasErrors}}
-    {{#each errors}}
-    <li>
-        {{this}}
-    </li>
-    {{/each}}
-    {{/if}}
-</ul>
-{{else}}
-<p>Only User can comment store</p>
-{{/if}}
+      <button type="submit" class="comment-submit-btn">Add New Comment</button>
+    </form>
+
+    <ul class="error-container" id="errorContainer">
+      {{#if hasErrors}}
+        {{#each errors}}
+          <li>{{this}}</li>
+        {{/each}}
+      {{/if}}
+    </ul>
+  {{else}}
+    <p class="user-restriction">Only Users can comment on this store.</p>
+  {{/if}}
+</div>
+
 <script src="/public/js/front_end_validation.js"></script>
