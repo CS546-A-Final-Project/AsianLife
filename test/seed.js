@@ -62,7 +62,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 let addReview = await reviewsforproductsData.addReview(
 userId,
@@ -106,7 +107,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -115,7 +117,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 
 //--------------------admin2-----------------------
@@ -163,7 +166,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -172,7 +176,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -181,7 +186,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 
 //--------------------admin3-----------------------
@@ -212,7 +218,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -221,7 +228,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -230,7 +238,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 //--------------------admin4-----------------------
 newUser = await usersData.addUser(
@@ -260,7 +269,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -269,7 +279,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -278,7 +289,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 //--------------------admin5-----------------------
 newUser = await usersData.addUser(
@@ -308,7 +320,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -317,7 +330,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 product = await productsData.addProduct(
 userId,
@@ -326,7 +340,8 @@ newStoreId,
 "Fresh Produce",
 13,
 '12/06/2023',
-'12/25/2023'
+'12/25/2023',
+1
 )
 await closeConnection();
 // // reviewsforproducts
