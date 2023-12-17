@@ -150,7 +150,7 @@ newUser = await usersData.addUser(
 'bobwen',
 'Mingzhi',
 'Wen',
-'abc2@gmail.com',
+'abc3@gmail.com',
 'Abc123,,',
 'admin'
 );
@@ -163,7 +163,7 @@ city: "Hoboken",
 state: "NJ",
 zipCode: "07030",
 phoneNumber: "1234567890",
-email: "abc2@gmail.com",
+email: "abc3@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
@@ -198,7 +198,7 @@ newUser = await usersData.addUser(
 'bobwen',
 'Mingzhi',
 'Wen',
-'abc3@gmail.com',
+'abc4@gmail.com',
 'Abc123,,',
 'admin'
 );
@@ -211,7 +211,7 @@ city: "Hoboken",
 state: "NJ",
 zipCode: "07030",
 phoneNumber: "1234567890",
-email: "abc3@gmail.com",
+email: "abc4@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
@@ -246,7 +246,7 @@ newUser = await usersData.addUser(
 'bobwen',
 'Mingzhi',
 'Wen',
-'abc4@gmail.com',
+'abc5@gmail.com',
 'Abc123,,',
 'admin'
 );
@@ -259,7 +259,7 @@ city: "Hoboken",
 state: "NJ",
 zipCode: "07030",
 phoneNumber: "1234567890",
-email: "abc4@gmail.com",
+email: "abc5@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
