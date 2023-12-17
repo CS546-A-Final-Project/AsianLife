@@ -50,6 +50,18 @@ const addProduct = async (
     expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     helpers.checkDateValid(manufactureDate, expirationDate);
 
+    const productsCollection = await products();
+    const storesCollection = await stores();
+
+    // 检查同一商店中是否有重名的产品
+    const existingProduct = await productsCollection.findOne({
+        productName: productName,
+        store_id: new ObjectId(store_id) // 确保只在同一商店内检查
+    });
+    if (existingProduct) {
+        throw new Error('A product with the same name already exists in the store.');
+    }
+
     let newProduct = {
         user_id: user_id,
         store_id: store_id,
@@ -63,19 +75,6 @@ const addProduct = async (
         productRating: 0,
         totalAmountOfReviews: 0,
     };
-    const storesCollection = await stores();
-    const productsCollection = await products();
-    // existing same product?
-    const existingProduct = await productsCollection.findOne({
-        productName: productName,
-        productCategory: productCategory,
-        productPrice: productPrice,
-        manufactureDate: manufactureDate,
-        expirationDate: expirationDate
-    });
-    if (existingProduct) {
-        throw ('A product with the same details already exists in the database.');
-    }
 
     // insert new product inside 'store'
     const newInsertProductInformation = await productsCollection.insertOne(newProduct);
@@ -135,7 +134,7 @@ const updateProduct = async (
     productCategory,
     productPrice,
     manufactureDate,
-    expirationDate,
+    expirationDate
 ) => {
     id = xss(id);
     id = helpers.checkId(id, 'product_id');
@@ -148,12 +147,11 @@ const updateProduct = async (
     helpers.checkDateValid(manufactureDate, expirationDate);
 
     const productsCollection = await products();
-    // const storesCollection = await stores();  // 获取 store collection
 
     // 获取现有产品信息
     const currentProduct = await productsCollection.findOne({ _id: new ObjectId(id) });
     if (!currentProduct) {
-        throw (`Cannot find a product with the id ${id}.`);
+        throw new Error(`Cannot find a product with the id ${id}.`);
     }
 
     // 检查产品名称是否已存在（在除此产品之外的同一商店中）
@@ -164,21 +162,31 @@ const updateProduct = async (
             store_id: currentProduct.store_id  // 与当前产品同一商店
         });
         if (existingProduct) {
-            throw (`Another product with the name ${productName} already exists in the same store.`);
+            throw new Error(`Another product with the name ${productName} already exists in the same store.`);
         }
     }
 
-    const updateProduct = await productsCollection.findOneAndUpdate(
+    // 准备更新字段
+    const updateFields = {
+        productName,
+        productCategory,
+        productPrice,
+        manufactureDate,
+        expirationDate
+    };
+
+    const updateResult = await productsCollection.findOneAndUpdate(
         { _id: new ObjectId(id) },
         { $set: updateFields },
         { returnDocument: "after" }
     );
-    if (!updateProduct) {
-        throw (`The product of ${id} could not be added successfully.`);
+    if (!updateResult) {
+        throw new Error(`The product of ${id} could not be updated successfully.`);
     }
 
-    return updateProduct.value; // return object
+    return updateResult; // 返回更新后的产品对象
 };
+
 const updateImage = async (product_id, fileName) => {
     product_id = xss(product_id);
     fileName = xss(fileName);

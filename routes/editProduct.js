@@ -23,7 +23,13 @@ router
         let productPrice = parseFloat(xss(req.body.productPrice));
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
-        let productImage = req.file.filename;
+        let productImage;
+        if (req.file && req.file.filename) {
+            productImage = xss(req.file.filename);
+        } else {
+            const product = await productsData.getProductById(productId);
+            productImage = product.productImage;
+        }  
         let errors = [];
 
         let newProduct = req.body;   
@@ -67,7 +73,7 @@ router
             errors.push(e);
         }
         try {
-            const result = await productsData.updateProduct(
+          await productsData.updateProduct(
                 productId, // must
                 productName,
                 productCategory,

@@ -18,7 +18,6 @@ const getAllReviews = async product_id => {
     if (!product) {
         throw `Product with id ${product_id} has not been found.`;
     }
-
     return product.productReviews || []; // return review object
 };
 
@@ -63,6 +62,8 @@ const addReview = async (
     productReviews = helpers.checkReview(productReviews, 'productReviews');
     rating = helpers.checkRating(rating, ' rating');
     const usersCollection = await users();
+    const user = await usersFunctions.getUser(user_id);
+    let userName = user.userName;
     const productsCollection = await products();
     const product = await productsFunctions.getProductById(product_id);
     const storeCollection = await stores();
@@ -73,6 +74,7 @@ const addReview = async (
         user_id: user_id,
         product_id: product_id,
         store_id: store_id,
+        userName: userName,
         productName: product.productName,
         productReviews: productReviews,
         rating: rating,
@@ -84,6 +86,7 @@ const addReview = async (
                 user_id === review.user_id &&
                 product_id === review.product_id &&
                 store_id === review.store_id &&
+                userName === review.userName &&
                 productReviews === review.productReviews &&
                 rating === review.rating
             ) {
@@ -376,7 +379,7 @@ const getReviewByReviewId = async (id) => {
 };
 export {
     getAllReviews,
-    getUserNamebyUserId,
+    // getUserNamebyUserId,
     addReview,
     removeReview,
     updateReview,

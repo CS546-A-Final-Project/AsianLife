@@ -10,7 +10,7 @@ import logoutRoutes from './logout.js';
 import errorRoutes from './error.js';
 import passwordRoutes from './password.js';;
 import productsRoutes from './products.js';
-import reviewsForProductsRoutes from './reveiwsForProducts.js';
+// import reviewsForProductsRoutes from './reveiwsForProducts.js';
 import editRoutes from './editstore.js';
 import apiForLoginRoutes from './apiForLogin.js';
 import addProductRoutes from './addProduct.js';

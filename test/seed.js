@@ -98,7 +98,7 @@ newStoreId,
 
 //--------------------admin2-----------------------
 newUser = await usersData.addUser(
-'bobwen',
+'bobwenpp',
 'Mingzhi',
 'Wen',
 'abc2@gmail.com',

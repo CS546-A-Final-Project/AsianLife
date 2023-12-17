@@ -27,7 +27,12 @@ router
         let productPrice = parseFloat(xss(req.body.productPrice));
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
-        // let productImage = xss(req.file.filename);
+        let productImage;
+        if (req.file && req.file.filename) {
+            productImage = xss(req.file.filename);
+        } else {
+            productImage = 'default.png';
+        }   
         let errors = [];
 
         let newProduct = req.body;
@@ -75,18 +80,21 @@ router
         } catch (e) {
             errors.push(e);
         }
-        try {
-            if (req.file && req.file.filename) {
-                let productImage = xss(req.file.filename);
-                productImage = helpers.checkString(productImage);
-            } else {
-                productImage = 'default.png'; 
-                console.log(productImage);
-            }
-        } catch (e) {
-            errors.push(e);
+        if (errors.length > 0) {
+            const selected = { [`${productCategory}`]: 'selected' };
+            return res.status(400).render('addProduct', {
+                title: "add Product",
+                productName: productName,
+                productCategory: productCategory,
+                productPrice: productPrice,
+                manufactureDate: manufactureDate,
+                expirationDate: expirationDate,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            })
         }
-        // after validation, now starts add product
+        errors = [];
         try {
             let productId = await productsData.addProduct(
                 user_id,
