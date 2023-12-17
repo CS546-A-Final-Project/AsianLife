@@ -59,7 +59,6 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
     email: email,
     phoneNumber: phoneNumber,
   };
-  console.log("success");
   try {
     validation.checkIfLocationValid(location);
     console.log("checkIfLocationValid");
@@ -104,7 +103,23 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
       storeId: storeId,
     });
 }
-console.log("success");
+if (errors.length > 0) {
+  const selected = { [`${state}`]: 'selected' };
+  return res.status(400).render("editStore", {
+    title: "editStore",
+    name: name,
+    address: address,
+    city: city,
+    state: state,
+    zipCode: zipCode,
+    phoneNumber: phoneNumber,
+    email: email,
+    selected: selected,
+    hasErrors: true,
+    errors: errors,
+    storeId: storeId,
+  });
+}
   try {
     await updateStore(req.params.id, {
       adminId: adminId,
@@ -137,7 +152,6 @@ console.log("success");
       storeId: storeId,
     });
   }
-  console.log("success");
   return res.redirect(`/store/${storeId}`);
 
 });

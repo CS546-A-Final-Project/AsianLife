@@ -22,6 +22,17 @@ router.route('/:comment_id').get(async (req, res) => {
 
     try{
       checkId(commentId)
+      checkId(userid)
+      checkId(ownedStoreid)
+      checkId(storeid)
+    }catch(e){
+      return res.status(400).render('error', {title: "Error", error: e})
+    }
+
+    try{
+      checkString(comment)
+      if(comment.length < 25) throw 'comment must more than 25 characters!';
+      if(comment.length > 200) throw 'comment cannot surpass 200 valid characters!';
     }catch(e){
       return res.status(400).render('error', {title: "Error", error: e})
     }
