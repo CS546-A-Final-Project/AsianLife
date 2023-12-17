@@ -47,7 +47,8 @@ router
                 avatarId: user.avatar,
                 isAdminOfThisStore: isAdminOfThisStore,
                 product: product,
-                productId: productId
+                productId: productId,
+                selected: { default: 'selected' }
             });
         } catch (e) {
             return res.status(404).render('error', {
@@ -73,7 +74,15 @@ router
         }
         let productReviews = xss(req.body.productReviews);
         let rating = parseInt(xss(req.body.productRating));
+        let selected;
+        let option;
         let errors = [];
+        try {        
+            if (req.session.user.ownedStoreId === store_id) {
+            throw "The store's owner should not add review for the product."
+        } } catch (e) {
+            errors.push(e);
+        }
         try {
             user_id = helpers.checkId(user_id, 'user_id');
         } catch (e) {
@@ -99,6 +108,37 @@ router
         } catch (e) {
             errors.push(e);
         }
+        if (rating === 1) {
+            option = 'a';
+        } else if (rating === 2) {
+            option = 'b';
+        } else if (rating === 3) {
+            option = 'c';
+        } else if (rating === 4) {
+            option = 'd';
+        } else if (rating === 5) {
+            option = 'e';
+        }
+        if (rating) {
+            selected = { [option]: "selected" };
+        } else {
+            selected = { default: "selected" };
+        }
+        if (errors.length > 0) {
+            return res.status(400).render('products', {
+                title: product.productName,
+                name: name,
+                storeId: req.session.user.ownedStoreId,
+                isAdminAndHasAStore: isAdminAndHasAStore,
+                avatarId: user.avatar,
+                isAdminOfThisStore: isAdminOfThisStore,
+                product: product,
+                productId: productId,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            })
+        }
         try {
             await reviewsForProductsData.addReview(
                 user_id,
@@ -110,9 +150,8 @@ router
             res.status(200).redirect(`/products/${productId}`);
         } catch (e) {
             errors.push(e);
-        }
+        }     
         if (errors.length > 0) {
-            const selected = { [`${productCategory}`]: 'selected' };
             return res.status(400).render('products', {
                 title: product.productName,
                 name: name,
