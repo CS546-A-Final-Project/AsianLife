@@ -52,14 +52,18 @@ const addProduct = async (
 
     const productsCollection = await products();
     const storesCollection = await stores();
+    // 获取商店信息，包括产品ID数组
+    const store = await storesCollection.findOne({ _id: new ObjectId(store_id) });
+    if (!store) {
+        throw new Error(`Store with ID ${store_id} not found.`);
+    }
 
-    // 检查同一商店中是否有重名的产品
-    const existingProduct = await productsCollection.findOne({
-        productName: productName,
-        store_id: new ObjectId(store_id) // 确保只在同一商店内检查
-    });
-    if (existingProduct) {
-        throw new Error('A product with the same name already exists in the store.');
+    // 遍历商店中的每个产品ID
+    for (let productId of store.products) {
+        let product = await productsCollection.findOne({ _id: new ObjectId(productId) });
+        if (product && product.productName === productName) {
+            throw new Error(`A product with the name "${productName}" already exists in the store.`);
+        }
     }
 
     let newProduct = {
