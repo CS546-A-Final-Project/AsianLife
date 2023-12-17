@@ -58,21 +58,6 @@ const router = express.Router();
 }),
 
 router.route('/').get(async (req, res) => {
-    const id = req.session.user.id;
-    const user = await getUser(id);
-    const name = user.userName;
-    try {
-        const allStores = await storesData.getAllStores();
-    
-        res.status(200).render('storeList', { stores: allStores,
-                                                name: name,
-                                                avatarId: user.avatar}); 
-    } catch (e) {
-        return res.status(500).render('error', { error: 'Error fetching stores' }); 
-    }
-})
-
-router.route('/').get(async (req, res) => {
     const title = "All Store";
     const id = req.session.user.id;
     const role = req.session.user.role;
