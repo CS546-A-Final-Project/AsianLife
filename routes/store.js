@@ -18,7 +18,10 @@ router.route('/:id').get(async (req, res) => {
         const store = await storesData.getStoreById(storeId);
         const storeProducts = await productsData.getAllProductsByStoreId(storeId);
         storeProducts.forEach(product => {
-            product.firstReview = product.productReviews[0];
+            if(product.productReviews[0] && product.productReviews[0].productReviews)
+                product.firstReview = product.productReviews[0].productReviews;
+            else
+                product.firstReview = "No Review";
         });
         const user = req.session.user;
         if (store === null)
@@ -31,6 +34,7 @@ router.route('/:id').get(async (req, res) => {
         if (role === 'admin' && user.ownedStoreId && storeId !== user.ownedStoreId) {
             isAdminAndHasAStore = true;
         }
+        const productReviews = 
         res.status(200).render('store', {
             name: theUser.userName,
             avatarId: theUser.avatar,
