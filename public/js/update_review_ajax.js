@@ -33,13 +33,13 @@
         window.location.href = '/profile';
     });
 
-    deleteReviewForm.submit((event) => {
+    deleteReviewForm.submit(async (event) => {
         const currentLink = window.location.href;
         let requestConfig = {
             method: 'DELETE',
             url: currentLink,
         }
-        $.ajax(requestConfig).then((responseMessage) => {
+        await $.ajax(requestConfig).then((responseMessage) => {
             if (responseMessage.deleteReview) {
                 window.location.href = '/profile';
                 return;
