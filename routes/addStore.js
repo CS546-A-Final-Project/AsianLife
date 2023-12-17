@@ -62,6 +62,22 @@ router.route('/')
         } catch (e) {
             errors.push(e);
         }
+        if (errors.length > 0) {
+            const selected = { [`${state}`]: 'selected' };
+            return res.status(400).render('addStore', {
+                title: "add store",
+                name: name,
+                address: address,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+                phoneNumber: phoneNumber,
+                email: email,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            });
+        }
         let storeId;
         try {
             storeId = await addStore({
