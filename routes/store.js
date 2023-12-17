@@ -35,7 +35,8 @@ const router = express.Router();
         if (role === 'admin' && user.ownedStoreId && storeId !== user.ownedStoreId) {
             isAdminAndHasAStore = true;
         }
-        const productReviews = 
+        const contact_information = store.contact_information;
+        const store_location = store.store_location;
         res.status(200).render('store', {
             name: theUser.userName,
             avatarId: theUser.avatar,
@@ -45,7 +46,9 @@ const router = express.Router();
             storeProducts: storeProducts,
             storeID: storeId,
             user: userRole,
-            isOwner: isOwner
+            isOwner: isOwner,
+            contact_information:contact_information,
+            store_location:store_location
         });
 
 

@@ -48,13 +48,28 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
     validation.checkIfStoreNameValid(name);
   } catch (e) {
     errors.push(e);
+    const selected = { default: "selected" };
+    return res.status(400).render("editStore", {
+      title: "editStore",
+      name: name,
+      address: address,
+      city: city,
+      state: state,
+      zipCode: zipCode,
+      phoneNumber: phoneNumber,
+      email: email,
+      selected: selected,
+      hasErrors: true,
+      errors: errors,
+      storeId: storeId,
+    });
   }
   const location = {
     address: address,
     city: city,
     state: state,
     zip: zipCode,
-}
+  };
   const contact_information = {
     email: email,
     phoneNumber: phoneNumber,
@@ -85,7 +100,7 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
     validation.checkIfPhoneNumberValid(phoneNumber);
     console.log("checkIfPhoneNumberValid");
     validation.checkEmail(email, "E-mail");
-} catch (e) {
+  } catch (e) {
     errors.push(e);
     const selected = { default: "selected" };
     return res.status(400).render("editStore", {
@@ -102,24 +117,8 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
       errors: errors,
       storeId: storeId,
     });
-}
-if (errors.length > 0) {
-  const selected = { [`${state}`]: 'selected' };
-  return res.status(400).render("editStore", {
-    title: "editStore",
-    name: name,
-    address: address,
-    city: city,
-    state: state,
-    zipCode: zipCode,
-    phoneNumber: phoneNumber,
-    email: email,
-    selected: selected,
-    hasErrors: true,
-    errors: errors,
-    storeId: storeId,
-  });
-}
+  }
+ 
   try {
     await updateStore(req.params.id, {
       adminId: adminId,
@@ -134,9 +133,8 @@ if (errors.length > 0) {
   } catch (e) {
     console.log(e);
     errors.push(e);
-  }
-  if (errors.length > 0) {
-    const selected = { [`${state}`]: 'selected' };
+     
+    const selected = { [`${state}`]: "selected" };
     return res.status(400).render("editStore", {
       title: "editStore",
       name: name,
@@ -151,8 +149,9 @@ if (errors.length > 0) {
       errors: errors,
       storeId: storeId,
     });
+  
   }
+  
   return res.redirect(`/store/${storeId}`);
-
 });
 export default router;
