@@ -424,6 +424,41 @@ button:hover {
   margin: 0 auto; 
 }
 
+.share-main {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+#share-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#share-form input[type="text"],
+#share-form input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#share-form button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%; 
+}
+
 
 html, body {
   min-height: 100%;

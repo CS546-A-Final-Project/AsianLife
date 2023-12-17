@@ -414,6 +414,38 @@
         })
     }
 
+    const shareForm = document.getElementById('share-form')
+    if (shareForm){
+        const sharedEmail = document.getElementById("friend-email");
+        const sharedNickname = document.getElementById("user-nickname");
+
+        shareStaticForm.addEventListener('submit', (event) => {
+            let errors = [];
+            errorContainer.innerHTML = '';
+            const regexName = /^[a-zA-Z0-9]+$/
+            const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            const shareEmail = xss(sharedEmail.value).trim();
+            if (!shareEmail || sharedEmail.length === 0) errors.push ('You must provide an email to share!');
+            if (typeof shareEmail !== 'string') errors.push('The email address must be a string');
+            if (!String(shareEmail).toLowerCase().match(regexEmail)) errors.push('You must provide a valid email');
+            
+            const shareNickname = xss(shareNickname.value).trim();
+            if (!shareNickname || shareNickname.length === 0) errors.push ('You must provide a nick name');
+            if (typeof shareNickname !== 'string') errors.push('Type of nickName must be string');
+            if (shareNickname.length <=2 || shareNickname.length >= 20) errors.push('Nick name length should be between 2 and 20');
+            if (!String(shareNickname).match(regexName)) errors.push('You must provide a valid nick name');
+
+
+            if (errors.length > 0) {
+                event.preventDefault();
+                for (let i = 0; i < errors.length; i++) {
+                    const addLi = document.createElement('li');
+                    addLi.textContent = errors[i];
+                    errorContainer.appendChild(addLi);
+                }
+            }
+        })
+    }
 
     const storecommentStaticForm = document.getElementById('storecomment-form');
     if (storecommentStaticForm) {

@@ -80,6 +80,14 @@ app.use('/login', (req, res, next) => {
   }
 });
 
+app.use('/send-promotion', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+})
+
 app.use('/register', (req, res, next) => {
   if (!req.session.user) {
     next();
@@ -99,6 +107,14 @@ app.use('/home', (req, res, next) => {
     next();
   }
 });
+
+app.use('/share', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+})
 
 app.use('/store', (req, res, next) => {
   const requestRoute = req.originalUrl;
