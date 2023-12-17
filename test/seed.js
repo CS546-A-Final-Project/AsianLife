@@ -5,6 +5,7 @@ import {
   usersData,
   commentsData,
   productsData,
+  commentsforstoresData
 } from "../data/index.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 
@@ -32,7 +33,28 @@ phoneNumber: "1234567890",
 email: "abc1@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
-
+let newUser1 = await usersData.addUser(
+  'bobwen',
+  'Mingzhi',
+  'Wen',
+  'abc1_1@gmail.com',
+  'Abc123,,',
+  'user'
+  );
+let user1Id = newUser1.user_id;
+let newComment1forstore = await commentsforstoresData.addComment({
+  user_id: user1Id, 
+  store_id: newStoreId,
+  comment: "This is comment1 for store1" });
+let updateStore = await storesData.updateCommentofStore(
+  newStoreId,
+  "This is comment1 for store1"
+);
+let comment1Id = newComment1forstore._id;
+let newAnswerforcomment = await commentsforstoresData.addAnswer(
+  comment1Id,
+  "This is answer1 for comment1 of store1"
+);
 let product = await productsData.addProduct(
 userId,
 newStoreId,
@@ -117,6 +139,23 @@ phoneNumber: "1234567890",
 email: "abc2@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
+newUser1 = await usersData.addUser(
+  'bobwen',
+  'Mingzhi',
+  'Wen',
+  'abc2_1@gmail.com',
+  'Abc123,,',
+  'user'
+  );
+user1Id = newUser1.user_id;
+newComment1forstore = await commentsforstoresData.addComment({
+  user_id: user1Id, 
+  store_id: newStoreId,
+  comment: "This is comment1 for store2" });
+updateStore = await storesData.updateCommentofStore(
+  newStoreId,
+  "This is comment1 for store2"
+);
 product = await productsData.addProduct(
 userId,
 newStoreId,
@@ -150,20 +189,20 @@ newUser = await usersData.addUser(
 'bobwen',
 'Mingzhi',
 'Wen',
-'abc2@gmail.com',
+'abc3@gmail.com',
 'Abc123,,',
 'admin'
 );
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
 adminId: userId,
-name: 'store2',
+name: 'store3',
 address: "address",
 city: "Hoboken",
 state: "NJ",
 zipCode: "07030",
 phoneNumber: "1234567890",
-email: "abc2@gmail.com",
+email: "abc3@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
@@ -198,20 +237,20 @@ newUser = await usersData.addUser(
 'bobwen',
 'Mingzhi',
 'Wen',
-'abc3@gmail.com',
+'abc4@gmail.com',
 'Abc123,,',
 'admin'
 );
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
 adminId: userId,
-name: 'store3',
+name: 'store4',
 address: "address",
 city: "Hoboken",
 state: "NJ",
 zipCode: "07030",
 phoneNumber: "1234567890",
-email: "abc3@gmail.com",
+email: "abc4@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(
@@ -246,20 +285,20 @@ newUser = await usersData.addUser(
 'bobwen',
 'Mingzhi',
 'Wen',
-'abc4@gmail.com',
+'abc5@gmail.com',
 'Abc123,,',
 'admin'
 );
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
 adminId: userId,
-name: 'store4',
+name: 'store5',
 address: "address",
 city: "Hoboken",
 state: "NJ",
 zipCode: "07030",
 phoneNumber: "1234567890",
-email: "abc4@gmail.com",
+email: "abc5@gmail.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 product = await productsData.addProduct(

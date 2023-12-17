@@ -67,7 +67,6 @@ const addAnswer = async(Id,  Answer) => {
   let id = xss(Id).trim();
   let answer = xss(Answer).trim();
   try{
-    s
     validation.checkId(id);
   }catch(e){
     throw e;
