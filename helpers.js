@@ -1,4 +1,5 @@
 import { users } from "./config/mongoCollections.js";
+import { stores } from "./config/mongoCollections.js";
 import bcrypt from 'bcrypt';
 import { ObjectId } from "mongodb";
 
@@ -181,6 +182,18 @@ const checkRating = (rating) => {
     return rating
 }
 
+const checkIfStoreNameExists = async (name) => {
+    name = name.replace(/\s/g, "").toLowerCase();
+    const storeCollection = await stores();
+    const storeList = await storeCollection.find().toArray();
+    for (let store of storeList) {
+        if (store.name.replace(/\s/g, "").toLowerCase() === name) {
+            return true;
+        }
+    }
+    return false;
+};
+
 export default {
     toHashPassword,
     checkIfEmailExists,
@@ -194,5 +207,6 @@ export default {
     checkDateFormat,
     checkDateValid,
     checkCategories,
-    checkRating
+    checkRating,
+    checkIfStoreNameExists,
 };
