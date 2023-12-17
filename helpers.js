@@ -103,20 +103,20 @@ const checkCategories = (categoryToCheck) => {
 }
 const checkPrice = (productPrice) => {
     if (typeof productPrice !== "number"){
-        throw (`productPrice ${productPrice} should be a number`);
+        throw (`ProductPrice should be a number`);
     }
         
     const reguExForPrice = /^[1-9][0-9]*(\.[0-9]{1,2})?$/;
     if (!reguExForPrice.test(productPrice.toString())) {
-        throw (`${productPrice} should be a positive whole number, positive 2 decimal place float.`);
+        throw (`ProductPrice should be a positive whole number, positive 2 decimal place float.`);
     }      
     
     return productPrice;
 };
 const checkReview = (review) => {
     review = checkString(review, "review"); // description are already trimmed
-    if (review.length < 25)
-        throw `This product's review ${review} should not be less than 25 characters.`;
+    if (review.length < 25 || review.length > 200)
+        throw `This product's review should not be less than 25 characters.`;
     return review;
 };
 const checkDateFormat = (eventDate, varName) => {
@@ -124,7 +124,7 @@ const checkDateFormat = (eventDate, varName) => {
     // ChatGPT: Valid Date format "MM/DD/YYYY"
     const reguExForDate = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
     if (!eventDate.match(reguExForDate))
-        throw (`This event's date ${eventDate} is not in the expected 'MM/DD/YYYY' format.`);
+        throw (`This event's date ${varName} is not in the expected 'MM/DD/YYYY' format.`);
 
     // ChatGPT: Check if it is a valid date
     const [month, day, year] = eventDate.split("/").map(Number); // split and convert string into number
@@ -134,7 +134,7 @@ const checkDateFormat = (eventDate, varName) => {
         dateObj.getMonth() !== month - 1 ||
         dateObj.getFullYear() !== year
     ) {
-        throw (`Invalid date ${eventDate} was provided, like 02/30 or 11/31.`);
+        throw (`Invalid date for ${varName} was provided, like 02/30 or 11/31.`);
     }
     return eventDate;
 };
@@ -152,10 +152,10 @@ const checkDateValid = (manufactureDate, expiryDate) => {
     // expiryDate should be late than current Date
     const currDate = new Date();
     if (manufactureDateObj > currDate) {
-        throw new Error(`Manufacture Date ${manufactureDateObj} should not be future date`);
+        throw new Error(`Manufacture Date should not be future date`);
     }
     if (expiryDateObj <= currDate) {
-        throw new Error(`Expiry Date ${expiryDateObj} should be future date`);
+        throw new Error(`Expiry Date should be future date`);
     }
 
     // manufacturedDate should be earlier than expiryDate
@@ -163,7 +163,7 @@ const checkDateValid = (manufactureDate, expiryDate) => {
 }
 const checkRating = (rating) => {
     if (typeof rating != "number"){
-        throw (`The product's rating ${rating} should be a number`);
+        throw (`The product's rating should be a number`);
     }
     if (!Number.isInteger(rating)) {
         throw ('Rating must be an integer');

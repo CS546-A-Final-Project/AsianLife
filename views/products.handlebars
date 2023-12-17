@@ -17,24 +17,24 @@
 
     </div>
 </nav>
-<h1>{{productName}}</h1>
+<h1>{{product.productName}}</h1>
 
 {{#if isAdminOfThisStore}}
 <a href='/editProduct/{{productId}}' class="button">EDIT Product</a>
 {{/if}}
 
-{{#if hasProduct}}
+{{#if product}}
 <div class="products-container">
-<p><img src="/public/images/products/{{#if productImage}}{{productImage}}{{else}}default.png{{/if}}" alt="Product Image" width="200" height="200"></p>
-    <p>Product Category: {{productCategory}}</p>
-    <p>Price: ${{productPrice}}</p>
-    <p>Manufacture Date: {{manufactureDate}}</p>
-    <p>Expiration Date: {{expirationDate}}</p>
+<p><img src="/public/images/products/{{product.productImage}}" alt="Product Image" width="200" height="200"></p>
+    <p>Product Category: {{product.productCategory}}</p>
+    <p>Price: ${{product.productPrice}}</p>
+    <p>Manufacture Date: {{product.manufactureDate}}</p>
+    <p>Expiration Date: {{product.expirationDate}}</p>
 
-    {{#if productReviews}}
+    {{#if product.productReviews}}
     <ul>
         
-        {{#each productReviews}}
+        {{#each product.productReviews}}
         <li> 
             <p>User: {{this.userName}}</p>       
             <p>Rating: {{this.rating}}</p>

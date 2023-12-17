@@ -8,7 +8,6 @@ const router = express.Router();
 
 const upload = multer({
     dest: path.join(process.cwd(), "/public/images/products"), 
-    // 注意更改目录为产品图片目录
   });
 
 router
@@ -19,7 +18,11 @@ router
             selected: { default: 'selected' }
         })
     })
-    .post(upload.single("productImage"), async (req, res) => { // runs well!
+    .post(upload.single("productImage"), async (req, res) => { 
+        let role = req.session.user.role;
+        if (role !== 'admin' || !req.session.user.ownedStoreId) {
+            return res.status(403).render('error', { error: "You don't have the authority to update this product." });
+        }
         let user_id = xss(req.session.user.id);
         let store_id = xss(req.session.user.ownedStoreId);
         let productName = xss(req.body.productName);
@@ -29,14 +32,13 @@ router
         let expirationDate = xss(req.body.expirationDate);
         let productImage;
         if (req.file && req.file.filename) {
-            productImage = xss(req.file.filename);
+            productImage = req.file.filename;
         } else {
             productImage = 'default.png';
         }   
         let errors = [];
 
         let newProduct = req.body;
-        //console.log("req", req.body)
         if (!newProduct || Object.keys(newProduct).length === 0) {
             return res.status(400).json({ error: "You didn't provide any information." });
         }
