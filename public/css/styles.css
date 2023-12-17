@@ -627,3 +627,15 @@ h1 {
   color: #d9534f;
   margin-top: 10px;
 }
+
+p.high {
+  color: green;
+}
+
+p.low {
+  color: orange;
+}
+
+p.none {
+  color: red;
+}
