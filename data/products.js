@@ -53,13 +53,15 @@ const addProduct = async (
     const productsCollection = await products();
     const storesCollection = await stores();
 
-    // 检查同一商店中是否有重名的产品
-    const existingProduct = await productsCollection.findOne({
-        productName: productName,
-        store_id: new ObjectId(store_id) // 确保只在同一商店内检查
-    });
-    if (existingProduct) {
-        throw new Error('A product with the same name already exists in the store.');
+    const store = await storesCollection.findOne({ _id: new ObjectId(store_id) });
+    if (!store) {
+        throw new Error(`Store with ID ${store_id} not found.`);
+    }
+    for (const productId of store.products) {
+        const product = await productsCollection.findOne({ _id: new ObjectId(productId) });
+        if (product && product.productName === productName) {
+            throw new Error(`A product with the name "${productName}" already exists in the store.`);
+        }
     }
 
     let newProduct = {
@@ -76,7 +78,6 @@ const addProduct = async (
         totalAmountOfReviews: 0,
     };
 
-    // insert new product inside 'store'
     const newInsertProductInformation = await productsCollection.insertOne(newProduct);
     if (!newInsertProductInformation.acknowledged || !newInsertProductInformation.insertedId) {
         throw (
@@ -84,8 +85,7 @@ const addProduct = async (
         )
     };
     const newProductId = newInsertProductInformation.insertedId;
-
-    // update products array      
+    
     const updateStore = await storesCollection.findOneAndUpdate(
         { _id: new ObjectId(store_id) },
         { $push: { products: newProductId.toString() } },
