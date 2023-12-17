@@ -1,5 +1,5 @@
 <div class="container">
-    <form id="edit-product-form" action="/editProduct/{{productId}}" method="POST">
+    <form id="edit-product-form" action="/editProduct/{{productId}}" method="POST" enctype="multipart/form-data">
         <h2>Update Product</h2>
 
         <label for="productName">Product Name:</label>
@@ -29,12 +29,15 @@
         <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
         <input type="text" id="expirationDate" name="expirationDate" value="{{product.expirationDate}}" required>
         
-        <label for="productImage">Product Image:</label>
-        <input type="file" id="productImage" name="productImage" accept="image/*" >
+        <label for="productImage">Product Image "optional":</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*">
 
         <button type="submit" class="button">Update Product</button>
     </form>  
-    <button id="delete-product" type="button" class="button"> delete Product</button>
+    <form id="delete-product-form" action="/editProduct/{{productId}}">
+        <button type="submit">Delete Review</button>
+    </form>
+
      {{#if hasErrors}}
     <ul class="errorContainer" id="errorContainer">
        
@@ -49,4 +52,9 @@
 </div>
 
 <script src="/public/js/front_end_validation.js"></script>
-<script src="/public/js/front-end-update.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+<script src="/public/js/delete_product_ajax.js"></script>

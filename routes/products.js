@@ -13,19 +13,15 @@ router
         res.status(400).json('Cannot be here');
     })
 
-
 router
-    .route('/:productId') // get one product after add it
+    .route('/:productId')
     .get(async (req, res) => {
         let productId = xss(req.params.productId);
-        // let user_id = xss(req.session.user.id);
         try {
             productId = helpers.checkId(productId, 'productId');
-            // user_id = helpers.checkId(user_id, "user_id");
         } catch (e) {
-            return res.status(400).render('products', {
-                hasErrors: true,
-                errors: e
+            return res.status(400).render('error', {
+                error: e
             });
         }
         try {
@@ -38,7 +34,6 @@ router
             const user = await getUser(id);
             const name = user.userName;
             let product = await productsData.getProductById(productId);
-            // let userName = await reviewsForProductsData.get(user_id);
             const storeId = product.store_id;
             let isAdminOfThisStore = false;
             if (storeId === req.session.user.ownedStoreId) {
@@ -50,32 +45,42 @@ router
                 storeId: req.session.user.ownedStoreId,
                 isAdminAndHasAStore: isAdminAndHasAStore,
                 avatarId: user.avatar,
-                hasProduct: true,
                 isAdminOfThisStore: isAdminOfThisStore,
-                // userName:userName,
-                productName: product.productName,
-                productCategory: product.productCategory,
-                productPrice: product.productPrice,
-                manufactureDate: product.manufactureDate,
-                expirationDate: product.expirationDate,
-                productReviews: product.productReviews,
-                productImage: product.productImage,
-                productId: productId // for add reviews
+                product: product,
+                productId: productId,
+                selected: { default: 'selected' }
             });
         } catch (e) {
             return res.status(404).render('error', {
-                errors: e
+                error: e
             });
         }
     })
     .post(async (req, res) => { // 加评论！！！add a review for a product
         let user_id = xss(req.session.user.id);
-        let productId = xss(req.params.productId); // for test
-        let storeIdForOwner = xss(req.session.user.ownedStoreId); // for test
-        let store_id;
+        let role = req.session.user.role;
+        let productId = xss(req.params.productId);
+        let isAdminAndHasAStore = false;
+        if (role === 'admin' && req.session.user.ownedStoreId) {
+            isAdminAndHasAStore = true;
+        }
+        let user = await getUser(user_id);
+        let name = user.userName;
+        let product = await productsData.getProductById(productId);
+        let store_id = product.store_id;
+        if (req.session.user.ownedStoreId === store_id) {
+            return res.status(403).render('error', { error: "The store's owner should not add review for the product." });
+        }
+        let isAdminOfThisStore = false;
+        if (store_id === req.session.user.ownedStoreId) {
+            isAdminOfThisStore = true;
+        }
         let productReviews = xss(req.body.productReviews);
         let rating = parseInt(xss(req.body.productRating));
-        let errors = [];
+        let selected;
+        let option;
+        let errors = [];  
+
         try {
             user_id = helpers.checkId(user_id, 'user_id');
         } catch (e) {
@@ -83,8 +88,6 @@ router
         }
         try {
             productId = helpers.checkId(productId, 'productId');
-            let product = await productsData.getProductById(productId);
-            store_id = product.store_id;
         } catch (e) {
             errors.push(e);
         }
@@ -103,21 +106,38 @@ router
         } catch (e) {
             errors.push(e);
         }
+        if (rating === 1) {
+            option = 'a';
+        } else if (rating === 2) {
+            option = 'b';
+        } else if (rating === 3) {
+            option = 'c';
+        } else if (rating === 4) {
+            option = 'd';
+        } else if (rating === 5) {
+            option = 'e';
+        }
+        if (rating) {
+            selected = { [option]: "selected" };
+        } else {
+            selected = { default: "selected" };
+        }
         if (errors.length > 0) {
             return res.status(400).render('products', {
-                productName: productName,
-                productReviews: productReviews,
-                rating: rating,
+                title: product.productName,
+                name: name,
+                storeId: req.session.user.ownedStoreId,
+                isAdminAndHasAStore: isAdminAndHasAStore,
+                avatarId: user.avatar,
+                isAdminOfThisStore: isAdminOfThisStore,
+                product: product,
+                productId: productId,
                 selected: selected,
                 hasErrors: true,
                 errors: errors,
             })
         }
-        errors = [];
         try {
-            if (storeIdForOwner === store_id) {
-                throw "You can not add review for your store's products."
-            }
             await reviewsForProductsData.addReview(
                 user_id,
                 productId,
@@ -128,12 +148,17 @@ router
             res.status(200).redirect(`/products/${productId}`);
         } catch (e) {
             errors.push(e);
-        }
+        }     
         if (errors.length > 0) {
             return res.status(400).render('products', {
-                productName: productName,
-                productReviews: productReviews,
-                rating: rating,
+                title: product.productName,
+                name: name,
+                storeId: req.session.user.ownedStoreId,
+                isAdminAndHasAStore: isAdminAndHasAStore,
+                avatarId: user.avatar,
+                isAdminOfThisStore: isAdminOfThisStore,
+                product: product,
+                productId: productId,
                 selected: selected,
                 hasErrors: true,
                 errors: errors,

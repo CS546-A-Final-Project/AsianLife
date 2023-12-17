@@ -17,24 +17,24 @@
 
     </div>
 </nav>
-<h1>{{productName}}</h1>
+<h1>{{product.productName}}</h1>
 
 {{#if isAdminOfThisStore}}
 <a href='/editProduct/{{productId}}' class="button">EDIT Product</a>
 {{/if}}
 
-{{#if hasProduct}}
+{{#if product}}
 <div class="products-container">
-<p><img src="/public/images/products/{{#if productImage}}{{productImage}}{{else}}default.png{{/if}}" alt="Product Image" width="200" height="200"></p>
-    <p>Product Category: {{productCategory}}</p>
-    <p>Price: ${{productPrice}}</p>
-    <p>Manufacture Date: {{manufactureDate}}</p>
-    <p>Expiration Date: {{expirationDate}}</p>
+<p><img src="/public/images/products/{{product.productImage}}" alt="Product Image" width="200" height="200"></p>
+    <p>Product Category: {{product.productCategory}}</p>
+    <p>Price: ${{product.productPrice}}</p>
+    <p>Manufacture Date: {{product.manufactureDate}}</p>
+    <p>Expiration Date: {{product.expirationDate}}</p>
 
-    {{#if productReviews}}
+    {{#if product.productReviews}}
     <ul>
         
-        {{#each productReviews}}
+        {{#each product.productReviews}}
         <li> 
             <p>User: {{this.userName}}</p>       
             <p>Rating: {{this.rating}}</p>
@@ -53,12 +53,12 @@
 
         <label for="productRating">Product Rating:</label>
         <select id="productRating" name="productRating">
-            <option value="" disabled selected>Select</option>
-            <option value="1">1 - Poor</option>
-            <option value="2">2 - Fair</option>
-            <option value="3">3 - Good</option>
-            <option value="4">4 - Very Good</option>
-            <option value="5">5 - Excellent</option>
+            <option value="" disabled {{selected.default}}>Select</option>
+            <option value="1" {{selected.a}}>1 - Poor</option>
+            <option value="2" {{selected.b}}>2 - Fair</option>
+            <option value="3" {{selected.c}}>3 - Good</option>
+            <option value="4" {{selected.d}}>4 - Very Good</option>
+            <option value="5" {{selected.e}}>5 - Excellent</option>
         </select>
 
         <button type="submit">Submit Review</button>

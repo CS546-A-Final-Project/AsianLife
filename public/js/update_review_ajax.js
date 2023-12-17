@@ -4,7 +4,7 @@
         errorContainer = $('#errorContainer'),
         review = $('#productReviews'),
         rating = $('#productRating');
-    
+
     errorContainer.hide();
     updateReviewForm.submit((event) => {
         event.preventDefault();

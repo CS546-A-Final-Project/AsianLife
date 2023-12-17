@@ -1,41 +1,42 @@
-{{!
-You can use this template to render any errors on your site if you wish
-}}
+<nav>
+    <a href="/home">Home</a>
+</nav>
+<h1>{{title}} Comment Detail</h1>
 
+<div class="comment-section">
+  <ul class="comment-list">
+    <li>
+      {{comment}}
+      {{#if isCommenter}}
+        <p class="comment-tag">(Your Comment)</p>
+      {{/if}}
+      {{#if answer}}
+        <ul class="answer-list">
+          <li class="answer-arrow">&rarr; {{answer}}</li>
+        </ul>
+      {{/if}}
+    </li>
+  </ul>
 
-    <h1>{{title}} Comment Detail</h1>
+  {{#if isAdmin}}
+    {{#unless answer}}
+      <form id="answer-form" action="/commentsDetail/{{commentId}}" method="POST" class="answer-form">
+        <label for="answer">Owner Answer:</label>
+        <input type="text" name="answerInput" id="answerInput" class="answer-input">
+        <button type="submit" class="answer-submit-btn">Add Answer</button>
+      </form>
 
-    <ul>
-        <li>{{comment}}
-            {{#if isCommenter}}
-            <p>(Your Comment)</p>
-            {{/if}}
-            {{#if answer}}
-            <ul>
-                <li>&rarr; {{answer}}</li>
-            </ul>
-            {{/if}}
-        </li>
-    </ul>
-    
+      <ul class="error-container" id="errorContainer">
+        {{#if hasErrors}}
+          {{#each errors}}
+            <li>{{this}}</li>
+          {{/each}}
+        {{/if}}
+      </ul>
+    {{/unless}}
+  {{else}}
+    <p class="owner-restriction">Only the store owner can answer the comment</p>
+  {{/if}}
+</div>
 
-     {{#if isAdmin}}
-        {{#unless answer}}
-            <form id="answer-form" action="/commentsDetail/{{commentId}}" method="POST">
-                <label for="answer">Owner Answer:</label>
-                <input type="text" name="answerInput" id="answerInput">
-                <button type="submit">Add answer</button>
-            </form>
-            <ul class="errorContainer" id="errorContainer">
-                {{#if hasErrors}}
-                    {{#each errors}}
-                        <li>{{this}}</li>
-                    {{/each}}
-                {{/if}}
-            </ul>
-            <script src="/public/js/front_end_validation.js"></script>
-        {{/unless}}
-    {{else}}
-        <p>Only store Owner can answer the comment</p>
-    {{/if}}
-   
+<script src="/public/js/front_end_validation.js"></script>
