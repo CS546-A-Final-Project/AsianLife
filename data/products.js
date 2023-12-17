@@ -78,6 +78,7 @@ const addProduct = async (
         productReviews: [],
         productRating: 0,
         totalAmountOfReviews: 0,
+        stockStatus: "out of stock"
     };
 
     // insert new product inside 'store'
@@ -138,17 +139,19 @@ const updateProduct = async (
     productCategory,
     productPrice,
     manufactureDate,
-    expirationDate
+    expirationDate,
+    stockStatus
 ) => {
     id = xss(id);
     id = helpers.checkId(id, 'product_id');
 
     productName = helpers.checkString(productName, 'productName');
-    productCategory = helpers.checkCategories(productCategory, 'productCategory');
-    productPrice = helpers.checkPrice(productPrice, 'productPrice');
+    productCategory = helpers.checkCategories(productCategory);
+    productPrice = helpers.checkPrice(productPrice);
     manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
     expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     helpers.checkDateValid(manufactureDate, expirationDate);
+    stockStatus = helpers.checkStockStatus(stockStatus);
 
     const productsCollection = await products();
 
