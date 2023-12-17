@@ -379,6 +379,52 @@ button:hover {
   margin: 20px 0;
 }
 
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333; 
+  
+  color: white;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-block {
+  margin: 0 20px; 
+}
+
+.footer-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 0 auto; 
+}
+
+.site-footer {
+  flex-shrink: 0;
+}
+
 h3 {
   margin: 0;
   font-size: 18px;
