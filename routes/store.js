@@ -2,6 +2,7 @@ import express from 'express';
 import { getUser } from '../data/users.js';
 import { ObjectId } from "mongodb";
 import { storesData, productsData } from "../data/index.js";
+import { getAllStores } from '../data/stores.js';
 const router = express.Router();
 
     router.route('/:id').get(async (req, res) => {
@@ -18,7 +19,10 @@ const router = express.Router();
         const store = await storesData.getStoreById(storeId);
         const storeProducts = await productsData.getAllProductsByStoreId(storeId);
         storeProducts.forEach(product => {
-            product.firstReview = product.productReviews[0];
+            if (product.productReviews[0] && product.productReviews[0].productReviews)
+                product.firstReview = product.productReviews[0].productReviews;
+            else
+                product.firstReview = "No Review";
         });
         const user = req.session.user;
         if (store === null)
@@ -31,6 +35,7 @@ const router = express.Router();
         if (role === 'admin' && user.ownedStoreId && storeId !== user.ownedStoreId) {
             isAdminAndHasAStore = true;
         }
+        const productReviews = 
         res.status(200).render('store', {
             name: theUser.userName,
             avatarId: theUser.avatar,
@@ -64,4 +69,41 @@ router.route('/').get(async (req, res) => {
     }
 })
 
+router.route('/').get(async (req, res) => {
+    const title = "All Store";
+    const id = req.session.user.id;
+    const role = req.session.user.role;
+    const storeId = req.session.user.ownedStoreId;
+    let isAdminAndHasAStore = false;
+    if (role === 'admin' && storeId) {
+        isAdminAndHasAStore = true;
+    }
+    let isAdminAndHasNoStore = false;
+    if (role === 'admin' && !storeId) {
+        isAdminAndHasNoStore = true;
+    }
+    const user = await getUser(id);
+    const name = user.userName;
+    const stores = await getAllStores();
+    if (!stores) {
+        return res.status(400).render('storeList',{
+            title: title, 
+            name: name,
+            avatarId: user.avatar,
+            hasStores: false,
+            isAdminAndHasAStore: isAdminAndHasAStore,
+            isAdminAndHasNoStore: isAdminAndHasNoStore,
+        });
+    }
+    res.status(200).render('storeList',{
+        title: title, 
+        name: name,
+        avatarId: user.avatar,
+        hasStores: true,
+        stores: stores,
+        isAdminAndHasAStore: isAdminAndHasAStore,
+        isAdminAndHasNoStore: isAdminAndHasNoStore,
+        storeId: storeId,
+    })
+})
 export default router;

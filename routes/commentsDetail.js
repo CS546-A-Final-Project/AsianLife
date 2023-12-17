@@ -21,14 +21,7 @@ router.route('/:comment_id').get(async (req, res) => {
     }
 
     try{
-      checkId(commentId)
-    }catch(e){
-      return res.status(400).render('error', {title: "Error", error: e})
-    }
-
-    try{
         let commentData = await commentsforstoresData.getCommentById(commentId);
-        // console.log(commentData)
         let comment = commentData.comment;
         let commentuserid = commentData.user_id
         let isCommenter = true;

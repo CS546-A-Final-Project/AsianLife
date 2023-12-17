@@ -14,9 +14,10 @@ const upload = multer({
 });
 
 router.post("/", upload.single("file"), async (req, res) => {
-  //console.log(req.file);
-  await updateAvatar(req.session.user.id, req.file.filename);
-  res.status(200).redirect("/profile");
+  if (req.file) {
+    await updateAvatar(req.session.user.id, req.file.filename);
+  }
+  return res.status(200).redirect("/profile");
 });
 
 const uploadStore = multer({
@@ -58,7 +59,6 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
     email: email,
     phoneNumber: phoneNumber,
   };
-  console.log("success");
   try {
     validation.checkIfLocationValid(location);
     console.log("checkIfLocationValid");
@@ -103,7 +103,23 @@ router.post("/store/:id", uploadStore.single("file"), async (req, res) => {
       storeId: storeId,
     });
 }
-console.log("success");
+if (errors.length > 0) {
+  const selected = { [`${state}`]: 'selected' };
+  return res.status(400).render("editStore", {
+    title: "editStore",
+    name: name,
+    address: address,
+    city: city,
+    state: state,
+    zipCode: zipCode,
+    phoneNumber: phoneNumber,
+    email: email,
+    selected: selected,
+    hasErrors: true,
+    errors: errors,
+    storeId: storeId,
+  });
+}
   try {
     await updateStore(req.params.id, {
       adminId: adminId,
@@ -136,11 +152,7 @@ console.log("success");
       storeId: storeId,
     });
   }
-  console.log("success");
-  return res.status(200).render("editStore", {
-    title: "editStore",
-    message:"edit store successfully",
-  });
+  return res.redirect(`/store/${storeId}`);
 
 });
 export default router;

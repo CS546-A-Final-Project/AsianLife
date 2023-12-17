@@ -1,6 +1,7 @@
 import express from 'express';
 import xss from 'xss';
 import validation from '../validation.js'
+import helpers from '../helpers.js';
 import { addStore } from '../data/stores.js';
 import { bindStoreWithUser } from '../data/users.js';
 const router = express.Router();
@@ -24,6 +25,9 @@ router.route('/')
         let errors = [];
         try {
             validation.checkIfStoreNameValid(name);
+            if (await helpers.checkIfStoreNameExists(name)) {
+                errors.push("Store name exists");
+            }
         } catch (e) {
             errors.push(e);
         }
@@ -57,6 +61,22 @@ router.route('/')
             validation.checkEmail(email, "E-mail");
         } catch (e) {
             errors.push(e);
+        }
+        if (errors.length > 0) {
+            const selected = { [`${state}`]: 'selected' };
+            return res.status(400).render('addStore', {
+                title: "add store",
+                name: name,
+                address: address,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+                phoneNumber: phoneNumber,
+                email: email,
+                selected: selected,
+                hasErrors: true,
+                errors: errors,
+            });
         }
         let storeId;
         try {

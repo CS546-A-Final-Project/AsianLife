@@ -5,6 +5,7 @@ import {
   usersData,
   commentsData,
   productsData,
+  commentsforstoresData
 } from "../data/index.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 
@@ -13,807 +14,320 @@ await db.dropDatabase();
 
 //--------------------admin6-----------------------
 let newUser = await usersData.addUser(
-  'testone',
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc1@gmail.com',
+'Abc123,,',
+'admin'
+);
+let userId = newUser.user_id;
+let newStoreId = await storesData.addStore({
+adminId: userId,
+name: 'store1',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc1@gmail.com",
+});
+await usersData.bindStoreWithUser(newStoreId, userId);
+let newUser1 = await usersData.addUser(
+  'bobwen',
   'Mingzhi',
   'Wen',
-  'test1@gmail.com',
+  'abc1_1@gmail.com',
   'Abc123,,',
-  'admin'
+  'user'
   );
-  let userId = newUser.user_id;
-  let newStoreId = await storesData.addStore({
-  adminId: userId,
-  name: 'Five guys',
-  address: "address",
-  city: "Hoboken",
-  state: "NJ",
-  zipCode: "07030",
-  phoneNumber: "1234567890",
-  email: "test1@gmail.com",
-  });
-  await usersData.bindStoreWithUser(newStoreId, userId);
-  
-  let product = await productsData.addProduct(
-  userId,
+let user1Id = newUser1.user_id;
+let newComment1forstore = await commentsforstoresData.addComment({
+  user_id: user1Id, 
+  store_id: newStoreId,
+  comment: "This is comment1 for store1" });
+let updateStore = await storesData.updateCommentofStore(
   newStoreId,
-  'Hamburger',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
-  )
-  let addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
+  "This is comment1 for store1"
+);
+let comment1Id = newComment1forstore._id;
+let newAnswerforcomment = await commentsforstoresData.addAnswer(
+  comment1Id,
+  "This is answer1 for comment1 of store1"
+);
+let product = await productsData.addProduct(
+userId,
+newStoreId,
+'AAA',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+let addReview = await reviewsforproductsData.addReview(
+userId,
+product,
+newStoreId,
+"goooooooooooooooooooooooooooooooooood",
+4
+)
+addReview = await reviewsforproductsData.addReview(
+userId,
+product,
+newStoreId,
+"gooooooooooooooooooooooooooooooooood",
+4
+)
+addReview = await reviewsforproductsData.addReview(
+userId,
+product,
+newStoreId,
+"goooooooooooooooooooooooooooooooood",
+4
+)
+addReview = await reviewsforproductsData.addReview(
+userId,
+product,
+newStoreId,
+"goooooooooooooooooooooooooooooood",
+4
+)
+addReview = await reviewsforproductsData.addReview(
+userId,
+product,
+newStoreId,
+"goooooooooooooooooooooooooooood",
+4
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'AAAA',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'AAAAA',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+
+//--------------------admin2-----------------------
+newUser = await usersData.addUser(
+'bobwenpp',
+'Mingzhi',
+'Wen',
+'abc2@gmail.com',
+'Abc123,,',
+'admin'
+);
+userId = newUser.user_id;
+newStoreId = await storesData.addStore({
+adminId: userId,
+name: 'store2',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc2@gmail.com",
+});
+await usersData.bindStoreWithUser(newStoreId, userId);
+newUser1 = await usersData.addUser(
+  'bobwen',
+  'Mingzhi',
+  'Wen',
+  'abc2_1@gmail.com',
+  'Abc123,,',
+  'user'
+  );
+user1Id = newUser1.user_id;
+newComment1forstore = await commentsforstoresData.addComment({
+  user_id: user1Id, 
+  store_id: newStoreId,
+  comment: "This is comment1 for store2" });
+updateStore = await storesData.updateCommentofStore(
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-  )
-  addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "gooooooooooooooooooooooooooooooooood",
-  4
-  )
-  addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooood",
-  4
-  )
-  addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooood",
-  4
-  )
-  addReview = await reviewsforproductsData.addReview(
-  userId,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooood",
-  4
-  )
-  product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'CHEESEBURGER',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
-  )
-  product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'BACON BURGER',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023'
-  )
-  
-  //--------------------admin7-----------------------  
-  newUser = await usersData.addUser(
-    'testseven',
-    'Mingzhi',
-    'Wen',
-    'test7@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'RANCH 99',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test7@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Mouse Breed',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Macaron',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Mango Smooth',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
+  "This is comment1 for store2"
+);
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'BBB',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'BBBB',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'BBBBB',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
 
-     //--------------------admin8-----------------------  
-  newUser = await usersData.addUser(
-    'testeight',
-    'Mingzhi',
-    'Wen',
-    'test8@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'Fresh GOGO',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test8@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Cheeto',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Pocky',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Perets',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-
-     //--------------------admin9-----------------------  
-  newUser = await usersData.addUser(
-    'testseven',
-    'Mingzhi',
-    'Wen',
-    'test9@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'Weeeeee',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test9@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Japan Noodle',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Fried shrimp',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Shoyo ramen',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-
-     //--------------------admin10-----------------------  
-  newUser = await usersData.addUser(
-    'testten',
-    'Mingzhi',
-    'Wen',
-    'test10@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'Shoprite',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test10@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Chicken Breast',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Beef brisket',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Chick wing',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-
-     //--------------------admin11-----------------------  
-  newUser = await usersData.addUser(
-    'testeleven',
-    'Mingzhi',
-    'Wen',
-    'test11@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'Safeway',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test11@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Moss Pocky',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Meet Bread',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Bubble tea',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-
-     //--------------------admin12-----------------------  
-  newUser = await usersData.addUser(
-    'testtelve',
-    'Mingzhi',
-    'Wen',
-    'test12@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'Yelp',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test12@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    '98k Hamburger',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Chicken Popcorn',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Chicken Nuggets',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-
-     //--------------------admin13-----------------------  
-  newUser = await usersData.addUser(
-    'testthirteen',
-    'Mingzhi',
-    'Wen',
-    'test13@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'Paris Bargette',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test13@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Birthday Bread',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Chocolate cake',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Banana Cake',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-
-     //--------------------admin14-----------------------  
-  newUser = await usersData.addUser(
-    'testFourteen',
-    'Mingzhi',
-    'Wen',
-    'test14@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'Lady M',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test14@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Green Tea Mille Crepe',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Signature Mille Crepe',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Champagne Mille Crepe',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-
-     //--------------------admin15-----------------------  
-  newUser = await usersData.addUser(
-    'testFifteen',
-    'Mingzhi',
-    'Wen',
-    'test15@gmail.com',
-    'Abc123,,',
-    'admin'
-    );
-    userId = newUser.user_id;
-    newStoreId = await storesData.addStore({
-    adminId: userId,
-    name: 'Wawa',
-    address: "address",
-    city: "Hoboken",
-    state: "NJ",
-    zipCode: "07030",
-    phoneNumber: "1234567890",
-    email: "test15@gmail.com",
-    });
-    await usersData.bindStoreWithUser(newStoreId, userId);
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Vanilla Cafe',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Mocha',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-    product = await productsData.addProduct(
-    userId,
-    newStoreId,
-    'Blende Cafe',
-    "Fresh Produce",
-    13,
-    '12/06/2023',
-    '12/25/2023'
-    )
-//--------------------admin1-----------------------
-// let newUser = await usersData.addUser(
-// 'bobwen',
-// 'Mingzhi',
-// 'Wen',
-// 'abc1@gmail.com',
-// 'Abc123,,',
-// 'admin'
-// );
-// let userId = newUser.user_id;
-// let newStoreId = await storesData.addStore({
-// adminId: userId,
-// name: 'store1',
-// address: "address",
-// city: "Hoboken",
-// state: "NJ",
-// zipCode: "07030",
-// phoneNumber: "1234567890",
-// email: "abc1@gmail.com",
-// });
-// await usersData.bindStoreWithUser(newStoreId, userId);
-
-// let product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'AAA',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// let addReview = await reviewsforproductsData.addReview(
-// userId,
-// product,
-// newStoreId,
-// "goooooooooooooooooooooooooooooooooood",
-// 4
-// )
-// addReview = await reviewsforproductsData.addReview(
-// userId,
-// product,
-// newStoreId,
-// "gooooooooooooooooooooooooooooooooood",
-// 4
-// )
-// addReview = await reviewsforproductsData.addReview(
-// userId,
-// product,
-// newStoreId,
-// "goooooooooooooooooooooooooooooooood",
-// 4
-// )
-// addReview = await reviewsforproductsData.addReview(
-// userId,
-// product,
-// newStoreId,
-// "goooooooooooooooooooooooooooooood",
-// 4
-// )
-// addReview = await reviewsforproductsData.addReview(
-// userId,
-// product,
-// newStoreId,
-// "goooooooooooooooooooooooooooood",
-// 4
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'AAAA',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'AAAAA',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-
-// //--------------------admin2-----------------------
-// newUser = await usersData.addUser(
-// 'bobwen',
-// 'Mingzhi',
-// 'Wen',
-// 'abc2@gmail.com',
-// 'Abc123,,',
-// 'admin'
-// );
-// userId = newUser.user_id;
-// newStoreId = await storesData.addStore({
-// adminId: userId,
-// name: 'store2',
-// address: "address",
-// city: "Hoboken",
-// state: "NJ",
-// zipCode: "07030",
-// phoneNumber: "1234567890",
-// email: "abc2@gmail.com",
-// });
-// await usersData.bindStoreWithUser(newStoreId, userId);
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'BBB',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'BBBB',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'BBBBB',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-
-// //--------------------admin3-----------------------
-// newUser = await usersData.addUser(
-// 'bobwen',
-// 'Mingzhi',
-// 'Wen',
-// 'abc2@gmail.com',
-// 'Abc123,,',
-// 'admin'
-// );
-// userId = newUser.user_id;
-// newStoreId = await storesData.addStore({
-// adminId: userId,
-// name: 'store2',
-// address: "address",
-// city: "Hoboken",
-// state: "NJ",
-// zipCode: "07030",
-// phoneNumber: "1234567890",
-// email: "abc2@gmail.com",
-// });
-// await usersData.bindStoreWithUser(newStoreId, userId);
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'CCC',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'CCCC',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'CCCCC',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// //--------------------admin4-----------------------
-// newUser = await usersData.addUser(
-// 'bobwen',
-// 'Mingzhi',
-// 'Wen',
-// 'abc3@gmail.com',
-// 'Abc123,,',
-// 'admin'
-// );
-// userId = newUser.user_id;
-// newStoreId = await storesData.addStore({
-// adminId: userId,
-// name: 'store3',
-// address: "address",
-// city: "Hoboken",
-// state: "NJ",
-// zipCode: "07030",
-// phoneNumber: "1234567890",
-// email: "abc3@gmail.com",
-// });
-// await usersData.bindStoreWithUser(newStoreId, userId);
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'DDD',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'DDDD',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'DDDDD',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// //--------------------admin5-----------------------
-// newUser = await usersData.addUser(
-// 'bobwen',
-// 'Mingzhi',
-// 'Wen',
-// 'abc4@gmail.com',
-// 'Abc123,,',
-// 'admin'
-// );
-// userId = newUser.user_id;
-// newStoreId = await storesData.addStore({
-// adminId: userId,
-// name: 'store4',
-// address: "address",
-// city: "Hoboken",
-// state: "NJ",
-// zipCode: "07030",
-// phoneNumber: "1234567890",
-// email: "abc4@gmail.com",
-// });
-// await usersData.bindStoreWithUser(newStoreId, userId);
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'EEE',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'EEEE',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
-// product = await productsData.addProduct(
-// userId,
-// newStoreId,
-// 'EEEEE',
-// "Fresh Produce",
-// 13,
-// '12/06/2023',
-// '12/25/2023'
-// )
+//--------------------admin3-----------------------
+newUser = await usersData.addUser(
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc3@gmail.com',
+'Abc123,,',
+'admin'
+);
+userId = newUser.user_id;
+newStoreId = await storesData.addStore({
+adminId: userId,
+name: 'store3',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc3@gmail.com",
+});
+await usersData.bindStoreWithUser(newStoreId, userId);
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'CCC',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'CCCC',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'CCCCC',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+//--------------------admin4-----------------------
+newUser = await usersData.addUser(
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc4@gmail.com',
+'Abc123,,',
+'admin'
+);
+userId = newUser.user_id;
+newStoreId = await storesData.addStore({
+adminId: userId,
+name: 'store4',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc4@gmail.com",
+});
+await usersData.bindStoreWithUser(newStoreId, userId);
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'DDD',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'DDDD',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'DDDDD',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+//--------------------admin5-----------------------
+newUser = await usersData.addUser(
+'bobwen',
+'Mingzhi',
+'Wen',
+'abc5@gmail.com',
+'Abc123,,',
+'admin'
+);
+userId = newUser.user_id;
+newStoreId = await storesData.addStore({
+adminId: userId,
+name: 'store5',
+address: "address",
+city: "Hoboken",
+state: "NJ",
+zipCode: "07030",
+phoneNumber: "1234567890",
+email: "abc5@gmail.com",
+});
+await usersData.bindStoreWithUser(newStoreId, userId);
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'EEE',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'EEEE',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
+product = await productsData.addProduct(
+userId,
+newStoreId,
+'EEEEE',
+"Fresh Produce",
+13,
+'12/06/2023',
+'12/25/2023'
+)
 await closeConnection();
 // // reviewsforproducts
 // console.log("-----------------------");

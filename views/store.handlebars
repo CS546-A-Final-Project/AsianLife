@@ -19,22 +19,26 @@
 </nav>
 
 <p>{{store.store_name}}</p>
-<div class="store-comment">
-  <a href="/storeComments/{{storeID}}">
-    <button id="store_comment" name="store_comment">Store Comments</button>
+
+  <a class="link-button" href="/storeComments/{{storeID}}">
+    Store Comments
   </a>
 
   <button id="store_review" name="store_review" hidden>Store Review</button>
 
   <button id="store_edit" name="store_edit" hidden>EDIT</button>
   {{#if isOwner}}
-  <a href="/addproduct">
-    <button id="addproduct" name="addproduct">ADDPRODUCT</button>
+  <a class="link-button" href="/addproduct">
+    ADDPRODUCT
   </a>
-  <a href="/editstore/{{storeID}}">
-    <button id="editstore" name="editstore">EDITSTORE</button>
+  <a class="link-button" href="/editstore/{{storeID}}">
+    EDITSTORE
   </a>
   {{/if}}
+  <p>Contact Infomation</p>
+  <p>Phone:{{contact_information.phone}}</p>
+  <p>Email:{{contact_information.email}}</p>
+  <p>Address:{{store_location.streetAddress}},{{store_location.city}},{{store_location.state}}</p>
 
   <h1>The Products of {{title}}</h1>
 
@@ -53,5 +57,4 @@
       </a>
     </div>
     {{/each}}
-
   </div>

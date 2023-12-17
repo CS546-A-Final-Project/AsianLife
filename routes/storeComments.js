@@ -65,9 +65,10 @@ router.route('/:store_id').get(async (req, res) => {//get all comment for this s
         
         try{
             checkString(comment, "Newcomment");
+            if(comment.length < 25) errors.push( 'comment must more than 25 characters!');
             if(comment.length > 200) throw 'comment cannot surpass 200 valid characters! '
         }catch(e){
-            return res.status(400).render('error', {title: "Error", error: e})
+            return res.status(400).render('storeComments', {title: "Error", error: e})
         }
 
         let newComment
@@ -75,8 +76,6 @@ router.route('/:store_id').get(async (req, res) => {//get all comment for this s
         try{
             newComment = await commentsforstoresData.addComment({user_id: userid, store_id: storeid, comment: comment})
             updateStore = await storesData.updateCommentofStore(storeid, comment)
-            // console.log(updateStore.comments[3], "comments3")
-            // console.log(newComment,"newcomment")
             if(newComment){
             res.redirect(`/storeComments/${storeid}`)  
             }

@@ -2,18 +2,18 @@
   enctype="multipart/form-data"
   method="post"
   action="/upload/store/{{storeId}}"
-  id="uploadForm"
+  id="edit-store-form"
 >
-  <input type="file" name="file" id="file" accept="image/*" />
+  <input type="file" name="file" id="file" accept="image/*">
 
   <label for="name">Store Name:</label>
-  <input type="text" id="name" name="name" value="{{name}}" required />
+  <input type="text" id="name" name="name" value="{{name}}" required >
   <label for="address">Store Address:</label>
-  <input type="text" id="address" name="address" value="{{address}}" required />
+  <input type="text" id="address" name="address" value="{{address}}" required >
   <label for="city">Store city:</label>
-  <input type="text" id="city" name="city" value="{{city}}" required />
+  <input type="text" id="city" name="city" value="{{city}}" required >
   <label for="state">Store state:</label>
-  <select id="state" name="state">
+  <select id="state" name="state" >
     <option value="" disabled {{selected.default}}>Select</option>
     <option value="AL" {{selected.AL}}>Alabama</option>
     <option value="AK" {{selected.AK}}>Alaska</option>
@@ -69,18 +69,18 @@
   </select>
 
   <label for="zipCode">Store zip:</label>
-  <input type="text" id="zipCode" name="zipCode" value="{{zipCode}}" required />
+  <input type="text" id="zipCode" name="zipCode" value="{{zipCode}}" required >
 
   <label for="email">Store Email:</label>
-  <input type="email" id="email" name="email" value="{{email}}" required />
+  <input type="email" id="email" name="email" value="{{email}}" required >
   <label for="phoneNumber">Store Phone:</label>
   <input
-    type="phone"
+    type="tel"
     id="phoneNumber"
     name="phoneNumber"
     value="{{phone}}"
     required
-  />
+  >
   <button type="submit">Update Stroe </button>
 </form>
 <ul class="errorContainer" id="errorContainer">

@@ -18,16 +18,21 @@ router.route('/').get(async (req, res) => {
     if (role === 'admin' && storeId) {
         isAdminAndHasAStore = true;
     }
+    let isAdminAndHasNoStore = false;
+    if (role === 'admin' && !storeId) {
+        isAdminAndHasNoStore = true;
+    }
     const user = await getUser(id);
     const name = user.userName;
-
     const stores = await getAllStores();
     if (!stores) {
-        return res.status(200).render('home',{
+        return res.status(400).render('home',{
             title: title, 
             name: name,
             avatarId: user.avatar,
             hasStores: false,
+            isAdminAndHasAStore: isAdminAndHasAStore,
+            isAdminAndHasNoStore: isAdminAndHasNoStore,
         });
     }
     //get recommended stores
@@ -45,6 +50,7 @@ router.route('/').get(async (req, res) => {
         recommendedStores: topRatedStores,
         recommendedProducts: topRatedProducts,
         isAdminAndHasAStore: isAdminAndHasAStore,
+        isAdminAndHasNoStore: isAdminAndHasNoStore,
         storeId: storeId,
     })
 });
@@ -57,6 +63,10 @@ router.route('/search').post(async (req, res) => {
     let isAdminAndHasAStore = false;
     if (role === 'admin' && storeId) {
         isAdminAndHasAStore = true;
+    }
+    let isAdminAndHasNoStore = false;
+    if (role === 'admin' && !storeId) {
+        isAdminAndHasNoStore = true;
     }
     const id = req.session.user.id;
     const user = await getUser(id);
@@ -108,12 +118,13 @@ router.route('/search').post(async (req, res) => {
         title: title, 
         name: name,
         avatarId: user.avatar,
-        //storeId: store._id,
         recommendedStores: topRatedStores,
         recommendedProducts: topRatedProducts,
         searchResult: searchResults,
         noResultsMessage: noResultsMessage,
-        searchTerm: searchTerm
+        searchTerm: searchTerm,
+        isAdminAndHasAStore: isAdminAndHasAStore,
+        isAdminAndHasNoStore: isAdminAndHasNoStore,
     })
 });
 

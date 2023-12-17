@@ -5,7 +5,7 @@
         passwordTerm = $('#password')
 
     errorContainer.hide();
-    loginForm.submit(function (event) {
+    loginForm.submit(async function (event) {
         event.preventDefault();
         let email = emailTerm.val().trim();
         let password = passwordTerm.val().trim();
@@ -38,7 +38,7 @@
                 password: password
             }
         }
-        $.ajax(requestConfig).then((responseMessage) => {
+        await $.ajax(requestConfig).then(function(responseMessage) {
             console.log(responseMessage);
             errorContainer.empty();
             errorContainer.hide();

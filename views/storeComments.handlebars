@@ -1,6 +1,6 @@
 
 
-<body>
+
     {{#if isAdmin}}
     <p>Welcome Store Owner!</p>
     {{/if}}
@@ -16,7 +16,7 @@
 
     {{#if isUser}}
         <form id="storecomment-form" action="/storeComments/{{storeID}}" method="POST">
-            <label for="comment">Your Comment:</label>
+            <label for="commentInput">Your Comment:</label>
             <input type="text" name="commentInput" id="commentInput">
 
             <button type="submit">Add New Comment</button> 
@@ -34,4 +34,4 @@
     {{else}}
         <p>Only User can comment store</p>
     {{/if}}
-</body>
+

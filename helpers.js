@@ -1,4 +1,5 @@
 import { users } from "./config/mongoCollections.js";
+import { stores } from "./config/mongoCollections.js";
 import bcrypt from 'bcrypt';
 import { ObjectId } from "mongodb";
 
@@ -61,7 +62,6 @@ const getUserInfoByEmail = async (email) => {
     }
 }
 
-
 const checkId = (id, varName) => {
     if (!id) throw `Error: You must provide a ${varName}`;
     if (typeof id !== "string") throw `Error:${varName} must be a string`;
@@ -81,7 +81,6 @@ const checkString = (strVal, varName) => {
     return strVal;
 };
 const checkCategories = (categoryToCheck) => {
-    // console.log(categoryToCheck);
     categoryToCheck = checkString(categoryToCheck, 'categoryToCheck'); // 假设这个函数验证并转换为字符串
 
     const categories = [
@@ -98,18 +97,18 @@ const checkCategories = (categoryToCheck) => {
     ];
 
     if (!categories.includes(categoryToCheck)) {
-        throw new Error(`The category ${categoryToCheck} is not a recognized category.`);
+        throw (`The category ${categoryToCheck} is not a recognized category.`);
     }
     return categoryToCheck;
 }
 const checkPrice = (productPrice) => {
     if (typeof productPrice !== "number"){
-        throw new Error (`productPrice ${productPrice} should be a number`);
+        throw (`productPrice ${productPrice} should be a number`);
     }
         
     const reguExForPrice = /^[1-9][0-9]*(\.[0-9]{1,2})?$/;
     if (!reguExForPrice.test(productPrice.toString())) {
-        throw new Error(`${productPrice} should be a positive whole number, positive 2 decimal place float.`);
+        throw (`${productPrice} should be a positive whole number, positive 2 decimal place float.`);
     }      
     
     return productPrice;
@@ -125,7 +124,7 @@ const checkDateFormat = (eventDate, varName) => {
     // ChatGPT: Valid Date format "MM/DD/YYYY"
     const reguExForDate = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
     if (!eventDate.match(reguExForDate))
-        throw new Error(`This event's date ${eventDate} is not in the expected 'MM/DD/YYYY' format.`);
+        throw (`This event's date ${eventDate} is not in the expected 'MM/DD/YYYY' format.`);
 
     // ChatGPT: Check if it is a valid date
     const [month, day, year] = eventDate.split("/").map(Number); // split and convert string into number
@@ -135,12 +134,8 @@ const checkDateFormat = (eventDate, varName) => {
         dateObj.getMonth() !== month - 1 ||
         dateObj.getFullYear() !== year
     ) {
-        // if the newly created date object does not match the regular date (09/31 => 10/1)
-        throw new Error(`Invalid date ${eventDate} was provided, like 02/30 or 11/31.`);
+        throw (`Invalid date ${eventDate} was provided, like 02/30 or 11/31.`);
     }
-    // // Compare date: https://stackoverflow.com/questions/15063670/compare-string-with-todays-date-in-javascript
-    // const currDate = new Date();
-    // if (dateObj <= currDate) throw `${eventDate} should be future events`;
     return eventDate;
 };
 const checkDateValid = (manufactureDate, expiryDate) => {
@@ -150,9 +145,7 @@ const checkDateValid = (manufactureDate, expiryDate) => {
     const manufactureDateObj = new Date(year, month - 1, day);
     // console.log(manufactureDateObj);
     const expiryDateObj = new Date(yearE, monthE - 1, dayE);
-    // console.log(expiryDateObj);
 
-    // check if it is a valid date
     if (isNaN(manufactureDateObj.getTime()) || isNaN(expiryDateObj.getTime())) {
         throw new Error("Invalid date format");
     }
@@ -170,16 +163,28 @@ const checkDateValid = (manufactureDate, expiryDate) => {
 }
 const checkRating = (rating) => {
     if (typeof rating != "number"){
-        throw new Error (`The product's rating ${rating} should be a number`);
+        throw (`The product's rating ${rating} should be a number`);
     }
     if (!Number.isInteger(rating)) {
-        throw new Error('Rating must be an integer');
+        throw ('Rating must be an integer');
     }
     if (rating < 1 || rating > 5) {
-        throw new Error('Rating must be between 1 and 5');
+        throw ('Rating must be between 1 and 5');
     }
     return rating
 }
+
+const checkIfStoreNameExists = async (name) => {
+    name = name.replace(/\s/g, "").toLowerCase();
+    const storeCollection = await stores();
+    const storeList = await storeCollection.find().toArray();
+    for (let store of storeList) {
+        if (store.name.replace(/\s/g, "").toLowerCase() === name) {
+            return true;
+        }
+    }
+    return false;
+};
 
 export default {
     toHashPassword,
@@ -194,5 +199,6 @@ export default {
     checkDateFormat,
     checkDateValid,
     checkCategories,
-    checkRating
+    checkRating,
+    checkIfStoreNameExists,
 };
