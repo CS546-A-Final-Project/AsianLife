@@ -44,13 +44,13 @@
     <label>History Reviews:</label>
     <ul class="userReviews" id="userReviews">
         {{#if hasReviews}}
-        {{#each allReviews}}
-        <a href="/products/{{this.product_id}}/{{this._id}}">
-            <li>
-                {{this.productReviews}}
-            </li>
-        </a>
-        {{/each}}
+            {{#each allReviews}}
+                <li>
+                    <a href="/products/{{this.product_id}}/{{this._id}}">
+                        {{this.productReviews}}
+                    </a>
+                </li>
+            {{/each}}
         {{/if}}
         {{#if hasNoReviews}}
         <li>
