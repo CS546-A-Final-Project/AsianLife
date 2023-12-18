@@ -22,7 +22,16 @@ let newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
+let newUser1 = await usersData.addUser(
+  'bobwen',
+  'Mingzhi',
+  'Wen',
+  'user1@m.com',
+  'Abc123,,',
+  'user'
+);
 let userId = newUser.user_id;
+let userId1 = newUser1.user_id;
 let newStoreId = await storesData.addStore({
   adminId: userId,
   name: '99 RANCH',
@@ -35,7 +44,7 @@ let newStoreId = await storesData.addStore({
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 let newComment1forstore = await commentsforstoresData.addComment({
-  user_id: userId,
+  user_id: userId1,
   store_id: newStoreId,
   comment: "This is comment1 for store1"
 });
@@ -52,7 +61,7 @@ let product = await productsData.addProduct(
 )
 
 let addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -71,7 +80,7 @@ product = await productsData.addProduct(
 )
 
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -90,7 +99,7 @@ product = await productsData.addProduct(
 )
 
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -108,7 +117,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -127,7 +136,7 @@ product = await productsData.addProduct(
 )
 
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "gooooooooooooooooooooooooooooooooood",
@@ -145,7 +154,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -163,7 +172,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -179,6 +188,15 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
+newUser1 = await usersData.addUser(
+  'bobwen',
+  'Mingzhi',
+  'Wen',
+  'user2@m.com',
+  'Abc123,,',
+  'user'
+);
+userId1 = newUser1.user_id;
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
@@ -192,7 +210,7 @@ newStoreId = await storesData.addStore({
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
-  user_id: userId,
+  user_id: userId1,
   store_id: newStoreId,
   comment: "This is comment1 for store1"
 });
@@ -219,7 +237,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -237,7 +255,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -255,7 +273,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -273,7 +291,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -291,7 +309,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -309,7 +327,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -324,6 +342,15 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
+newUser1 = await usersData.addUser(
+  'bobwen',
+  'Mingzhi',
+  'Wen',
+  'user3@m.com',
+  'Abc123,,',
+  'user'
+);
+userId1 = newUser1.user_id;
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
@@ -337,7 +364,7 @@ newStoreId = await storesData.addStore({
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
-  user_id: userId,
+  user_id: userId1,
   store_id: newStoreId,
   comment: "This is comment1 for store1"
 });
@@ -364,7 +391,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -382,7 +409,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -400,7 +427,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -418,7 +445,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -436,7 +463,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -454,7 +481,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -469,6 +496,15 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
+newUser1 = await usersData.addUser(
+  'bobwen',
+  'Mingzhi',
+  'Wen',
+  'user4@m.com',
+  'Abc123,,',
+  'user'
+);
+userId1 = newUser1.user_id;
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
@@ -482,7 +518,7 @@ newStoreId = await storesData.addStore({
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
-  user_id: userId,
+  user_id: userId1,
   store_id: newStoreId,
   comment: "This is comment1 for store1"
 });
@@ -509,7 +545,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -527,7 +563,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -545,7 +581,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -563,7 +599,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -581,7 +617,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -599,7 +635,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -614,6 +650,15 @@ newUser = await usersData.addUser(
   'Abc123,,',
   'admin'
 );
+newUser1 = await usersData.addUser(
+  'bobwen',
+  'Mingzhi',
+  'Wen',
+  'user5@m.com',
+  'Abc123,,',
+  'user'
+);
+userId1 = newUser1.user_id;
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
@@ -627,7 +672,7 @@ newStoreId = await storesData.addStore({
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
-  user_id: userId,
+  user_id: userId1,
   store_id: newStoreId,
   comment: "This is comment1 for store1"
 });
@@ -654,7 +699,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -672,7 +717,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -690,7 +735,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -708,7 +753,7 @@ product = await productsData.addProduct(
   5
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -726,7 +771,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
@@ -744,7 +789,7 @@ product = await productsData.addProduct(
   1
 )
 addReview = await reviewsforproductsData.addReview(
-  userId,
+  userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
