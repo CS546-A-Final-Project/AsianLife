@@ -132,7 +132,7 @@ export async function getRecommendedProducts(userId) {
         }
 
         return {
-            name: product.productName,
+            productName: product.productName,
             productId: product._id,
             productImage: product.productImage,
             rating: product.rating,

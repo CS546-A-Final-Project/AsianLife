@@ -313,7 +313,7 @@ button:hover {
 .product-image {
   width: 100%;
   height: 150px;
-  object-fit: cover;
+  display: block;
 }
 
 .store-info {
@@ -350,6 +350,7 @@ button:hover {
   flex-direction: column;
   align-items: center; 
   text-align: center;
+  padding: 10px;
 }
 
 .recommendation-item img {
@@ -666,6 +667,7 @@ h1 {
   position: relative;
   width: 100%;
   height: 150px; 
+  overflow: hidden;
 }
 
 .product-image.out-of-stock {
