@@ -87,7 +87,7 @@ const addReview = async (
                 product_id === review.product_id &&
                 store_id === review.store_id
             ) {
-                throw `One user could only leave one review`;
+                throw `A user could only leave one review for a product!`;
             }
         }
     }
