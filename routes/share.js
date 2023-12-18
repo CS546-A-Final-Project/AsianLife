@@ -23,14 +23,31 @@ const oauth2Client = new OAuth2(
   const accessToken = await oauth2Client.getAccessToken();
 
 router.get('/', (req, res) => {
-    const title = "Share to Your Friends";
-    res.status(200).render('share', {
-        title: title,
-    }); 
+    const title = "Share";
+    res.render('share'); 
 });
 
 router.post('/', async (req, res) => {
-    const title = "Share to Your Friends";
+    const storeId = req.session.user.ownedStoreId;
+    const role = req.session.user.role;
+    let isAdminAndHasAStore = false;
+    if (role === 'admin' && storeId) {
+        isAdminAndHasAStore = true;
+    }
+    let isAdminAndHasNoStore = false;
+    if (role === 'admin' && !storeId) {
+        isAdminAndHasNoStore = true;
+    }
+    const id = req.session.user.id;
+    const user = await getUser(id);
+    const name = user.userName;
+
+    //get recommended stores
+    const topRatedStores = await getRecommendedStores(id);
+    
+    //get recommended products
+    const topRatedProducts = await getRecommendedProducts(id);
+
     let friendEmail = xss(req.body.friendEmail);
     let userNickname = xss(req.body.userNickname); 
     let errors = [];
@@ -48,13 +65,8 @@ router.post('/', async (req, res) => {
     }
 
     if (errors.length > 0) {
-        return res.status(400).render('share', {
-            title: title,
-            hasErrors: true,
-            errors: errors, 
-            email: friendEmail, 
-            name: userNickname 
-        });
+        res.status(400).render('share', { errors, friendEmail, userNickname });
+        return;
     }
 
     const transporter = nodemailer.createTransport({
@@ -75,9 +87,15 @@ router.post('/', async (req, res) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        res.render('promotion', {
-            title: 'Promotion email sent successfully',
-            email: friendEmail,
+        res.render('home', {
+            title: "Home",
+            name: name,
+            avatarId: user.avatar,
+            message: "Promotion email sent successfully",
+            recommendedStores: topRatedStores,
+            recommendedProducts: topRatedProducts,
+            isAdminAndHasAStore: isAdminAndHasAStore,
+            isAdminAndHasNoStore: isAdminAndHasNoStore,
         });
     } catch (error) {
         console.error('Failed to send email', error);
