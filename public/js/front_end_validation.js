@@ -414,26 +414,25 @@
         })
     }
 
-    const shareForm = document.getElementById('share-form')
-    if (shareForm) {
-        const sharedEmail = document.getElementById("friend-email");
-        const sharedNickname = document.getElementById("user-nickname");
+    const shareStaticForm = document.getElementById('share-form')
+    if (shareStaticForm) {
+        const sharedEmailInput = document.getElementById("friend-email");
+        const shareNicknameInput = document.getElementById("user-nickname");
+        const errorContainer = document.getElementById('errorContainer');
 
         shareStaticForm.addEventListener('submit', (event) => {
             let errors = [];
             errorContainer.innerHTML = '';
             const regexName = /^[a-zA-Z0-9]+$/
             const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            const shareEmail = xss(sharedEmail.value).trim();
-            if (!shareEmail || sharedEmail.length === 0) errors.push('You must provide an email to share!');
-            if (typeof shareEmail !== 'string') errors.push('The email address must be a string');
-            if (!String(shareEmail).toLowerCase().match(regexEmail)) errors.push('You must provide a valid email');
+            const shareEmail = sharedEmailInput.value.trim();
+            if (!shareEmail || shareEmail.length === 0) errors.push('You must provide an email to share!');
+            if (!shareEmail.toLowerCase().match(regexEmail)) errors.push('You must provide a valid email');
 
-            const shareNickname = xss(shareNickname.value).trim();
+            const shareNickname = shareNicknameInput.value.trim();
             if (!shareNickname || shareNickname.length === 0) errors.push('You must provide a nick name');
-            if (typeof shareNickname !== 'string') errors.push('Type of nickName must be string');
             if (shareNickname.length <= 2 || shareNickname.length >= 20) errors.push('Nick name length should be between 2 and 20');
-            if (!String(shareNickname).match(regexName)) errors.push('You must provide a valid nick name');
+            if (!shareNickname.match(regexName)) errors.push('You must provide a valid nick name');
 
 
             if (errors.length > 0) {
@@ -450,6 +449,7 @@
     const storecommentStaticForm = document.getElementById('storecomment-form');
     if (storecommentStaticForm) {
         const commentInput = document.getElementById("commentInput");
+        const errorContainer = document.getElementById('errorContainer');
         storecommentStaticForm.addEventListener('submit', (event) => {
             let errors = [];
             errorContainer.innerHTML = '';
@@ -473,6 +473,7 @@
     const commentdetailStaticForm = document.getElementById('answer-form');
     if (commentdetailStaticForm) {
         const answerInput = document.getElementById("answerInput");
+        const errorContainer = document.getElementById('errorContainer');
         commentdetailStaticForm.addEventListener('submit', (event) => {
             let errors = [];
             errorContainer.innerHTML = '';
