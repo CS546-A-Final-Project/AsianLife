@@ -6,7 +6,7 @@ import { getUser } from '../data/users.js';
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 import { getAllStores } from '../data/stores.js';
-import {getStoreSearchResults, getProductSearchResults, getRecommendedStores, getRecommendedProducts} from '../data/homepage.js';
+import { getStoreSearchResults, getProductSearchResults, getRecommendedStores, getRecommendedProducts } from '../data/homepage.js';
 const router = express.Router();
 const OAuth2 = google.auth.OAuth2;
 
@@ -14,13 +14,13 @@ const oauth2Client = new OAuth2(
     '1051634156593-948mtgs5bf1fuh5qumvb99pve7pgbh6p.apps.googleusercontent.com',
     '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',
     'https://developers.google.com/oauthplayground'
-  );
+);
 
-  oauth2Client.setCredentials({
+oauth2Client.setCredentials({
     refresh_token: '1//04el2iReAzjnsCgYIARAAGAQSNwF-L9IrUjucNNl8_mC-taoA7-nm9gkYuiGIRM5sR0rgxoJfrho3C4RKplBcT3MWCnxHHPhY7f0'
-  });
+});
 
-  const accessToken = await oauth2Client.getAccessToken();
+const accessToken = await oauth2Client.getAccessToken();
 
 router.get('/', (req, res) => {
     const title = "Share to Your Friends";
@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
     const title = "Share to Your Friends";
     let friendEmail = xss(req.body.friendEmail);
-    let userNickname = xss(req.body.userNickname); 
+    let userNickname = xss(req.body.userNickname);
     let errors = [];
 
     try {
@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
 
     try {
         userNickname = validation.checkName(userNickname);
-    } catch (e){
+    } catch (e) {
         errors.push(e);
     }
 
@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
     }
 
     const transporter = nodemailer.createTransport({
-        service: 'gmail', 
+        service: 'gmail',
         auth: {
             type: 'OAuth2',
             user: 'asianlifeweb@gmail.com',

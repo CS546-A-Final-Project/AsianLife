@@ -73,7 +73,7 @@
         {{else if this.isProduct}}
         <a href="/products/{{this.productId}}">
             <div class="product-image-container">
-                <img class="product-image {{#if this.isOutOfStock}}out-of-stock{{else if this.isLowStock}}low-stock{{/if}}"
+                 <img class="product-image {{#if this.isOutOfStock}}out-of-stock{{else if this.isLowStock}}low-stock{{/if}}" 
                     src="/public/images/products/{{this.productImage}}" alt="{{this.photo_id}}">
                 {{#if this.isOutOfStock}}
                 <div class="stock-status out-of-stock-text">Out of Stock</div>
@@ -130,8 +130,7 @@
         <div class="recommendation-item">
             <a href="/products/{{this.productId}}">
                 <div class="product-image-container">
-                    <img class="product-image {{#if this.isLowStock}}low-stock{{/if}}"
-                        src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
+                    <img class="product-image {{#if this.isLowStock}}low-stock{{/if}}" src="/public/images/products/{{this.productImage}}" alt="{{this.name}}">
                     {{#if this.isLowStock}}
                     <div class="stock-status low-stock-text">Low in Stock</div>
                     {{/if}}
@@ -147,8 +146,7 @@
     <div class="footer-block">
         <a href="/share" class="footer-link">Share Our Website by Email</a>
         <span class="footer-link-separator"> | </span>
-        <a href="https://twitter.com/intent/tweet?url=https://github.com/CS546-A-Final-Project/AsianLife/tree/main&text=Just%20discovered%20an%20amazing%20website,%20check%20it%20out!"
-            class="footer-link" target="_blank" rel="noopener noreferrer">by X</a>
+        <a href="https://twitter.com/intent/tweet?url=https://github.com/CS546-A-Final-Project/AsianLife/tree/main&text=Just%20discovered%20an%20amazing%20website,%20check%20it%20out!" class="footer-link" target="_blank" rel="noopener noreferrer">by X</a>
     </div>
 </footer>
 
