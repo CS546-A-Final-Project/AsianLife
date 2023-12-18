@@ -27,11 +27,16 @@
     {{message}}
 </div>
 {{/if}}
+{{#if message}}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{{/if}}
 
-<div class="store-description">
+    <div class="store-description">
     <h2 class="store-greeting">Welcome to AsianLife Grocery Store</h2>
     <p class="store-motto">We only recommend the best Asian Grocery Store just for you.</p>
-</div>
+    </div>  
 
 
 <div class="searchContainer">
@@ -85,7 +90,7 @@
                 <div class="stock-status out-of-stock-text">Out of Stock</div>
                 {{else if this.isLowStock}}
                 <div class="stock-status low-stock-text">Low in Stock</div>
-                {{/if}}
+            {{/if}}
             </div>
             <div class="product-info">
                 <h3>{{this.name}}</h3>
