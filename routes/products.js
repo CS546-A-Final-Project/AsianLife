@@ -96,8 +96,16 @@ router
         let rating = parseInt(xss(req.body.productRating));
         let selected;
         let option;
-        let errors = [];  
+        let errors = [];
 
+        try {
+            let userHasReview = product.productReviews.some(review => review.user_id === user_id);
+            if (userHasReview) {
+                throw "You have already added a review. A user could only leave one review for a product!";
+            }
+        } catch (e) {
+            errors.push(e);
+        }
         try {
             user_id = helpers.checkId(user_id, 'user_id');
         } catch (e) {
@@ -149,6 +157,7 @@ router
                 isAdminOfThisStore: isAdminOfThisStore,
                 product: product,
                 productId: productId,
+                addProductReviews: productReviews,
                 selected: selected,
                 hasErrors: true,
                 errors: errors,
@@ -165,7 +174,7 @@ router
             res.status(200).redirect(`/products/${productId}`);
         } catch (e) {
             errors.push(e);
-        }     
+        }
         if (errors.length > 0) {
             return res.status(400).render('products', {
                 title: product.productName,
@@ -176,6 +185,7 @@ router
                 isAdminOfThisStore: isAdminOfThisStore,
                 product: product,
                 productId: productId,
+                addProductReviews: productReviews,
                 selected: selected,
                 hasErrors: true,
                 errors: errors,
