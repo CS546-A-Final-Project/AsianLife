@@ -613,8 +613,7 @@
                 errors.push("Expiration date should be future date");
             }
 
-
-            if (manufactureDate > expirationDate) {
+            if (dateObj > dateObj1) {
                 errors.push("Manufacture date should be earlier than expiration date");
             }
 
