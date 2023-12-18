@@ -8,6 +8,7 @@ import {
   commentsforstoresData
 } from "../data/index.js";
 import { dbConnection, closeConnection } from "../config/mongoConnection.js";
+import helpers from "../helpers.js";
 
 const db = await dbConnection();
 await db.dropDatabase();
@@ -32,6 +33,7 @@ let newStoreId = await storesData.addStore({
   phoneNumber: "1234567890",
   email: "admin1@m.com",
 });
+await usersData.bindStoreWithUser(newStoreId, userId);
 let newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId,
   store_id: newStoreId,
@@ -188,6 +190,7 @@ newStoreId = await storesData.addStore({
   phoneNumber: "1234567890",
   email: "admin2@m.com",
 });
+await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId,
   store_id: newStoreId,
@@ -332,6 +335,7 @@ newStoreId = await storesData.addStore({
   phoneNumber: "1234567890",
   email: "admin2@m.com",
 });
+await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId,
   store_id: newStoreId,
@@ -476,6 +480,7 @@ newStoreId = await storesData.addStore({
   phoneNumber: "1234567890",
   email: "admin2@m.com",
 });
+await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId,
   store_id: newStoreId,
@@ -620,6 +625,7 @@ newStoreId = await storesData.addStore({
   phoneNumber: "1234567890",
   email: "admin2@m.com",
 });
+await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId,
   store_id: newStoreId,
