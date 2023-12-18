@@ -78,6 +78,7 @@ router
         let role = req.session.user.role;
         let productId = xss(req.params.productId);
         let isAdminAndHasAStore = false;
+        let errors = [];
         if (role === 'admin' && req.session.user.ownedStoreId) {
             isAdminAndHasAStore = true;
         }
@@ -85,8 +86,10 @@ router
         let name = user.userName;
         let product = await productsData.getProductById(productId);
         let store_id = product.store_id;
-        if (req.session.user.ownedStoreId === store_id) {
-            return res.status(403).render('error', { error: "The store's owner should not add review for the product." });
+        if (req.session.user.ownedStoreId) {
+            if (req.session.user.ownedStoreId === store_id) {
+                errors.push("The store's owner should not add review for the product.");
+            }
         }
         let isAdminOfThisStore = false;
         if (store_id === req.session.user.ownedStoreId) {
@@ -96,7 +99,7 @@ router
         let rating = parseInt(xss(req.body.productRating));
         let selected;
         let option;
-        let errors = [];
+        
 
         try {
             let userHasReview = product.productReviews.some(review => review.user_id === user_id);
