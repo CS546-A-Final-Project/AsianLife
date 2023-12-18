@@ -13,7 +13,8 @@
             <option value="Meat and Poultry" {{selected.MeatAndPoultry}}>Meat and Poultry</option>
             <option value="Seafood" {{selected.Seafood}}>Seafood</option>
             <option value="Frozen Foods" {{selected.FrozenFoods}}>Frozen Foods</option>
-            <option value="Bakery and Confectionery" {{selected.BakeryAndConfectionery}}>Bakery and Confectionery</option>
+            <option value="Bakery and Confectionery" {{selected.BakeryAndConfectionery}}>Bakery and Confectionery
+            </option>
             <option value="Beverages" {{selected.Beverages}}>Beverages</option>
             <option value="Snacks" {{selected.Snacks}}>Snacks</option>
             <option value="Canned and Jarred Goods" {{selected.CannedAndJarredGoods}}>Canned and Jarred Goods</option>
@@ -28,33 +29,34 @@
 
         <label for="expirationDate">Erexpiration Date "MM/DD/YYYY":</label>
         <input type="text" id="expirationDate" name="expirationDate" value="{{product.expirationDate}}" required>
-        
+
+        <label for="stock">Stock(0 for OUT of stock):</label>
+        <input type="text" id="stock" name="stock" value="{{product.stock}}" required>
+
         <label for="productImage">Product Image "optional":</label>
         <input type="file" id="productImage" name="productImage" accept="image/*">
 
         <button type="submit" class="button">Update Product</button>
-    </form>  
+    </form>
     <form id="delete-product-form" action="/editProduct/{{productId}}">
-        <button type="submit">Delete Review</button>
+        <button type="submit">Delete Product</button>
     </form>
 
-     {{#if hasErrors}}
+
     <ul class="errorContainer" id="errorContainer">
-       
+        {{#if hasErrors}}
         {{#each errors}}
         <li>
             {{this}}
         </li>
         {{/each}}
-        
+        {{/if}}
     </ul>
-    {{/if}}
-</div>
 
-<script src="/public/js/front_end_validation.js"></script>
+</div>
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"
     integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
     integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
     crossorigin="anonymous"></script>
-<script src="/public/js/delete_product_ajax.js"></script>
+<script src="/public/js/update_delete_product_ajax.js"></script>

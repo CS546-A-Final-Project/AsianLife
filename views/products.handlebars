@@ -26,11 +26,13 @@
 {{#if product}}
 <div class="products-container">
 <p><img src="/public/images/products/{{product.productImage}}" alt="Product Image" width="200" height="200"></p>
+    <p>Name: {{product.productName}}</p>
     <p>Product Category: {{product.productCategory}}</p>
     <p>Price: ${{product.productPrice}}</p>
+    <p>Stock: {{product.stock}}</p>
     <p>Manufacture Date: {{product.manufactureDate}}</p>
     <p>Expiration Date: {{product.expirationDate}}</p>
-
+    <p class="{{stockStyle}}">{{stockMessage}}</p>
     {{#if product.productReviews}}
     <ul>
         
@@ -49,16 +51,16 @@
 
     <form id="add-review-form" action="/products/{{productId}}" method="POST">
         <label for="productReviews">Add Review 'more than 25 characters lengths':</label>
-        <textarea id="productReviews" name="productReviews" required></textarea>
+        <textarea id="productReviews" name="productReviews" required>{{addProductReviews}}</textarea>
 
         <label for="productRating">Product Rating:</label>
         <select id="productRating" name="productRating">
-            <option value="" disabled selected>Select</option>
-            <option value="1">1 - Poor</option>
-            <option value="2">2 - Fair</option>
-            <option value="3">3 - Good</option>
-            <option value="4">4 - Very Good</option>
-            <option value="5">5 - Excellent</option>
+            <option value="" disabled {{selected.default}}>Select</option>
+            <option value="1" {{selected.a}}>1 - Poor</option>
+            <option value="2" {{selected.b}}>2 - Fair</option>
+            <option value="3" {{selected.c}}>3 - Good</option>
+            <option value="4" {{selected.d}}>4 - Very Good</option>
+            <option value="5" {{selected.e}}>5 - Excellent</option>
         </select>
 
         <button type="submit">Submit Review</button>

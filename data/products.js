@@ -40,26 +40,33 @@ const addProduct = async (
     productPrice,
     manufactureDate,
     expirationDate,
+    stock,
 ) => {
     user_id = helpers.checkId(user_id, 'user_id');
     store_id = helpers.checkId(store_id, 'store_id');
-    productName = helpers.checkString(productName, 'productName');
+    productName = helpers.checkProductName(productName);
     productCategory = helpers.checkCategories(productCategory, 'productCategory');
     productPrice = helpers.checkPrice(productPrice, 'productPrice');
     manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
     expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     helpers.checkDateValid(manufactureDate, expirationDate);
+    if (!stock) throw "Stock cannot be empty";
+    if (typeof stock !== 'number') throw "Type of stock should be a number";
+    if (!Number.isInteger(stock)) throw "Stock should be an integer";
+    if (stock < 1 || stock > 999) throw "Stock should be 1 - 999";
 
     const productsCollection = await products();
     const storesCollection = await stores();
 
-    // 检查同一商店中是否有重名的产品
-    const existingProduct = await productsCollection.findOne({
-        productName: productName,
-        store_id: new ObjectId(store_id) // 确保只在同一商店内检查
-    });
-    if (existingProduct) {
-        throw new Error('A product with the same name already exists in the store.');
+    const store = await storesCollection.findOne({ _id: new ObjectId(store_id) });
+    if (!store) {
+        throw new Error(`Store with ID ${store_id} not found.`);
+    }
+    for (const productId of store.products) {
+        const product = await productsCollection.findOne({ _id: new ObjectId(productId) });
+        if (product && product.productName === productName) {
+            throw new Error(`A product with the name "${productName}" already exists in the store.`);
+        }
     }
 
     let newProduct = {
@@ -71,12 +78,12 @@ const addProduct = async (
         productPrice: productPrice,
         manufactureDate: manufactureDate,
         expirationDate: expirationDate,
+        stock: stock,
         productReviews: [],
         productRating: 0,
         totalAmountOfReviews: 0,
     };
 
-    // insert new product inside 'store'
     const newInsertProductInformation = await productsCollection.insertOne(newProduct);
     if (!newInsertProductInformation.acknowledged || !newInsertProductInformation.insertedId) {
         throw (
@@ -84,8 +91,7 @@ const addProduct = async (
         )
     };
     const newProductId = newInsertProductInformation.insertedId;
-
-    // update products array      
+    
     const updateStore = await storesCollection.findOneAndUpdate(
         { _id: new ObjectId(store_id) },
         { $push: { products: newProductId.toString() } },
@@ -134,7 +140,8 @@ const updateProduct = async (
     productCategory,
     productPrice,
     manufactureDate,
-    expirationDate
+    expirationDate,
+    stock,
 ) => {
     id = xss(id);
     id = helpers.checkId(id, 'product_id');
@@ -145,6 +152,10 @@ const updateProduct = async (
     manufactureDate = helpers.checkDateFormat(manufactureDate, 'manufactureDate');
     expirationDate = helpers.checkDateFormat(expirationDate, 'expirationDate');
     helpers.checkDateValid(manufactureDate, expirationDate);
+    if (typeof stock === 'undefined') throw "Stock cannot be empty";
+    if (typeof stock !== 'number') throw "Type of stock should be a number";
+    if (!Number.isInteger(stock)) throw "Stock should be an integer";
+    if (stock < 0 || stock > 999) throw "Stock should be 0 - 999";
 
     const productsCollection = await products();
 
@@ -172,7 +183,8 @@ const updateProduct = async (
         productCategory,
         productPrice,
         manufactureDate,
-        expirationDate
+        expirationDate,
+        stock,
     };
 
     const updateResult = await productsCollection.findOneAndUpdate(

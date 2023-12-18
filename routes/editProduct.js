@@ -23,10 +23,11 @@ router
         })
     })
     .post(upload.single("productImage"), async (req, res) => {
-        let role = req.session.user.role;
+        let role
+        if (req.session.user) role= req.session.user.role;
         let productId = xss(req.params.productId);
         let product = await productsData.getProductById(productId);
-        store_id = product.store_id;
+        let store_id = product.store_id;
         if (role !== 'admin' || req.session.user.ownedStoreId !== store_id) {
             return res.status(403).render('error', { error: "You don't have the authority to update this product." });
         }
@@ -35,6 +36,7 @@ router
         let productPrice = parseFloat(xss(req.body.productPrice));
         let manufactureDate = xss(req.body.manufactureDate);
         let expirationDate = xss(req.body.expirationDate);
+        let stock = xss(req.body.stock);
         let productImage;
         if (req.file && req.file.filename) {
             productImage = req.file.filename;
@@ -54,7 +56,7 @@ router
             errors.push(e);
         }
         try {
-            productName = helpers.checkString(productName, 'productName');
+            productName = helpers.checkProductName(productName);
         } catch (e) {
             errors.push(e);
         }
@@ -83,6 +85,14 @@ router
         } catch (e) {
             errors.push(e);
         }
+        if (/^\d+$/.test(stock)) {
+            stock = parseInt(stock, 10);
+            if (stock < 0 || stock > 999) {
+                errors.push("Stock should be 0 - 999");
+            }
+        } else {
+            errors.push('Stock should be an positive integer');
+        }
         if (errors.length > 0) {
             const product = await productsData.getProductById(productId);
             const selected = { [`${productCategory}`]: 'selected' };
@@ -103,7 +113,8 @@ router
                 productCategory,
                 productPrice,
                 manufactureDate,
-                expirationDate
+                expirationDate,
+                stock,
             );
             await productsData.updateImage(productId, productImage);
             return res.status(200).redirect(`/products/${productId}`);

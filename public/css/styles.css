@@ -313,7 +313,7 @@ button:hover {
 .product-image {
   width: 100%;
   height: 150px;
-  object-fit: cover;
+  display: block;
 }
 
 .store-info {
@@ -350,6 +350,7 @@ button:hover {
   flex-direction: column;
   align-items: center; 
   text-align: center;
+  padding: 10px;
 }
 
 .recommendation-item img {
@@ -424,6 +425,41 @@ button:hover {
   margin: 0 auto; 
 }
 
+.share-main {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+#share-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#share-form input[type="text"],
+#share-form input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#share-form button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%; 
+}
+
 
 html, body {
   min-height: 100%;
@@ -476,3 +512,217 @@ p {
   display: inline-block;
 }
 
+.admin-welcome {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.comments-section {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #333;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-list li {
+  margin-bottom: 10px;
+}
+
+.comment-form {
+  margin-top: 20px;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.comment-submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error-container {
+  list-style: none;
+  padding: 0;
+  color: #d9534f;
+}
+
+.user-restriction {
+  color: #d9534f;
+}
+
+.comment-section {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment-list li {
+  margin-bottom: 15px;
+}
+
+.comment-tag {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.answer-list {
+  list-style: none;
+  margin-top: 10px;
+}
+
+.answer-arrow {
+  margin-left: 20px;
+}
+
+.answer-form {
+  margin-top: 20px;
+}
+
+.answer-input {
+  width: 70%;
+  padding: 8px;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+
+.answer-submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.replacement-section {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f9f9f9; 
+  border-radius: 10px; 
+}
+
+.replacement-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333; 
+}
+
+.replacement-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: 20px; 
+}
+
+.replacement-item {
+  flex: 0 1 200px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center;
+}
+
+.replacement-item img {
+  max-width: 100%; 
+  height: auto; 
+  border-radius: 5px; 
+}
+
+.replacement-item p {
+  margin-top: 10px; 
+  color: #666; 
+  font-size: 1em; 
+}
+
+.product-image-container {
+  position: relative;
+  width: 100%;
+  height: 150px; 
+  overflow: hidden;
+}
+
+.product-image.out-of-stock {
+  filter: grayscale(100%);
+}
+
+.stock-status {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px 0;
+}
+
+.low-stock-text {
+  background-color: orange;
+  color: white;
+}
+
+.out-of-stock-text {
+  background-color: grey;
+  color: white;
+}
+
+.owner-restriction {
+  color: #d9534f;
+  margin-top: 10px;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-align: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+p.high {
+  color: green;
+}
+
+p.low {
+  color: orange;
+}
+
+p.none {
+  color: red;
+}

@@ -17,8 +17,9 @@ import addProductRoutes from './addProduct.js';
 import editProductRoutes from './editProduct.js';
 
 import storeCommentsRoutes from './storeComments.js';
-import commentDetailRoutes from './commentsDetail.js'
-
+import commentDetailRoutes from './commentsDetail.js';
+import shareRoutes from './share.js';
+import sendPromotionRoutes from './share.js'
 
 
 
@@ -34,7 +35,8 @@ const constructorMethod = (app) => {
   app.use('/error', errorRoutes);
   app.use('/password', passwordRoutes);
   app.use('/editstore', editRoutes);
-
+  app.use('/share', shareRoutes);
+  app.use('/send-promotion', sendPromotionRoutes);
   app.use('/addProduct', addProductRoutes);
   app.use('/products', productsRoutes);
   app.use('/editProduct', editProductRoutes);

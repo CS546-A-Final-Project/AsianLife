@@ -80,6 +80,13 @@ const checkString = (strVal, varName) => {
         throw `Error: ${varName} cannot be an empty string or string with just spaces`;
     return strVal;
 };
+const checkProductName = (productName) => {
+    productName = checkString(productName, 'productName');
+    if (!/^[a-zA-Z0-9\s\-&',.()]{3,25}$/.test(productName)) {
+        throw ("Invalid product name (the product name should be 3 to 25 characters)");
+    }
+    return productName;
+}
 const checkCategories = (categoryToCheck) => {
     categoryToCheck = checkString(categoryToCheck, 'categoryToCheck'); // 假设这个函数验证并转换为字符串
 
@@ -194,6 +201,7 @@ export default {
     getUserInfoByEmail,
     checkId,
     checkString,
+    checkProductName,
     checkPrice,
     checkReview,
     checkDateFormat,

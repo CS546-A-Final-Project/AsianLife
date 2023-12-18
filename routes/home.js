@@ -78,6 +78,7 @@ router.route('/search').post(async (req, res) => {
     const topRatedProducts = await getRecommendedProducts(id);
 
     let searchResults;
+    let replacements;
     let noResultsMessage;
     try {
         searchTerm = validation.checkSearchValid(searchTerm);
@@ -88,14 +89,18 @@ router.route('/search').post(async (req, res) => {
     if (!searchType || searchType === 'product') {
         // No specific search type selected we search product
         const matchedProducts = await getProductSearchResults(searchTerm);
-        if (matchedProducts.length === 0) {
+        
+        let searchedResults = matchedProducts.searchResults;
+        let replacedments = matchedProducts.replacements;
+        if (searchedResults.length === 0) {
             noResultsMessage = "No products matched your search.";
         }
         else {
-            searchResults = matchedProducts.map(product => ({
+            searchResults = searchedResults.map(product => ({
                 ...product,
                 type: 'product'
                 }));
+            replacements = replacedments;
             } 
     }   else if (searchType === 'store') {
         // Search for stores 
@@ -121,6 +126,7 @@ router.route('/search').post(async (req, res) => {
         recommendedStores: topRatedStores,
         recommendedProducts: topRatedProducts,
         searchResult: searchResults,
+        replacements: replacements,
         noResultsMessage: noResultsMessage,
         searchTerm: searchTerm,
         isAdminAndHasAStore: isAdminAndHasAStore,

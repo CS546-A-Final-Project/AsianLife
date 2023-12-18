@@ -1,0 +1,28 @@
+<nav>
+    <a href="/home">Home</a>
+</nav>
+
+<div class="container">
+    <h1>Share Our Website</h1>
+    <p>Share AsianLife with your relatives and friends.</p>
+    <form id="share-form" action="/send-promotion" method="POST">
+        <label for="user-nickname">Your Nickname:</label>
+        <input type="text" id="user-nickname" name="userNickname" placeholder="Enter your nickname" required>
+
+        <label for="friend-email">Friend's Email:</label>
+        <input type="email" id="friend-email" name="friendEmail" placeholder="Enter your friend's email" required>
+
+        <button type="submit">Send Promotion</button>
+    </form>
+    <ul class="errorContainer" id="errorContainer">
+        {{#if hasErrors}}
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+        {{/if}}
+    </ul>
+</div>
+
+<script src="/public/js/front_end_validation.js"></script>

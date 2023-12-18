@@ -80,6 +80,14 @@ app.use('/login', (req, res, next) => {
   }
 });
 
+app.use('/send-promotion', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+})
+
 app.use('/register', (req, res, next) => {
   if (!req.session.user) {
     next();
@@ -99,6 +107,14 @@ app.use('/home', (req, res, next) => {
     next();
   }
 });
+
+app.use('/share', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+})
 
 app.use('/store', (req, res, next) => {
   const requestRoute = req.originalUrl;
@@ -168,6 +184,22 @@ app.use('/editStore/:id', (req, res, next) => {
   }
 });
 
+app.use('/share', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+});
+
+app.use('/send-promotion', (req, res, next) => {
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  } else {
+    next();
+  }
+});
+
 app.use('/addProduct', (req, res, next) => {
   if (!req.session.user) {
     return res.status(200).redirect('/login');
@@ -186,6 +218,18 @@ app.use('/products', (req, res, next) => {
     return res.status(200).redirect('/login');
   }
   if (requestRoute === '/products' || requestRoute === '/products/') {
+    return res.status(200).redirect('/home');
+  } else {
+    next();
+  }
+});
+
+app.use('/editProduct', (req, res, next) => {
+  const requestRoute = req.originalUrl.toLowerCase();
+  if (!req.session.user) {
+    return res.status(200).redirect('/login');
+  }
+  if (requestRoute === '/editproduct' || requestRoute === '/editproduct/') {
     return res.status(200).redirect('/home');
   } else {
     next();
