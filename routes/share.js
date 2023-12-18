@@ -6,7 +6,7 @@ import { getUser } from '../data/users.js';
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 import { getAllStores } from '../data/stores.js';
-import {getStoreSearchResults, getProductSearchResults, getRecommendedStores, getRecommendedProducts} from '../data/homepage.js';
+import { getStoreSearchResults, getProductSearchResults, getRecommendedStores, getRecommendedProducts } from '../data/homepage.js';
 const router = express.Router();
 const OAuth2 = google.auth.OAuth2;
 
@@ -14,25 +14,44 @@ const oauth2Client = new OAuth2(
     '1051634156593-948mtgs5bf1fuh5qumvb99pve7pgbh6p.apps.googleusercontent.com',
     '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',
     'https://developers.google.com/oauthplayground'
-  );
+);
 
-  oauth2Client.setCredentials({
+oauth2Client.setCredentials({
     refresh_token: '1//04el2iReAzjnsCgYIARAAGAQSNwF-L9IrUjucNNl8_mC-taoA7-nm9gkYuiGIRM5sR0rgxoJfrho3C4RKplBcT3MWCnxHHPhY7f0'
-  });
+});
 
-  const accessToken = await oauth2Client.getAccessToken();
+const accessToken = await oauth2Client.getAccessToken();
 
 router.get('/', (req, res) => {
     const title = "Share to Your Friends";
     res.status(200).render('share', {
         title: title,
-    }); 
+    });
 });
 
 router.post('/', async (req, res) => {
+    const storeId = req.session.user.ownedStoreId;
+    const role = req.session.user.role;
+    let isAdminAndHasAStore = false;
+    if (role === 'admin' && storeId) {
+        isAdminAndHasAStore = true;
+    }
+    let isAdminAndHasNoStore = false;
+    if (role === 'admin' && !storeId) {
+        isAdminAndHasNoStore = true;
+    }
+    const id = req.session.user.id;
+    const user = await getUser(id);
+    const name = user.userName;
+
+    //get recommended stores
+    const topRatedStores = await getRecommendedStores(id);
+
+    //get recommended products
+    const topRatedProducts = await getRecommendedProducts(id);
     const title = "Share to Your Friends";
     let friendEmail = xss(req.body.friendEmail);
-    let userNickname = xss(req.body.userNickname); 
+    let userNickname = xss(req.body.userNickname);
     let errors = [];
 
     try {
@@ -43,7 +62,7 @@ router.post('/', async (req, res) => {
 
     try {
         userNickname = validation.checkName(userNickname);
-    } catch (e){
+    } catch (e) {
         errors.push(e);
     }
 
@@ -51,14 +70,14 @@ router.post('/', async (req, res) => {
         return res.status(400).render('share', {
             title: title,
             hasErrors: true,
-            errors: errors, 
-            email: friendEmail, 
-            name: userNickname 
+            errors: errors,
+            email: friendEmail,
+            name: userNickname
         });
     }
 
     const transporter = nodemailer.createTransport({
-        service: 'gmail', 
+        service: 'gmail',
         auth: {
             type: 'OAuth2',
             user: 'asianlifeweb@gmail.com',
@@ -75,9 +94,15 @@ router.post('/', async (req, res) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        res.render('promotion', {
-            title: 'Promotion email sent successfully',
-            email: friendEmail,
+        res.render('home', {
+            title: "Home",
+            name: name,
+            avatarId: user.avatar,
+            message: "Promotion email sent successfully",
+            recommendedStores: topRatedStores,
+            recommendedProducts: topRatedProducts,
+            isAdminAndHasAStore: isAdminAndHasAStore,
+            isAdminAndHasNoStore: isAdminAndHasNoStore,
         });
     } catch (error) {
         console.error('Failed to send email', error);
