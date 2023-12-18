@@ -79,18 +79,15 @@ const addReview = async (
         productReviews: productReviews,
         rating: rating,
     };
-    // check if the review has been already existed
+    // one user could only leave one review
     if (product.productReviews.length > 0) {
         for (let review of product.productReviews) {
             if (
                 user_id === review.user_id &&
                 product_id === review.product_id &&
-                store_id === review.store_id &&
-                userName === review.userName &&
-                productReviews === review.productReviews &&
-                rating === review.rating
+                store_id === review.store_id
             ) {
-                throw `This review ${review} has been already existed!`;
+                throw `One user could only leave one review`;
             }
         }
     }
