@@ -60,7 +60,7 @@ export async function getProductSearchResults(searchTerm) {
         let stockStatus;
         if (product.stock === 0) {
             stockStatus = 0; // Out of stock
-        } else if (product.stock > 0 && product.stock < 10) {
+        } else if (product.stock > 0 && product.stock < 100) {
             stockStatus = 1; // Low stock
         } else {
             stockStatus = 2; // In stock
@@ -125,7 +125,7 @@ export async function getRecommendedProducts(userId) {
         let stockStatus;
         if (product.stock === 0) {
             stockStatus = 0; // Out of stock
-        } else if (product.stock > 0 && product.stock < 10) {
+        } else if (product.stock > 0 && product.stock < 100) {
             stockStatus = 1; // Low stock
         } else {
             stockStatus = 2; // In stock

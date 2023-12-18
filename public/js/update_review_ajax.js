@@ -7,7 +7,6 @@
 
     errorContainer.hide();
     updateReviewForm.submit((event) => {
-        event.preventDefault();
         let reviewTerm = review.val().trim();
         let ratingTerm = rating.val().trim();
         let errors = [];
@@ -22,6 +21,7 @@
         }
 
         if (errors.length > 0) {
+            event.preventDefault();
             errorContainer.empty();
             for (let error of errors) {
                 errorContainer.append(error);
@@ -30,7 +30,6 @@
             return;
         }
 
-        window.location.href = '/profile';
     });
 
     deleteReviewForm.submit(async (event) => {

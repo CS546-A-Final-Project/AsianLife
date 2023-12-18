@@ -42,7 +42,7 @@ router
             let stockMessage, stockStyle;
             if (product) {
                 if (product.stock > 100) {
-                    stockMessage = `${product.stock}`;
+                    stockMessage = 'High stock';
                     stockStyle = 'high';
                 }
                 if (product.stock >= 1 && product.stock <= 100) {
