@@ -103,15 +103,6 @@ router.post('/', async (req, res) => {
             recommendedProducts: topRatedProducts,
             isAdminAndHasAStore: isAdminAndHasAStore,
             isAdminAndHasNoStore: isAdminAndHasNoStore,
-        res.render('home', {
-            title: "Home",
-            name: name,
-            avatarId: user.avatar,
-            message: "Promotion email sent successfully",
-            recommendedStores: topRatedStores,
-            recommendedProducts: topRatedProducts,
-            isAdminAndHasAStore: isAdminAndHasAStore,
-            isAdminAndHasNoStore: isAdminAndHasNoStore,
         });
     } catch (error) {
         console.error('Failed to send email', error);
