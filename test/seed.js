@@ -35,8 +35,8 @@ let userId1 = newUser1.user_id;
 let newStoreId = await storesData.addStore({
   adminId: userId,
   name: '99 RANCH',
-  address: "address",
-  city: "Hoboken",
+  address: "100 Jersey Ave",
+  city: "Jersey City",
   state: "NJ",
   zipCode: "07030",
   phoneNumber: "1234567890",
@@ -46,34 +46,53 @@ await usersData.bindStoreWithUser(newStoreId, userId);
 let newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId1,
   store_id: newStoreId,
-  comment: "This is comment1 for store1"
+  comment: "This is comment1 for 99 RANCH"
 });
 
 let product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOGANMA',
+  'Cola Soda 24 pack',
   "Fresh Produce",
-  13,
+  7,
   '12/06/2023',
   '12/25/2023',
-  5
+  100
 )
 
 let addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
+  "Great soda!!!I love it!!!!!!!!!",
+  5
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOTAN',
+  'Lay Chip family pack',
   "Fresh Produce",
-  13,
+  5,
+  '12/06/2023',
+  '12/25/2023',
+  20
+)
+
+addReview = await reviewsforproductsData.addReview(
+  userId1,
+  product,
+  newStoreId,
+  "My favorite chip!!!!!!!!!!!!!!!!!",
+  5
+)
+
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'A6 Steak Beef',
+  "Fresh Produce",
+  50,
   '12/06/2023',
   '12/25/2023',
   5
@@ -83,35 +102,16 @@ addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-)
-
-product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'DOUBANJIANG',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023',
+  "The steak is really juicy!!!!!!!!!!!!!!!",
   5
 )
 
-addReview = await reviewsforproductsData.addReview(
-  userId1,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-)
-
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'MAPODOUFU',
+  'Fresh Shrimp 5lb',
   "Fresh Produce",
-  13,
+  10,
   '12/06/2023',
   '12/25/2023',
   5
@@ -121,34 +121,34 @@ addReview = await reviewsforproductsData.addReview(
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
-  4
+  5
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'YOULEMEI',
+  'Rao noodles sauce 1lb',
   "Fresh Produce",
-  13,
+  5,
   '12/06/2023',
   '12/25/2023',
-  5
+  10
 )
 
 addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "gooooooooooooooooooooooooooooooooood",
-  4
+  "Great item!!!!!!!!!!!!!!!!!!!!!",
+  5
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'AAAA',
+  'Poland Water 24 pack',
   "Fresh Produce",
-  13,
+  5,
   '12/06/2023',
   '12/25/2023',
   1
@@ -158,25 +158,25 @@ addReview = await reviewsforproductsData.addReview(
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
-  4
+  5
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'AAAAA',
+  'Lettuce 1lb',
   "Fresh Produce",
-  13,
+  3,
   '12/06/2023',
   '12/25/2023',
-  1
+  101
 )
 addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
   "goooooooooooooooooooooooooooooooooood",
-  4
+  5
 )
 
 //--------------------admin2-----------------------
@@ -201,7 +201,7 @@ userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
   name: 'SHAXIANXIAOCHI',
-  address: "address",
+  address: "241 Garden St",
   city: "Hoboken",
   state: "NJ",
   zipCode: "07030",
@@ -218,7 +218,7 @@ newComment1forstore = await commentsforstoresData.addComment({
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOGANMA',
+  'LAOGANMA2',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -229,7 +229,25 @@ product = await productsData.addProduct(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOTAN',
+  'LAOTAN2',
+  "Fresh Produce",
+  13,
+  '12/06/2023',
+  '12/25/2023',
+  5
+)
+addReview = await reviewsforproductsData.addReview(
+  userId1,
+  product,
+  newStoreId,
+  "bad!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+  4
+)
+
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'DOUBANJIANG2',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -247,7 +265,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'DOUBANJIANG',
+  'MAPODOUFU2',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -265,7 +283,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'MAPODOUFU',
+  'YOULEMEI2',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -283,25 +301,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'YOULEMEI',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023',
-  5
-)
-addReview = await reviewsforproductsData.addReview(
-  userId1,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-)
-
-product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'AAAA',
+  'Cabbage',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -312,26 +312,26 @@ addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
+  "I will go back to shop next time!!!!!!!!!!!",
+  5
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'AAAAA',
+  'Sunkist',
   "Fresh Produce",
-  13,
+  2,
   '12/06/2023',
   '12/25/2023',
-  1
+  5
 )
 addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
+  "That's the favorite soda of my girlfriend!",
+  5
 )
 //--------------------admin3-----------------------
 newUser = await usersData.addUser(
@@ -354,38 +354,56 @@ userId1 = newUser1.user_id;
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
-  name: 'GOUBULIBAOZI',
-  address: "address",
+  name: 'ACME',
+  address: "100 Clinton",
   city: "Hoboken",
   state: "NJ",
   zipCode: "07030",
-  phoneNumber: "1234567890",
+  phoneNumber: "5879567853",
   email: "admin2@m.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId1,
   store_id: newStoreId,
-  comment: "This is comment1 for store1"
+  comment: "This is comment1 for ACME"
 });
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOGANMA',
+  'Whole Milk',
   "Fresh Produce",
-  13,
+  3.69,
   '12/06/2023',
   '12/25/2023',
-  5
+  200
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOTAN',
+  'Lay Chip',
   "Fresh Produce",
-  13,
+  5,
+  '12/06/2023',
+  '12/25/2023',
+  100
+)
+addReview = await reviewsforproductsData.addReview(
+  userId1,
+  product,
+  newStoreId,
+  "I hate that chips, make me thirsty!!!!!!!!!",
+  1
+)
+
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'Ice Cream',
+  "Fresh Produce",
+  10,
   '12/06/2023',
   '12/25/2023',
   5
@@ -394,68 +412,50 @@ addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
+  "Great Deal!!!!Everythings great here!!!",
+  5
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'DOUBANJIANG',
+  'Poland Water 24 pack',
   "Fresh Produce",
-  13,
+  5,
   '12/06/2023',
   '12/25/2023',
-  5
+  50
 )
 addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
+  "It's goooooooooooooooooooooooooood?",
+  3
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'MAPODOUFU',
+  'Black Pepper Sauce',
   "Fresh Produce",
-  13,
+  3,
   '12/06/2023',
   '12/25/2023',
-  5
+  200
 )
 addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-)
-
-product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'YOULEMEI',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023',
+  "That's great. I must add it to my steak!!!!!!!!EVERYTIME!!!!!!!!",
   5
 )
-addReview = await reviewsforproductsData.addReview(
-  userId1,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-)
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'AAAA',
+  'RAO sauce',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -466,16 +466,16 @@ addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
+  "Bad!!!!!!!!!!!!!!!TOO sour!!!!!!!!!!!!",
+  1
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'AAAAA',
+  'White Pepper',
   "Fresh Produce",
-  13,
+  1,
   '12/06/2023',
   '12/25/2023',
   1
@@ -484,8 +484,8 @@ addReview = await reviewsforproductsData.addReview(
   userId1,
   product,
   newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
+  "I need it everytime when I cook!!!!!!!!!!!!!!",
+  5
 )
 //--------------------admin4-----------------------
 newUser = await usersData.addUser(
@@ -508,36 +508,98 @@ userId1 = newUser1.user_id;
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
-  name: 'XIAOMAIBU',
-  address: "address",
+  name: 'Shoprite',
+  address: "100 Madison St",
   city: "Hoboken",
   state: "NJ",
   zipCode: "07030",
-  phoneNumber: "1234567890",
-  email: "admin2@m.com",
+  phoneNumber: "6385960782",
+  email: "admin4@m.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId1,
   store_id: newStoreId,
-  comment: "This is comment1 for store1"
+  comment: "This is comment1 for Shoprite"
 });
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOGANMA',
+  'Cola Soda 12 pack',
   "Fresh Produce",
-  13,
+  5,
   '12/06/2023',
   '12/25/2023',
+  200
+)
+
+addReview = await reviewsforproductsData.addReview(
+  userId1,
+  product,
+  newStoreId,
+  "goooooooooooooooooooooooooooooooooood",
+  4
+)
+
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'Top loin beef',
+  "Fresh Produce",
+  10,
+  '12/06/2023',
+  '12/25/2023',
+  20
+)
+addReview = await reviewsforproductsData.addReview(
+  userId1,
+  product,
+  newStoreId,
+  "That's juicy!!!!!!!!!!!!!!!!!!!!!",
+  4
+)
+
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'Long Grain Rice 20 lb',
+  "Fresh Produce",
+  9.9,
+  '12/06/2023',
+  '12/25/2023',
+  10
+)
+addReview = await reviewsforproductsData.addReview(
+  userId1,
+  product,
+  newStoreId,
+  "Best rice I've eat!!!!!!!!!!!!!!!!!!!!",
   5
 )
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOTAN',
+  'vitafusion',
+  "Fresh Produce",
+  8.9,
+  '12/06/2023',
+  '12/25/2023',
+  5
+)
+addReview = await reviewsforproductsData.addReview(
+  userId1,
+  product,
+  newStoreId,
+  "goooooooooooooooooooooooooooooooooood",
+  4
+)
+
+product = await productsData.addProduct(
+  userId,
+  newStoreId,
+  'Bread',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -555,61 +617,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'DOUBANJIANG',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023',
-  5
-)
-addReview = await reviewsforproductsData.addReview(
-  userId1,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-)
-
-product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'MAPODOUFU',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023',
-  5
-)
-addReview = await reviewsforproductsData.addReview(
-  userId1,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-)
-
-product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'YOULEMEI',
-  "Fresh Produce",
-  13,
-  '12/06/2023',
-  '12/25/2023',
-  5
-)
-addReview = await reviewsforproductsData.addReview(
-  userId1,
-  product,
-  newStoreId,
-  "goooooooooooooooooooooooooooooooooood",
-  4
-)
-
-product = await productsData.addProduct(
-  userId,
-  newStoreId,
-  'AAAA',
+  'New Yorker Beef',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -627,7 +635,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'AAAAA',
+  'New York House Beef',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -662,25 +670,25 @@ userId1 = newUser1.user_id;
 userId = newUser.user_id;
 newStoreId = await storesData.addStore({
   adminId: userId,
-  name: 'HUAIJIUSHIPIN',
-  address: "address",
-  city: "Hoboken",
+  name: 'Whole food',
+  address: "Harbor BLVD",
+  city: "Weehawken",
   state: "NJ",
   zipCode: "07030",
-  phoneNumber: "1234567890",
-  email: "admin2@m.com",
+  phoneNumber: "3568906435",
+  email: "admin5@m.com",
 });
 await usersData.bindStoreWithUser(newStoreId, userId);
 newComment1forstore = await commentsforstoresData.addComment({
   user_id: userId1,
   store_id: newStoreId,
-  comment: "This is comment1 for store1"
+  comment: "This is comment1 for Whole food"
 });
 
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOGANMA',
+  'Mango Sunkist Soda',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -688,10 +696,18 @@ product = await productsData.addProduct(
   5
 )
 
+addReview = await reviewsforproductsData.addReview(
+  userId1,
+  product,
+  newStoreId,
+  "goooooooooooooooooooooooooooooooooood",
+  4
+)
+
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'LAOTAN',
+  'Grape Sunkist Soda',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -709,7 +725,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'DOUBANJIANG',
+  'HD Ice Cream',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -727,7 +743,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'MAPODOUFU',
+  'Unsticky Pot',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -745,7 +761,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'YOULEMEI',
+  'Kitchen Gloves',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -763,7 +779,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'AAAA',
+  'Steak Beef',
   "Fresh Produce",
   13,
   '12/06/2023',
@@ -781,7 +797,7 @@ addReview = await reviewsforproductsData.addReview(
 product = await productsData.addProduct(
   userId,
   newStoreId,
-  'AAAAA',
+  'Vitafusion',
   "Fresh Produce",
   13,
   '12/06/2023',
