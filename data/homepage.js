@@ -9,7 +9,7 @@ export async function getStoreSearchResults(searchTerm) {
     
     const matchedStores = await storeCollection
         .find({ name: { $regex: searchTerm, $options: 'i' } })
-        .limit(10)
+        .limit(20)
         .toArray();
     
     const formattedStores = matchedStores.map(store => ({
@@ -27,19 +27,67 @@ export async function getProductSearchResults(searchTerm) {
     searchTerm = validation.checkSearchValid(searchTerm);
     const productCollection = await products();
 
-    const matchedProducts = await productCollection
+    let matchedProducts = await productCollection
         .find({ productName: { $regex: searchTerm, $options: 'i' } })
-        .limit(10)
+        .limit(50)
         .toArray();
 
-    const formattedProdcuts = matchedProducts.map(product => ({
-        name: product.productName,
-        productId: product._id,
-        productImage: product.productImage,
-        isProduct: true
-    }));
+    matchedProducts = matchedProducts.sort((a, b) => {
+        if (a.stock === 0) return 1;
+        if (b.stock === 0) return -1;
+        return 0;
+    });    
 
-    return formattedProdcuts;
+    let outOfStockCategories = matchedProducts
+        .filter(product => product.stock === 0)
+        .map(product => product.category);
+
+    outOfStockCategories = [...new Set(outOfStockCategories)];
+
+    let replacements = [];
+    for (const category of outOfStockCategories) {
+        const categoryRecommendations = await productCollection
+            .find({ category: category, stock: { $gt: 0 } })
+            .sort({ rating: -1 })
+            .limit(3)
+            .toArray();
+        replacements.push(...categoryRecommendations);
+    }
+
+    replacements = replacements.filter((v, i, a) => a.findIndex(t => (t.productId === v.productId)) === i);
+
+    const formattedProducts = matchedProducts.map(product => {
+        let stockStatus;
+        if (product.stock === 0) {
+            stockStatus = 0; // Out of stock
+        } else if (product.stock > 0 && product.stock < 10) {
+            stockStatus = 1; // Low stock
+        } else {
+            stockStatus = 2; // In stock
+        }
+
+        return {
+            name: product.productName,
+            productId: product._id,
+            productImage: product.productImage,
+            isProduct: true,
+            isOutOfStock: product.stock === 0,
+            isLowStock: product.stock === 1,
+            isInStock: product.stock === 2,
+        };
+    });
+
+    return {
+        searchResults: formattedProducts,
+        replacements: replacements.length > 0 ? replacements.map(product => ({
+            name: product.productName,
+            productId: product._id,
+            productImage: product.productImage,
+            category: product.category,
+            rating: product.rating,
+            isRecommendation: true
+        })) : null
+    };
 }
 
 
@@ -67,18 +115,32 @@ export async function getRecommendedProducts(userId) {
     const productCollection = await products();
 
     const topRatedProducts = await productCollection
-        .find({})
+        .find({ stock: { $gt: 0 } })
         .sort({ rating: -1 })
         .limit(5)
         .toArray();
 
     //console.log(topRatedProducts);
-    const formattedTopRatedProducts = topRatedProducts.map(product => ({
-        name: product.productName,
-        productId: product._id,
-        productImage: product.productImage,
-        rating: product.rating,
-    }));
+    const formattedTopRatedProducts = topRatedProducts.map(product => {
+        let stockStatus;
+        if (product.stock === 0) {
+            stockStatus = 0; // Out of stock
+        } else if (product.stock > 0 && product.stock < 10) {
+            stockStatus = 1; // Low stock
+        } else {
+            stockStatus = 2; // In stock
+        }
+
+        return {
+            name: product.productName,
+            productId: product._id,
+            productImage: product.productImage,
+            rating: product.rating,
+            isOutOfStock: product.stock === 0,
+            isLowStock: product.stock === 1,
+            isInStock: product.stock === 2,
+        };
+    });
 
     return formattedTopRatedProducts;
 }

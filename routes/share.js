@@ -2,8 +2,11 @@ import express from 'express';
 import validation from '../validation.js';
 import helper from '../helpers.js';
 import xss from 'xss';
+import { getUser } from '../data/users.js';
 import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
+import { getAllStores } from '../data/stores.js';
+import {getStoreSearchResults, getProductSearchResults, getRecommendedStores, getRecommendedProducts} from '../data/homepage.js';
 const router = express.Router();
 const OAuth2 = google.auth.OAuth2;
 
@@ -25,6 +28,25 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    const storeId = req.session.user.ownedStoreId;
+    const role = req.session.user.role;
+    let isAdminAndHasAStore = false;
+    if (role === 'admin' && storeId) {
+        isAdminAndHasAStore = true;
+    }
+    let isAdminAndHasNoStore = false;
+    if (role === 'admin' && !storeId) {
+        isAdminAndHasNoStore = true;
+    }
+    const id = req.session.user.id;
+    const user = await getUser(id);
+    const name = user.userName;
+
+    //get recommended stores
+    const topRatedStores = await getRecommendedStores(id);
+    
+    //get recommended products
+    const topRatedProducts = await getRecommendedProducts(id);
 
     let friendEmail = xss(req.body.friendEmail);
     let userNickname = xss(req.body.userNickname); 
@@ -65,7 +87,16 @@ router.post('/', async (req, res) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        res.send('Promotion email sent successfully');
+        res.render('home', {
+            title: "Home",
+            name: name,
+            avatarId: user.avatar,
+            message: "Promotion email sent successfully",
+            recommendedStores: topRatedStores,
+            recommendedProducts: topRatedProducts,
+            isAdminAndHasAStore: isAdminAndHasAStore,
+            isAdminAndHasNoStore: isAdminAndHasNoStore,
+        });
     } catch (error) {
         console.error('Failed to send email', error);
         res.status(500).send('Error sending promotion email');
