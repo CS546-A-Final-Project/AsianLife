@@ -7,10 +7,10 @@
     <p>Share AsianLife with your relatives and friends.</p>
     <form id="share-form" action="/send-promotion" method="POST">
         <label for="user-nickname">Your Nickname:</label>
-        <input type="text" id="user-nickname" name="userNickname" placeholder="Enter your nickname" required>
+        <input type="text" id="user-nickname" name="userNickname" placeholder="Enter your nickname" value="{{name}}" required>
 
         <label for="friend-email">Friend's Email:</label>
-        <input type="email" id="friend-email" name="friendEmail" placeholder="Enter your friend's email" required>
+        <input type="email" id="friend-email" name="friendEmail" placeholder="Enter your friend's email" value="{{email}}" required>
 
         <button type="submit">Send Promotion</button>
     </form>

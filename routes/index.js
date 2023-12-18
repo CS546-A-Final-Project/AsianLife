@@ -37,7 +37,6 @@ const constructorMethod = (app) => {
   app.use('/editstore', editRoutes);
   app.use('/share', shareRoutes);
   app.use('/send-promotion', sendPromotionRoutes);
-
   app.use('/addProduct', addProductRoutes);
   app.use('/products', productsRoutes);
   app.use('/editProduct', editProductRoutes);
