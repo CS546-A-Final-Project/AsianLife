@@ -576,15 +576,18 @@
             if (!reguExForPrice.test(productPrice.toString())) {
                 errors.push("Product price should be a positive whole number, positive 2 decimal place float.");
             }
-            if (manufactureDate.length === 0 || expirationDate.length === 0) {
-                errors.push("Manufacture date and expiration date should not be empty");
+            if (manufactureDate.length === 0) {
+                errors.push("Manufacture date should not be empty");
+            }
+            if (expirationDate.length === 0) {
+                errors.push("Expiration date should not be empty");
             }
             const reguExForDate = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
             if (!manufactureDate.match(reguExForDate) ) {
-                errors.push("Manufacture date and expiration date should be in the format of MM/DD/YYYY");
+                errors.push("Manufacture date should be in the format of MM/DD/YYYY");
             }
             if (!expirationDate.match(reguExForDate)) {
-                errors.push("Manufacture date and expiration date should be in the format of MM/DD/YYYY");
+                errors.push("Expiration date should be in the format of MM/DD/YYYY");
             }
             const [month, day, year] = manufactureDate.split("/").map(Number); // split and convert string into number
             const dateObj = new Date(year, month - 1, day); // create a date object with the input date
