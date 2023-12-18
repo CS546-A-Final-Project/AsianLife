@@ -47,8 +47,11 @@
             errors.push("Manufacture date and expiration date should not be empty");
         }
         const reguExForDate = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
-        if (!manufactureDateTerm.match(reguExForDate) || !expirationDateTerm.match(reguExForDate)) {
-            errors.push("Manufacture date and expiration date should be in the format of MM/DD/YYYY");
+        if (!manufactureDateTerm.match(reguExForDate) ) {
+            errors.push("Manufacture date should be in the format of MM/DD/YYYY");
+        }
+        if (!expirationDateTerm.match(reguExForDate)) {
+            errors.push("expiration date should be in the format of MM/DD/YYYY");
         }
         const [month, day, year] = manufactureDateTerm.split("/").map(Number); // split and convert string into number
         const dateObj = new Date(year, month - 1, day); // create a date object with the input date
