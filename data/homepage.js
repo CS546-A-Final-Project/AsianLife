@@ -60,7 +60,7 @@ export async function getProductSearchResults(searchTerm) {
         let stockStatus;
         if (product.stock === 0) {
             stockStatus = 0; // Out of stock
-        } else if (product.stock > 0 && product.stock < 10) {
+        } else if (product.stock > 0 && product.stock < 100) {
             stockStatus = 1; // Low stock
         } else {
             stockStatus = 2; // In stock
@@ -125,20 +125,20 @@ export async function getRecommendedProducts(userId) {
         let stockStatus;
         if (product.stock === 0) {
             stockStatus = 0; // Out of stock
-        } else if (product.stock > 0 && product.stock < 10) {
+        } else if (product.stock > 0 && product.stock < 100) {
             stockStatus = 1; // Low stock
         } else {
             stockStatus = 2; // In stock
         }
 
         return {
-            name: product.productName,
+            productName: product.productName,
             productId: product._id,
             productImage: product.productImage,
             rating: product.rating,
-            isOutOfStock: product.stock === 0,
-            isLowStock: product.stock === 1,
-            isInStock: product.stock === 2,
+            isOutOfStock: stockStatus === 0,
+            isLowStock: stockStatus === 1,
+            isInStock: stockStatus === 2,
         };
     });
 
